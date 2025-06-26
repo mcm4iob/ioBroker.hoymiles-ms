@@ -1,113 +1,113 @@
 {
-    "common": {
-        "name": "hoymiles-ms",
-        "version": "0.0.1",
-        "news": {
-            "0.0.1": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "uk": "Початкова версія",
-                "zh-cn": "首次出版"
-            }
-        },
-        "titleLang": {
-            "en": "Hoymiles MS integration",
-            "de": "Hoymiles MS -Integration",
-            "ru": "Hoymiles MS Интеграция",
-            "pt": "Hoymiles MS Integração",
-            "nl": "HOYMILES MS MS INTEGRATIE",
-            "fr": "Hoymiles MS Intégration",
-            "it": "Hoymiles MS Integration",
-            "es": "Hoymiles MS Integración",
-            "pl": "Integracja MS Hoymiles",
-            "uk": "Інтеграція Hoymiles MS",
-            "zh-cn": "Hoymiles MS集成"
-        },
-        "desc": {
-            "en": "This adapter integrates Hoymiles MS-A2 into ioBroker.",
-            "de": "Dieser Adapter integriert Hoymiles MS-A2 in IOBROKER.",
-            "ru": "Этот адаптер интегрирует Hoymiles MS-A2 в iobroker.",
-            "pt": "Este adaptador integra o Hoymiles MS-A2 ao IOBroker.",
-            "nl": "Deze adapter integreert Hoymiles MS-A2 in IoBroker.",
-            "fr": "Cet adaptateur intègre Hoymiles MS-A2 dans IOBRoker.",
-            "it": "Questo adattatore integra Hoymiles MS-A2 in IoBroker.",
-            "es": "Este adaptador integra Hoymiles MS-A2 en Iobroker.",
-            "pl": "Ten adapter integruje Haymiles MS-A2 z IOBRAKER.",
-            "uk": "Цей адаптер інтегрує Hoymiles MS-A2 в iobroker.",
-            "zh-cn": "该适配器将HoyMiles MS-A2集成到Iobroker中。"
-        },
-        "authors": [
-            "mcm1957 <mcm57@gmx.at>"
-        ],
-        "keywords": [
-            "hoymiles",
-            "hoymiles ms a2",
-            "microstorage",
-            "hoymiles akku"
-        ],
-        "licenseInformation": {
-            "type": "free",
-            "license": "MIT"
-        },
-        "platform": "Javascript/Node.js",
-        "icon": "hoymiles-ms.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/mcm1957/ioBroker.hoymiles-ms/main/admin/hoymiles-ms.png",
-        "readme": "https://github.com/mcm1957/ioBroker.hoymiles-ms/blob/main/README.md",
-        "loglevel": "info",
-        "tier": 3,
-        "mode": "daemon",
-        "type": "hardware",
-        "compact": true,
-        "connectionType": "local",
-        "dataSource": "push",
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=6.0.11"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": "7.0.23"
-            }
-        ]
+  "common": {
+    "name": "hoymiles-ms",
+    "version": "0.0.1-alpha.0",
+    "news": {
+      "0.0.1": {
+        "en": "initial release",
+        "de": "Erstveröffentlichung",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "uk": "Початкова версія",
+        "zh-cn": "首次出版"
+      }
     },
-    "native": {
-        "option1": true,
-        "option2": "42"
+    "titleLang": {
+      "en": "Hoymiles MS integration",
+      "de": "Hoymiles MS -Integration",
+      "ru": "Hoymiles MS Интеграция",
+      "pt": "Hoymiles MS Integração",
+      "nl": "HOYMILES MS MS INTEGRATIE",
+      "fr": "Hoymiles MS Intégration",
+      "it": "Hoymiles MS Integration",
+      "es": "Hoymiles MS Integración",
+      "pl": "Integracja MS Hoymiles",
+      "uk": "Інтеграція Hoymiles MS",
+      "zh-cn": "Hoymiles MS集成"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "Device or service connected",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "This adapter integrates Hoymiles MS-A2 into ioBroker.",
+      "de": "Dieser Adapter integriert Hoymiles MS-A2 in IOBROKER.",
+      "ru": "Этот адаптер интегрирует Hoymiles MS-A2 в iobroker.",
+      "pt": "Este adaptador integra o Hoymiles MS-A2 ao IOBroker.",
+      "nl": "Deze adapter integreert Hoymiles MS-A2 in IoBroker.",
+      "fr": "Cet adaptateur intègre Hoymiles MS-A2 dans IOBRoker.",
+      "it": "Questo adattatore integra Hoymiles MS-A2 in IoBroker.",
+      "es": "Este adaptador integra Hoymiles MS-A2 en Iobroker.",
+      "pl": "Ten adapter integruje Haymiles MS-A2 z IOBRAKER.",
+      "uk": "Цей адаптер інтегрує Hoymiles MS-A2 в iobroker.",
+      "zh-cn": "该适配器将HoyMiles MS-A2集成到Iobroker中。"
+    },
+    "authors": [
+      "mcm1957 <mcm57@gmx.at>"
+    ],
+    "keywords": [
+      "hoymiles",
+      "hoymiles ms a2",
+      "microstorage",
+      "hoymiles akku"
+    ],
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
+    "platform": "Javascript/Node.js",
+    "icon": "hoymiles-ms.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/mcm1957/ioBroker.hoymiles-ms/main/admin/hoymiles-ms.png",
+    "readme": "https://github.com/mcm1957/ioBroker.hoymiles-ms/blob/main/README.md",
+    "loglevel": "info",
+    "tier": 3,
+    "mode": "daemon",
+    "type": "hardware",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "push",
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=6.0.11"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": "7.0.23"
+      }
     ]
+  },
+  "native": {
+    "option1": true,
+    "option2": "42"
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "Device or service connected",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }

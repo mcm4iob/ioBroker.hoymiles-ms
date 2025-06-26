@@ -1,6 +1,6 @@
 {
   "name": "iobroker.hoymiles-ms",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha.0",
   "description": "This adapter integrates Hoymiles MS-A2 into ioBroker.",
   "author": {
     "name": "mcm1957",

@@ -112,9 +112,8 @@ Please refer to the [`dev-server` documentation](https://github.com/ioBroker/dev
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
 ### **WORK IN PROGRESS**
-* (mcm1957) initial release
+* (mcm1957) initial testing
 
 ## License
 MIT License
