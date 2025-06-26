@@ -112,7 +112,7 @@ Please refer to the [`dev-server` documentation](https://github.com/ioBroker/dev
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.1-alpha.2 (2025-06-26)
 * (mcm1957) initial testing
 
 ## License
