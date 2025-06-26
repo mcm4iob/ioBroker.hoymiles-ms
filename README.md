@@ -18,6 +18,9 @@ For more details and for information how to disable the error reporting see [Sen
 
 **************************************************************************************************************
 
+**ATTENTION: THIS IS A WORK IN PROGRESS DRAFT AND NOT YET USEAGEBLE AT ALL**
+A first workrin release can be expected ner 15.7.2025.
+
 ## hoymiles-ms adapter for ioBroker
 
 This adapter integrates the HGOYMILES **M**icro**S**torage systems (currently Hoymiles SM-A2) into ioBroker. A descritpion of the device is available [here](https://www.hoymiles.com/de/products/micro-storage).
