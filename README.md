@@ -18,8 +18,8 @@ For more details and for information how to disable the error reporting see [Sen
 
 **************************************************************************************************************
 
-**ATTENTION: THIS IS A WORK IN PROGRESS DRAFT AND NOT YET USEAGEBLE AT ALL**
-A first workrin release can be expected ner 15.7.2025.
+**ATTENTION: THIS IS A WORK IN PROGRESS DRAFT AND NOT YET USEABLE AT ALL**
+A first working release can be expected around 15.7.2025.
 
 ## hoymiles-ms adapter for ioBroker
 
