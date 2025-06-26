@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hoymiles-ms",
-    "version": "0.0.1-alpha.2",
+    "version": "0.0.1-alpha.3",
     "news": {
+      "0.0.1-alpha.3": {
+        "en": "initial testing",
+        "de": "erstprüfung",
+        "ru": "первоначальное тестирование",
+        "pt": "testes iniciais",
+        "nl": "eerste tests",
+        "fr": "essai initial",
+        "it": "test iniziale",
+        "es": "prueba inicial",
+        "pl": "badanie wstępne",
+        "uk": "початкове тестування",
+        "zh-cn": "初步测试"
+      },
       "0.0.1-alpha.2": {
         "en": "initial testing",
         "de": "erstprüfung",

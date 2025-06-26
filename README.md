@@ -51,7 +51,7 @@ Note that this adapter is not related to the company mentioned above in any way 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.1-alpha.3 (2025-06-26)
 * (mcm1957) initial testing
 
 ## License
