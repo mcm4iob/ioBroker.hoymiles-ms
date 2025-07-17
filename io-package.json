@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hoymiles-ms",
-    "version": "0.0.1-alpha.6",
+    "version": "0.0.1-alpha.7",
     "news": {
+      "0.0.1-alpha.7": {
+        "en": "initial testing",
+        "de": "erstprüfung",
+        "ru": "первоначальное тестирование",
+        "pt": "testes iniciais",
+        "nl": "eerste tests",
+        "fr": "essai initial",
+        "it": "test iniziale",
+        "es": "prueba inicial",
+        "pl": "badanie wstępne",
+        "uk": "початкове тестування",
+        "zh-cn": "初步测试"
+      },
       "0.0.1-alpha.6": {
         "en": "initial testing",
         "de": "erstprüfung",
@@ -80,19 +93,6 @@
         "pl": "badanie wstępne",
         "uk": "початкове тестування",
         "zh-cn": "初步测试"
-      },
-      "0.0.1": {
-        "en": "initial release",
-        "de": "Erstveröffentlichung",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "uk": "Початкова версія",
-        "zh-cn": "首次出版"
       }
     },
     "titleLang": {
