@@ -1,5 +1,10 @@
 {
     "hoymiles-ms adapter settings": "Adaptereinstellungen für hoymiles-ms",
     "option1": "Option1",
-    "option2": "Option2"
+    "option2": "Option2",
+    "lblClientMode": "Verwenden Sie den Client -Modus",
+    "lblSrvNetwork": "MQTT Server -Netzwerk",
+    "lblSrvPort": "MQTT Server -Port",
+    "lblbrokerIp": "MQTT Broker-IP",
+    "lblbrokerPort": "MQTT Broker-Port"
 }

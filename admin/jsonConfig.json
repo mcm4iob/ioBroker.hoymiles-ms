@@ -5,7 +5,8 @@
         "clientMode": {
             "type": "checkbox",
             "label": "lblClientMode",
-            "newLine": true
+            "newLine": true,
+            "hidden":"true"
         },
         "srvNetwork": {
             "type": "ip",
@@ -13,24 +14,25 @@
             "listenOnAllPorts": true,
             "onlyIp4": true,
             "default": "0.0.0.0",
-            "hidden":"!data.clientMode",
+            "hidden":"data.clientMode",
             "newLine": true
         },
         "srvPort": {
             "type": "port",
             "label": "lblSrvPort",
-            "hidden":"!data.clientMode"
+            "default": "1881",
+            "hidden":"data.clientMode"
         },
         "brokerIp": {
             "type": "text",
             "label": "lblbrokerIp",
-            "hidden":"data.clientMode",
+            "hidden":"!data.clientMode",
             "newLine": true
         },
         "brokerPort": {
             "type": "port",
             "label": "lblbrokerPort",
-            "hidden":"data.clientMode"
+            "hidden":"!data.clientMode"
         }
     }
 }

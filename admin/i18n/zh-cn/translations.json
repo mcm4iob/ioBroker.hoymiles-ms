@@ -1,5 +1,10 @@
 {
     "hoymiles-ms adapter settings": "hoymiles-ms的适配器设置",
     "option1": "选项1",
-    "option2": "选项2"
+    "option2": "选项2",
+    "lblClientMode": "使用客户端模式",
+    "lblSrvNetwork": "MQTT服务器网络",
+    "lblSrvPort": "MQTT服务器端口",
+    "lblbrokerIp": "MQTT经纪-IP",
+    "lblbrokerPort": "MQTT经纪港"
 }
