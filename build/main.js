@@ -22,7 +22,11 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var utils = __toESM(require("@iobroker/adapter-core"));
+var import_mqttServer = require("./lib/mqttServer");
+var import_hoymilesMqtt = require("./lib/hoymilesMqtt");
 class HoymilesMs extends utils.Adapter {
+  mqtt;
+  hoymilesMqtt = null;
   constructor(options = {}) {
     super({
       ...options,
@@ -36,51 +40,48 @@ class HoymilesMs extends utils.Adapter {
    * Is called when databases are connected and adapter received configuration.
    */
   async onReady() {
-    this.setState("info.connection", false, true);
-    this.log.info("config option1: " + this.config.option1);
-    this.log.info("config option2: " + this.config.option2);
-    await this.setObjectNotExistsAsync("testVariable", {
-      type: "state",
-      common: {
-        name: "testVariable",
-        type: "boolean",
-        role: "indicator",
-        read: true,
-        write: true
-      },
-      native: {}
-    });
-    this.subscribeStates("testVariable");
-    await this.setState("testVariable", true);
-    await this.setState("testVariable", { val: true, ack: true });
-    await this.setState("testVariable", { val: true, ack: true, expire: 30 });
+    await this.setState("info.connection", false, true);
+    this.hoymilesMqtt = new import_hoymilesMqtt.HoymilesMqtt(this);
+    this.mqtt = new import_mqttServer.MqttServer(this, { port: 1883 });
+    this.mqtt.on("connect", this.onMqttConnect.bind(this));
+    this.mqtt.on("message", this.onMqttMessage.bind(this));
+    await this.mqtt.start();
+    this.log.info("[MQTT-Server] started");
   }
   /**
    * Is called when adapter shuts down - callback has to be called under any circumstances!
+   *
+   * @param callback standard iobroker callback
    */
   onUnload(callback) {
     try {
       callback();
-    } catch (e) {
+    } catch {
       callback();
     }
   }
-  // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
-  // You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
-  // /**
-  //  * Is called if a subscribed object changes
-  //  */
-  // private onObjectChange(id: string, obj: ioBroker.Object | null | undefined): void {
-  //     if (obj) {
-  //         // The object was changed
-  //         this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-  //     } else {
-  //         // The object was deleted
-  //         this.log.info(`object ${id} deleted`);
-  //     }
-  // }
   /**
-   * Is called if a subscribed state changes
+   * onMqttConnect is called whenever a client connects
+   *
+   * @param event connection details
+   */
+  onMqttConnect(event) {
+    this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
+  }
+  /**
+   * onMqttMessage is called whenever a new message is received
+   *
+   * @param event message details
+   */
+  async onMqttMessage(event) {
+    var _a;
+    await ((_a = this.hoymilesMqtt) == null ? void 0 : _a.onMqttMessage(event));
+  }
+  /**
+   * onStateChange is called if a subscribed state changes
+   *
+   * @param id id of state
+   * @param state state details
    */
   onStateChange(id, state) {
     if (state) {

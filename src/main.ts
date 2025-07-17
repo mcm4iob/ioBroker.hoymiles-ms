@@ -6,10 +6,13 @@
 // you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
 
-// Load your modules here, e.g.:
-// import * as fs from "fs";
+import type { MqttConnectEvent, MqttMessageEvent } from './lib/mqtt-events';
+import { MqttServer } from './lib/mqttServer';
+import { HoymilesMqtt } from './lib/hoymilesMqtt';
 
 class HoymilesMs extends utils.Adapter {
+    private mqtt: any;
+    private hoymilesMqtt: HoymilesMqtt | null = null;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -18,7 +21,6 @@ class HoymilesMs extends utils.Adapter {
         });
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
-        // this.on('objectChange', this.onObjectChange.bind(this));
         // this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
     }
@@ -27,58 +29,25 @@ class HoymilesMs extends utils.Adapter {
      * Is called when databases are connected and adapter received configuration.
      */
     private async onReady(): Promise<void> {
-        // Initialize your adapter here
-
         // Reset the connection indicator during startup
-        this.setState('info.connection', false, true);
+        await this.setState('info.connection', false, true);
 
-        // The adapters config (in the instance object everything under the attribute "native") is accessible via
-        // this.config:
-        this.log.info('config option1: ' + this.config.option1);
-        this.log.info('config option2: ' + this.config.option2);
+        // init hoymileMqtt
+        this.hoymilesMqtt = new HoymilesMqtt(this);
 
-        /*
-        For every state in the system there has to be also an object of type state
-        Here a simple template for a boolean variable named "testVariable"
-        Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
-        */
-        await this.setObjectNotExistsAsync('testVariable', {
-            type: 'state',
-            common: {
-                name: 'testVariable',
-                type: 'boolean',
-                role: 'indicator',
-                read: true,
-                write: true,
-            },
-            native: {},
-        });
-
-        // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
-        this.subscribeStates('testVariable');
-        // You can also add a subscription for multiple states. The following line watches all states starting with "lights."
-        // this.subscribeStates('lights.*');
-        // Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
-        // this.subscribeStates('*');
-
-        /*
-            setState examples
-            you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
-        */
-        // the variable testVariable is set to true as command (ack=false)
-        await this.setState('testVariable', true);
-
-        // same thing, but the value is flagged "ack"
-        // ack should be always set to true if the value is received from or acknowledged from the target system
-        await this.setState('testVariable', { val: true, ack: true });
-
-        // same thing, but the state is deleted after 30s (getState will return null afterwards)
-        await this.setState('testVariable', { val: true, ack: true, expire: 30 });
-
+        // init mqttServer
+        this.mqtt = new MqttServer(this, { port: 1883 });
+        this.mqtt.on('connect', this.onMqttConnect.bind(this));
+        this.mqtt.on('message', this.onMqttMessage.bind(this));
+        //this.mqtt.on('message', this.hoymilesMqtt.onMqttMessage.bind(this.hoymilesMqtt));
+        await this.mqtt.start();
+        this.log.info('[MQTT-Server] started');
     }
 
     /**
      * Is called when adapter shuts down - callback has to be called under any circumstances!
+     *
+     * @param callback standard iobroker callback
      */
     private onUnload(callback: () => void): void {
         try {
@@ -89,28 +58,34 @@ class HoymilesMs extends utils.Adapter {
             // clearInterval(interval1);
 
             callback();
-        } catch (e) {
+        } catch {
             callback();
         }
     }
 
-    // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
-    // You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
-    // /**
-    //  * Is called if a subscribed object changes
-    //  */
-    // private onObjectChange(id: string, obj: ioBroker.Object | null | undefined): void {
-    //     if (obj) {
-    //         // The object was changed
-    //         this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-    //     } else {
-    //         // The object was deleted
-    //         this.log.info(`object ${id} deleted`);
-    //     }
-    // }
+    /**
+     * onMqttConnect is called whenever a client connects
+     *
+     * @param event connection details
+     */
+    private onMqttConnect(event: MqttConnectEvent): void {
+        this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
+    }
 
     /**
-     * Is called if a subscribed state changes
+     * onMqttMessage is called whenever a new message is received
+     *
+     * @param event message details
+     */
+    private async onMqttMessage(event: MqttMessageEvent): Promise<void> {
+        await this.hoymilesMqtt?.onMqttMessage(event);
+    }
+
+    /**
+     * onStateChange is called if a subscribed state changes
+     *
+     * @param id id of state
+     * @param state state details
      */
     private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
         if (state) {
@@ -138,7 +113,6 @@ class HoymilesMs extends utils.Adapter {
     //         }
     //     }
     // }
-
 }
 
 if (require.main !== module) {

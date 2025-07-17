@@ -1,0 +1,141 @@
+import net, { Server as NetServer, Socket } from 'net';
+import mqttCon, { MqttClient, Packet } from 'mqtt-connection';
+import { EventEmitter } from 'events';
+
+export interface MqttAsyncServerOptions {
+  port?: number;
+  host?: string;
+}
+
+export interface MqttAsyncServerConnectEvent {
+  clientId: string;
+  ip: string;
+  packet: Packet;
+}
+
+export interface MqttAsyncServerMessageEvent {
+  clientId: string;
+  ip: string;
+  topic: string;
+  payload: Buffer;
+  qos: number;
+  retain: boolean;
+  packet: Packet;
+}
+
+export class MqttAsyncServer extends EventEmitter {
+  private server: NetServer;
+  private port: number;
+  private host: string;
+
+  constructor(options: MqttAsyncServerOptions = {}) {
+    super();
+    this.port = options.port ?? 1883;
+    this.host = options.host ?? '0.0.0.0';
+    this.server = net.createServer(this.handleConnection.bind(this));
+  }
+
+  private handleConnection(stream: Socket) {
+    const remoteAddress = stream.remoteAddress || 'unknown';
+    console.log(`Incoming connection from IP: ${remoteAddress}`);
+
+    const client: MqttClient = mqttCon(stream);
+
+    client.on('connect', (packet: Packet) => {
+      client.connack({ returnCode: 0 });
+      console.log(`Client connected: ${packet.clientId} (IP: ${remoteAddress})`);
+      this.emit('connect', {
+        clientId: packet.clientId,
+        ip: remoteAddress,
+        packet,
+      } as MqttAsyncServerConnectEvent);
+    });
+
+    client.on('publish', (packet: Packet) => {
+      console.log(
+        `Received message on topic "${packet.topic}": ${packet.payload?.toString()}`
+      );
+      if (packet.qos && packet.qos > 0) {
+        client.puback({ messageId: packet.messageId });
+      }
+      this.emit('message', {
+        clientId: client.id || '',
+        ip: remoteAddress,
+        topic: packet.topic,
+        payload: packet.payload,
+        qos: packet.qos ?? 0,
+        retain: packet.retain ?? false,
+        packet,
+      } as MqttAsyncServerMessageEvent);
+    });
+
+    client.on('subscribe', (subscriptions: any[]) => {
+      subscriptions.forEach((sub) => {
+        console.log(`Client subscribed to "${sub.topic}"`);
+      });
+      client.suback({
+        granted: subscriptions.map((sub) => sub.qos ?? 0),
+        messageId: (client as any)._lastSubscriptionId || 1,
+      });
+    });
+
+    client.on('unsubscribe', (unsubscriptions: any[]) => {
+      unsubscriptions.forEach((topic) => {
+        console.log(`Client unsubscribed from "${topic}"`);
+      });
+      client.unsuback({ messageId: (client as any)._lastUnsubscribeId || 1 });
+    });
+
+    client.on('pingreq', () => {
+      client.pingresp();
+    });
+
+    client.on('disconnect', () => {
+      console.log(`Client disconnected (IP: ${remoteAddress})`);
+      client.stream.end();
+    });
+
+    client.on('close', () => {
+      console.log(`Client connection closed (IP: ${remoteAddress})`);
+    });
+
+    client.on('error', (err) => {
+      console.error(`Client error (IP: ${remoteAddress}):`, err);
+      client.stream.end();
+    });
+  }
+
+  public async start(): Promise<void> {
+    await new Promise<void>((resolve, reject) => {
+      this.server.listen(this.port, this.host, () => {
+        console.log(`MQTT server is running on ${this.host}:${this.port}`);
+        resolve();
+      });
+      this.server.on('error', (err) => reject(err));
+    });
+  }
+
+  public async stop(): Promise<void> {
+    await new Promise<void>((resolve, reject) => {
+      this.server.close((err?: Error) => {
+        if (err) {
+          reject(err);
+        } else {
+          console.log('MQTT server stopped.');
+          resolve();
+        }
+      });
+    });
+  }
+}
+
+// Example usage:
+// import { MqttAsyncServer } from './MqttAsyncServer';
+// const mqttServer = new MqttAsyncServer({ port: 1883 });
+// mqttServer.on('connect', (event) => {
+//   console.log('Event: connect', event);
+// });
+// mqttServer.on('message', (event) => {
+//   console.log('Event: message', event);
+// });
+// await mqttServer.start();

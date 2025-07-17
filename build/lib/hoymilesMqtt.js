@@ -1,0 +1,74 @@
+"use strict";
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var hoymilesMqtt_exports = {};
+__export(hoymilesMqtt_exports, {
+  HoymilesMqtt: () => HoymilesMqtt
+});
+module.exports = __toCommonJS(hoymilesMqtt_exports);
+var import_states = require("./states");
+class HoymilesMqtt {
+  adapter;
+  log;
+  /**
+   * class constructor
+   *
+   * @param adapter reference to ioBroker aapter class
+   */
+  constructor(adapter) {
+    this.adapter = adapter;
+    this.log = adapter.log;
+    this.log.debug(`[hoymilesMqtt] initializing`);
+  }
+  async onMqttMessage(event) {
+    this.log.debug(`[hoymilesMqtt] process message ${event.topic}: ${event.payload.toString()}`);
+    if (!event.topic) {
+      this.log.debug(`[hoymilesMqtt] ignoring empty topic`);
+      return;
+    }
+    const topicDetails = event.topic.split("/");
+    if (topicDetails.length < 2) {
+      this.log.debug(`[hoymilesMqtt] ignoring invalid topic ${event.topic}`);
+      return;
+    }
+    const deviceId = topicDetails[2];
+    topicDetails[2] = "<dev_id>";
+    const topic = topicDetails.join("/");
+    await (0, import_states.initStates)(this.adapter, deviceId);
+    for (const stateKey in import_states.stateConfig) {
+      if (import_states.stateConfig[stateKey].mqtt.mqtt_publish !== topic) {
+        continue;
+      }
+      this.log.debug(`[hoymilesMqtt] updateing state ${stateKey} from ${event.topic}`);
+      const mqtt_publish_func = import_states.stateConfig[stateKey].mqtt.mqtt_publish_funct;
+      const value = mqtt_publish_func(event.payload);
+      const stateId = `${(0, import_states.filterDevId)(deviceId)}.${stateKey}`;
+      if (value !== void 0) {
+        this.log.debug(`[hoymilesMqtt] updateing state ${stateId} using value ${value}`);
+        await this.adapter.setState(stateId, value, true);
+      } else {
+        this.log.warning(`[hoymilesMqtt] updateing state ${stateId} faile, no value is undefined`);
+      }
+    }
+  }
+}
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  HoymilesMqtt
+});
+//# sourceMappingURL=hoymilesMqtt.js.map
