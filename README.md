@@ -51,6 +51,11 @@ Note that this adapter is not related to the company mentioned above in any way 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (mcm1957) data conversion has been fixed
+* (mcm1957) 'quick' states tree has been renamed to 'realtime'
+* (mcm1957) 'system' data added
+
 ### 0.0.1-alpha.7 (2025-07-17)
 * (mcm1957) initial testing
 

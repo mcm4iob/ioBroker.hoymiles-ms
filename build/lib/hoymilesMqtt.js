@@ -55,9 +55,19 @@ class HoymilesMqtt {
         continue;
       }
       this.log.debug(`[hoymilesMqtt] updateing state ${stateKey} from ${event.topic}`);
-      const mqtt_publish_func = import_states.stateConfig[stateKey].mqtt.mqtt_publish_funct;
-      const value = mqtt_publish_func(event.payload);
+      const state = import_states.stateConfig[stateKey];
       const stateId = `${(0, import_states.filterDevId)(deviceId)}.${stateKey}`;
+      const mqtt_publish_func = state.mqtt.mqtt_publish_funct;
+      let value = mqtt_publish_func(event.payload);
+      if (state.common.type === "boolean" && value === "false") {
+        value = false;
+      }
+      if (state.common.type === "boolean" && value === "true") {
+        value = true;
+      }
+      if (state.common.type === "number" && value !== void 0) {
+        value = Number(value);
+      }
       if (value !== void 0) {
         this.log.debug(`[hoymilesMqtt] updateing state ${stateId} using value ${value}`);
         await this.adapter.setState(stateId, value, true);

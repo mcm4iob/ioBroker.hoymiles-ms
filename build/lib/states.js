@@ -58,20 +58,37 @@ const channelConfig = {
       }
     }
   },
-  quick: {
+  realtime: {
     common: {
       name: {
-        en: "Fast Updated Data ",
-        de: "Schnell aktualisierte Daten",
-        ru: "\u0411\u044B\u0441\u0442\u0440\u043E\u0435 \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u0435 \u0434\u0430\u043D\u043D\u044B\u0445",
-        pt: "Dados atualizados rapidamente",
-        nl: "Snel bijgewerkte gegevens",
-        fr: "Donn\xE9es mises \xE0 jour rapidement",
-        it: "Dati aggiornati rapidamente",
-        es: "Datos actualizados r\xE1pidamente",
-        pl: "Szybko aktualizowane dane",
-        uk: "\u0428\u0432\u0438\u0434\u043A\u043E \u043E\u043D\u043E\u0432\u043B\u044E\u0432\u0430\u043D\u0456 \u0434\u0430\u043D\u0456",
-        "zh-cn": "\u5FEB\u901F\u66F4\u65B0\u6570\u636E"
+        en: "Realtime Data",
+        de: "Echtzeitdaten",
+        ru: "\u0414\u0430\u043D\u043D\u044B\u0435 \u0432 \u0440\u0435\u0430\u043B\u044C\u043D\u043E\u043C \u0432\u0440\u0435\u043C\u0435\u043D\u0438",
+        pt: "Dados em tempo real",
+        nl: "Realtime gegevens",
+        fr: "Donn\xE9es en temps r\xE9el",
+        it: "Dati in tempo reale",
+        es: "Datos en tiempo real",
+        pl: "Dane w czasie rzeczywistym",
+        uk: "\u0414\u0430\u043D\u0456 \u0432 \u0440\u0435\u0430\u043B\u044C\u043D\u043E\u043C\u0443 \u0447\u0430\u0441\u0456",
+        "zh-cn": "\u5B9E\u65F6\u6570\u636E"
+      }
+    }
+  },
+  system: {
+    common: {
+      name: {
+        en: "System Data",
+        de: "Systemdaten",
+        ru: "\u0421\u0438\u0441\u0442\u0435\u043C\u043D\u044B\u0435 \u0434\u0430\u043D\u043D\u044B\u0435",
+        pt: "Dados do sistema",
+        nl: "Systeemgegevens",
+        fr: "Donn\xE9es syst\xE8me",
+        it: "Dati di sistema",
+        es: "Datos del sistema",
+        pl: "Dane systemowe",
+        uk: "\u0421\u0438\u0441\u0442\u0435\u043C\u043D\u0456 \u0434\u0430\u043D\u0456",
+        "zh-cn": "\u7CFB\u7EDF\u6570\u636E"
       }
     }
   }
@@ -314,7 +331,7 @@ const stateConfig = {
       unit: "W"
     }
   },
-  "quick.bat_p": {
+  "realtime.bat_p": {
     mqtt: {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).bat_p
@@ -340,7 +357,7 @@ const stateConfig = {
       unit: "W"
     }
   },
-  "quick.bat_sts": {
+  "realtime.bat_sts": {
     mqtt: {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).bat_sts
@@ -365,7 +382,7 @@ const stateConfig = {
       write: false
     }
   },
-  "quick.grid_on_p": {
+  "realtime.grid_on_p": {
     mqtt: {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).grid_on_p
@@ -391,7 +408,7 @@ const stateConfig = {
       unit: "W"
     }
   },
-  "quick.grid_off_p": {
+  "realtime.grid_off_p": {
     mqtt: {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).grid_off_p
@@ -417,7 +434,7 @@ const stateConfig = {
       unit: "W"
     }
   },
-  "quick.soc": {
+  "realtime.soc": {
     mqtt: {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).soc
@@ -443,7 +460,7 @@ const stateConfig = {
       unit: "%"
     }
   },
-  "quick.sys_bat_p": {
+  "realtime.sys_bat_p": {
     mqtt: {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_bat_p
@@ -469,7 +486,7 @@ const stateConfig = {
       unit: "W"
     }
   },
-  "quick.sys_grid_p": {
+  "realtime.sys_grid_p": {
     mqtt: {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_grid_p
@@ -495,7 +512,7 @@ const stateConfig = {
       unit: "W"
     }
   },
-  "quick.sys_load_p": {
+  "realtime.sys_load_p": {
     mqtt: {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_load_p
@@ -521,7 +538,7 @@ const stateConfig = {
       unit: "W"
     }
   },
-  "quick.sys_plug_p": {
+  "realtime.sys_plug_p": {
     mqtt: {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_plug_p
@@ -547,7 +564,7 @@ const stateConfig = {
       unit: "W"
     }
   },
-  "quick.sys_pv_p": {
+  "realtime.sys_pv_p": {
     mqtt: {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_pv_p
@@ -573,7 +590,7 @@ const stateConfig = {
       unit: "W"
     }
   },
-  "quick.sys_soc": {
+  "realtime.sys_soc": {
     mqtt: {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_soc
@@ -599,7 +616,7 @@ const stateConfig = {
       unit: "%"
     }
   },
-  "quick.sys_sp_p": {
+  "realtime.sys_sp_p": {
     mqtt: {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_sp_p
@@ -617,6 +634,291 @@ const stateConfig = {
         pl: "System Smart Socket Power",
         uk: "\u0421\u0438\u0441\u0442\u0435\u043C\u0430 \u0440\u043E\u0437\u0443\u043C\u043D\u043E\u0433\u043E \u0436\u0438\u0432\u043B\u0435\u043D\u043D\u044F \u0440\u043E\u0437\u0435\u0442\u043A\u0438",
         "zh-cn": "\u7CFB\u7EDF\u667A\u80FD\u63D2\u5EA7\u7535\u6E90"
+      },
+      type: "number",
+      role: "value.power",
+      read: true,
+      write: false,
+      unit: "W"
+    }
+  },
+  "system.bat_p": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).bat_p
+    },
+    common: {
+      name: {
+        en: "Battery Power",
+        de: "Batterieleistung",
+        ru: "\u041C\u043E\u0449\u043D\u043E\u0441\u0442\u044C \u0430\u043A\u043A\u0443\u043C\u0443\u043B\u044F\u0442\u043E\u0440\u0430",
+        pt: "Energia da bateria",
+        nl: "Batterijvoeding",
+        fr: "Alimentation par batterie",
+        it: "Potenza della batteria",
+        es: "Energ\xEDa de la bater\xEDa",
+        pl: "Moc baterii",
+        uk: "\u0416\u0438\u0432\u043B\u0435\u043D\u043D\u044F \u0432\u0456\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0457",
+        "zh-cn": "\u7535\u6C60\u7535\u91CF"
+      },
+      type: "number",
+      role: "value.power",
+      read: true,
+      write: false,
+      unit: "W"
+    }
+  },
+  "system.chg_e": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).chg_e
+    },
+    common: {
+      name: {
+        en: "Battery Charge (Today)\n",
+        de: "Batterieladung (heute)\n",
+        ru: "\u0417\u0430\u0440\u044F\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0438 (\u0441\u0435\u0433\u043E\u0434\u043D\u044F)\n",
+        pt: "Carga da bateria (hoje)\n",
+        nl: "Batterijlading (vandaag)\n",
+        fr: "Charge de la batterie (aujourd'hui)\n",
+        it: "Carica della batteria (oggi)\n",
+        es: "Carga de la bater\xEDa (hoy)\n",
+        pl: "\u0141adowanie baterii (dzisiaj)\n",
+        uk: "\u0417\u0430\u0440\u044F\u0434 \u0430\u043A\u0443\u043C\u0443\u043B\u044F\u0442\u043E\u0440\u0430 (\u0441\u044C\u043E\u0433\u043E\u0434\u043D\u0456)\n",
+        "zh-cn": "\u7535\u6C60\u7535\u91CF\uFF08\u4ECA\u65E5\uFF09\n"
+      },
+      type: "number",
+      role: "value.energy.consumed",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "system.dchg_e": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).dchg_e
+    },
+    common: {
+      name: {
+        en: "Battery Decharge (Today)\n",
+        de: "Batterieentladung (Heute)\n",
+        ru: "\u0420\u0430\u0437\u0440\u044F\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0438 (\u0441\u0435\u0433\u043E\u0434\u043D\u044F)\n",
+        pt: "Descarga da bateria (hoje)\n",
+        nl: "Batterij ontladen (vandaag)\n",
+        fr: "D\xE9charge de la batterie (aujourd'hui)\n",
+        it: "Scarica della batteria (oggi)\n",
+        es: "Descarga de la bater\xEDa (hoy)\n",
+        pl: "Roz\u0142adowanie akumulatora (dzisiaj)\n",
+        uk: "\u0420\u043E\u0437\u0440\u044F\u0434\u043A\u0430 \u0430\u043A\u0443\u043C\u0443\u043B\u044F\u0442\u043E\u0440\u0430 (\u0441\u044C\u043E\u0433\u043E\u0434\u043D\u0456)\n",
+        "zh-cn": "\u7535\u6C60\u653E\u7535\uFF08\u4ECA\u5929\uFF09\n"
+      },
+      type: "number",
+      role: "value.energy.produced",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "system.grid_p": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).grid_p
+    },
+    common: {
+      name: {
+        en: "Grid Power",
+        de: "Netzleistung",
+        ru: "\u0421\u0435\u0442\u0435\u0432\u0430\u044F \u043C\u043E\u0449\u043D\u043E\u0441\u0442\u044C",
+        pt: "Energia da rede",
+        nl: "Netstroom",
+        fr: "R\xE9seau \xE9lectrique",
+        it: "Potenza di rete",
+        es: "Energ\xEDa de red",
+        pl: "Moc sieciowa",
+        uk: "\u0415\u043D\u0435\u0440\u0433\u0456\u044F \u043C\u0435\u0440\u0435\u0436\u0456",
+        "zh-cn": "\u7535\u7F51\u7535\u529B"
+      },
+      type: "number",
+      role: "value.power",
+      read: true,
+      write: false,
+      unit: "W"
+    }
+  },
+  "system.ems_mode": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).ems_mode
+    },
+    common: {
+      name: {
+        en: "EMS Mode",
+        de: "EMS-Modus",
+        ru: "\u0420\u0435\u0436\u0438\u043C EMS",
+        pt: "Modo EMS",
+        nl: "EMS-modus",
+        fr: "Mode EMS",
+        it: "Modalit\xE0 EMS",
+        es: "Modo EMS",
+        pl: "Tryb EMS",
+        uk: "\u0420\u0435\u0436\u0438\u043C \u0435\u043A\u0441\u0442\u0440\u0435\u043D\u043E\u0457 \u043C\u0435\u0434\u0438\u0447\u043D\u043E\u0457 \u0434\u043E\u043F\u043E\u043C\u043E\u0433\u0438",
+        "zh-cn": "EMS\u6A21\u5F0F"
+      },
+      type: "string",
+      role: "state",
+      read: true,
+      write: false
+    }
+  },
+  "system.plug_in_e": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).plug_in_e
+    },
+    common: {
+      name: {
+        en: "Grid-Socket Input-Energy (Today)",
+        de: "Netz-Steckdosen-Eingangsenergie (Heute)",
+        ru: "\u0412\u0445\u043E\u0434\u043D\u0430\u044F \u043C\u043E\u0449\u043D\u043E\u0441\u0442\u044C \u0441\u0435\u0442\u0438-\u0440\u043E\u0437\u0435\u0442\u043A\u0438 (\u0441\u0435\u0433\u043E\u0434\u043D\u044F)",
+        pt: "Entrada de energia na rede el\xE9trica (hoje)",
+        nl: "Netstroom-ingangsenergie (vandaag)",
+        fr: "\xC9nergie d'entr\xE9e du r\xE9seau (aujourd'hui)",
+        it: "Energia in ingresso alla rete elettrica (oggi)",
+        es: "Energ\xEDa de entrada de la toma de red (hoy)",
+        pl: "Wej\u015Bcie-energia sieciowa-gniazdkowa (dzisiaj)",
+        uk: "\u0412\u0445\u0456\u0434\u043D\u0430 \u0435\u043D\u0435\u0440\u0433\u0456\u044F \u0440\u043E\u0437\u0435\u0442\u043A\u0438 \u043C\u0435\u0440\u0435\u0436\u0456 (\u0441\u044C\u043E\u0433\u043E\u0434\u043D\u0456)",
+        "zh-cn": "\u7535\u7F51\u63D2\u5EA7\u8F93\u5165\u80FD\u91CF\uFF08\u4ECA\u65E5\uFF09"
+      },
+      type: "number",
+      role: "value.enery.consumed",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "system.plug_out_e": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).plug_out_e
+    },
+    common: {
+      name: {
+        en: "Grid-Socket Output-Energy (Today)",
+        de: "Netz-Steckdosen-Ausgangsenergie (Heute)",
+        ru: "\u0412\u044B\u0445\u043E\u0434 \u044D\u043D\u0435\u0440\u0433\u0438\u0438 \u0438\u0437 \u0441\u0435\u0442\u0438 (\u0441\u0435\u0433\u043E\u0434\u043D\u044F)",
+        pt: "Sa\xEDda de energia da rede el\xE9trica (hoje)",
+        nl: "Netstroom-energie (vandaag)",
+        fr: "\xC9nergie de sortie du r\xE9seau (aujourd'hui)",
+        it: "Energia in uscita dalla rete elettrica (oggi)",
+        es: "Energ\xEDa de salida de la toma de red (hoy)",
+        pl: "Wyj\u015Bcie sieciowe-energia (obecnie)",
+        uk: "\u0412\u0438\u0445\u0456\u0434\u043D\u0430 \u0435\u043D\u0435\u0440\u0433\u0456\u044F \u0440\u043E\u0437\u0435\u0442\u043A\u0438 \u043C\u0435\u0440\u0435\u0436\u0456 (\u0441\u044C\u043E\u0433\u043E\u0434\u043D\u0456)",
+        "zh-cn": "\u7535\u7F51\u63D2\u5EA7\u8F93\u51FA\u80FD\u91CF\uFF08\u4ECA\u65E5\uFF09"
+      },
+      type: "number",
+      role: "value.energy.produced",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "system.pv_e": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).pv_e
+    },
+    common: {
+      name: {
+        en: "Photovoltaic Energyproduction (Today)",
+        de: "Photovoltaik-Energieerzeugung (heute)",
+        ru: "\u041F\u0440\u043E\u0438\u0437\u0432\u043E\u0434\u0441\u0442\u0432\u043E \u0444\u043E\u0442\u043E\u044D\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u043E\u0439 \u044D\u043D\u0435\u0440\u0433\u0438\u0438 (\u0441\u0435\u0433\u043E\u0434\u043D\u044F)",
+        pt: "Produ\xE7\xE3o de Energia Fotovoltaica (Hoje)",
+        nl: "Fotovolta\xEFsche energieproductie (vandaag)",
+        fr: "Production d'\xE9nergie photovolta\xEFque (aujourd'hui)",
+        it: "Produzione di energia fotovoltaica (oggi)",
+        es: "Producci\xF3n de energ\xEDa fotovoltaica (hoy)",
+        pl: "Produkcja energii fotowoltaicznej (dzisiaj)",
+        uk: "\u0412\u0438\u0440\u043E\u0431\u043D\u0438\u0446\u0442\u0432\u043E \u0444\u043E\u0442\u043E\u0435\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u043D\u043E\u0457 \u0435\u043D\u0435\u0440\u0433\u0456\u0457 (\u0441\u044C\u043E\u0433\u043E\u0434\u043D\u0456)",
+        "zh-cn": "\u5149\u4F0F\u53D1\u7535\uFF08\u4ECA\u5929\uFF09"
+      },
+      type: "number",
+      role: "value.energy.produced",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "system.pv_p": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).pv_p
+    },
+    common: {
+      name: {
+        en: "Photovoltaic Power",
+        de: "Photovoltaik Leistung",
+        ru: "\u0424\u043E\u0442\u043E\u044D\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u0430\u044F \u044D\u043D\u0435\u0440\u0433\u0438\u044F",
+        pt: "Energia Fotovoltaica",
+        nl: "Fotovolta\xEFsche energie",
+        fr: "\xC9nergie photovolta\xEFque",
+        it: "Energia fotovoltaica",
+        es: "Energ\xEDa fotovoltaica",
+        pl: "Energia fotowoltaiczna",
+        uk: "\u0424\u043E\u0442\u043E\u0435\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u043D\u0430 \u0435\u043D\u0435\u0440\u0433\u0456\u044F",
+        "zh-cn": "\u5149\u4F0F\u53D1\u7535"
+      },
+      type: "number",
+      role: "value.power",
+      read: true,
+      write: false,
+      unit: "W"
+    }
+  },
+  "system.soc": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).soc
+    },
+    common: {
+      name: {
+        en: "Battery SOC",
+        de: "Batterie-SOC",
+        ru: "\u0423\u0440\u043E\u0432\u0435\u043D\u044C \u0437\u0430\u0440\u044F\u0434\u0430 \u0431\u0430\u0442\u0430\u0440\u0435\u0438",
+        pt: "SOC da bateria",
+        nl: "Batterij SOC",
+        fr: "SOC de la batterie",
+        it: "SOC della batteria",
+        es: "SOC de la bater\xEDa",
+        pl: "Stan baterii",
+        uk: "\u0417\u0430\u0440\u044F\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0457",
+        "zh-cn": "\u7535\u6C60SOC"
+      },
+      type: "number",
+      role: "value",
+      read: true,
+      write: false,
+      unit: "%"
+    }
+  },
+  "system.sp_p": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).sp_p
+    },
+    common: {
+      name: {
+        en: "Smart-Socket Power",
+        de: "Smart-Socket Leistung",
+        ru: "\u0423\u043C\u043D\u0430\u044F \u0440\u043E\u0437\u0435\u0442\u043A\u0430 Power",
+        pt: "Energia Smart-Socket",
+        nl: "Slimme stopcontactvoeding",
+        fr: "Prise de courant intelligente",
+        it: "Potenza della presa intelligente",
+        es: "Alimentaci\xF3n mediante enchufe inteligente",
+        pl: "Smart-Socket Power",
+        uk: "\u0416\u0438\u0432\u043B\u0435\u043D\u043D\u044F \u0432\u0456\u0434 \u0441\u043C\u0430\u0440\u0442-\u0440\u043E\u0437\u0435\u0442\u043E\u043A",
+        "zh-cn": "\u667A\u80FD\u63D2\u5EA7\u7535\u6E90"
       },
       type: "number",
       role: "value.power",
