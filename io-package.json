@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hoymiles-ms",
-    "version": "0.0.1-alpha.7",
+    "version": "0.0.1-alpha.8",
     "news": {
+      "0.0.1-alpha.8": {
+        "en": "data conversion has been fixed\n'quick' states tree has been renamed to 'realtime'\n'system' data added",
+        "de": "datenkonvertierung wurde behoben\n'quick' zustände baum wurde in 'realtime umbenannt '\ndaten des systems",
+        "ru": "конверсия данных фиксирована\nдерево «быстрых» штатов было переименовано в «реальное время» \"\nдобавлены «системные» данные",
+        "pt": "a conversão de dados foi fixada\na árvore de estados 'rápidos' foi renomeada para 'em tempo real' '\ndados \"sistema\" adicionados",
+        "nl": "gegevensconversie is vastgesteld\n'snel' staat boom is hernoemd naar 'realtime' '\n\"systeem\"-gegevens toegevoegd",
+        "fr": "la conversion des données a été corrigée\nl'arbre des états «rapides» a été renommé en temps réel '\ndonnées «système» ajoutées",
+        "it": "la conversione dei dati è stata fissata\n'quick' stati albero è stato rinominato 'realtime '\n'sistema' dati aggiunti",
+        "es": "se ha fijado la conversión de datos\n\"quick\" árbol de estados ha sido renombrado a 'realtime '\n'sistema' datos añadidos",
+        "pl": "konwersja danych została ustalona\n'quick' stans tree został przemianowany na 'realtime'\ndodano dane \"systemowe\"",
+        "uk": "перетворення даних було виправлено\n'quick' стани дерево перейменовано в 'realtime р\nдодані дані системи",
+        "zh-cn": "数据转换已固定\n“ 快速” 状态树已改名为“ 实时 ”  '\n添加“ 系统” 数据"
+      },
       "0.0.1-alpha.7": {
         "en": "initial testing",
         "de": "erstprüfung",
@@ -69,19 +82,6 @@
         "zh-cn": "初步测试"
       },
       "0.0.1-alpha.2": {
-        "en": "initial testing",
-        "de": "erstprüfung",
-        "ru": "первоначальное тестирование",
-        "pt": "testes iniciais",
-        "nl": "eerste tests",
-        "fr": "essai initial",
-        "it": "test iniziale",
-        "es": "prueba inicial",
-        "pl": "badanie wstępne",
-        "uk": "початкове тестування",
-        "zh-cn": "初步测试"
-      },
-      "0.0.1-alpha.1": {
         "en": "initial testing",
         "de": "erstprüfung",
         "ru": "первоначальное тестирование",
