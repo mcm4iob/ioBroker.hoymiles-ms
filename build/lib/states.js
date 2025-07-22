@@ -1,7 +1,9 @@
 "use strict";
+var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
@@ -15,6 +17,14 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var states_exports = {};
 __export(states_exports, {
@@ -23,6 +33,7 @@ __export(states_exports, {
   stateConfig: () => stateConfig
 });
 module.exports = __toCommonJS(states_exports);
+var utils = __toESM(require("@iobroker/adapter-core"));
 const channelConfig = {
   device: {
     common: {
@@ -39,6 +50,21 @@ const channelConfig = {
         uk: "\u041F\u0440\u0438\u0441\u0442\u0440\u0456\u0439",
         "zh-cn": "\u8BBE\u5907"
       }
+    }
+  },
+  "device.grid_on": {
+    common: {
+      name: ""
+    }
+  },
+  "device.grid_off": {
+    common: {
+      name: ""
+    }
+  },
+  "device.inv": {
+    common: {
+      name: ""
     }
   },
   power_ctrl: {
@@ -113,6 +139,312 @@ const folderConfig = {
   }
 };
 const stateConfig = {
+  "device.grid_off.ein": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.ein;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.energy.consumed",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "device.grid_off.eout": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.eout;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.energy.produced",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "device.grid_off.etin": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.etin;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.energy.consumed",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "device.grid_off.etout": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.etout;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.energy.produced",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "device.grid_off.i": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.i;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.current",
+      read: true,
+      write: false,
+      unit: "A"
+    }
+  },
+  "device.grid_off.f": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.f;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.frequency",
+      read: true,
+      write: false,
+      unit: "Hz"
+    }
+  },
+  "device.grid_off.p": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.p;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.power.active",
+      read: true,
+      write: false,
+      unit: "W"
+    }
+  },
+  "device.grid_off.q": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.q;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.power.reactive",
+      read: true,
+      write: false,
+      unit: "Var"
+    }
+  },
+  "device.grid_off.v": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.v;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.voltage",
+      read: true,
+      write: false,
+      unit: "V"
+    }
+  },
+  "device.grid_on.ein": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.ein;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.energy.consumed",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "device.grid_on.eout": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.eout;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.energy.produced",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "device.grid_on.etin": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.etin;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.energy.consumed",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "device.grid_on.etout": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.etout;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.energy.produced",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "device.grid_on.i": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.i;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.current",
+      read: true,
+      write: false,
+      unit: "A"
+    }
+  },
+  "device.grid_on.f": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.f;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.frequency",
+      read: true,
+      write: false,
+      unit: "Hz"
+    }
+  },
+  "device.grid_on.p": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.p;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.power.active",
+      read: true,
+      write: false,
+      unit: "W"
+    }
+  },
+  "device.grid_on.q": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.q;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.power.reactive",
+      read: true,
+      write: false,
+      unit: "Var"
+    }
+  },
+  "device.grid_on.v": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.v;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.voltage",
+      read: true,
+      write: false,
+      unit: "V"
+    }
+  },
   "device.identifiers": {
     mqtt: {
       mqtt_publish: `homeassistant/switch/<dev_id>/config`,
@@ -139,6 +471,142 @@ const stateConfig = {
       role: "list",
       read: true,
       write: false
+    }
+  },
+  "device.inv.ein": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.ein;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.energy.consumed",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "device.inv.eout": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.eout;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.energy.produced",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "device.inv.etin": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.etin;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.energy.consumed",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "device.inv.etout": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.etout;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.energy.produced",
+      read: true,
+      write: false,
+      unit: "Wh"
+    }
+  },
+  "device.inv.i": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.i;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.current",
+      read: true,
+      write: false,
+      unit: "A"
+    }
+  },
+  "device.inv.p": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.p;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.power.active",
+      read: true,
+      write: false,
+      unit: "W"
+    }
+  },
+  "device.inv.q": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.q;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.power.reactive",
+      read: true,
+      write: false,
+      unit: "Var"
+    }
+  },
+  "device.inv.v": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => {
+        var _a, _b;
+        return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.v;
+      }
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.voltage",
+      read: true,
+      write: false,
+      unit: "V"
     }
   },
   "device.manufacturer": {
@@ -938,7 +1406,7 @@ async function initStates(adapter, dev_id) {
     return;
   }
   adapter.log.debug(`initializing states for device ${dev_id}`);
-  await adapter.extendObjectAsync(
+  await adapter.extendObject(
     `${deviceId}`,
     {
       type: "device",
@@ -953,39 +1421,46 @@ async function initStates(adapter, dev_id) {
     { preserve: { common: ["name"] } }
   );
   for (const channelKey in channelConfig) {
-    await adapter.extendObjectAsync(
+    const common = channelConfig[channelKey].common;
+    common.name = utils.I18n.getTranslatedObject(`${channelKey}_name`);
+    await adapter.extendObject(
       `${deviceId}.${channelKey}`,
       {
         type: "channel",
-        common: channelConfig[channelKey].common,
+        common,
         native: {}
       },
       { preserve: { common: ["name"] } }
     );
   }
   for (const folderKey in folderConfig) {
+    const common = folderConfig[folderKey].common;
+    common.name = utils.I18n.getTranslatedObject(`${folderKey}_name`);
     await adapter.extendObject(
       `${deviceId}.${folderKey}`,
       {
         type: "folder",
-        common: folderConfig[folderKey].common,
+        common,
         native: {}
       },
       { preserve: { common: ["name"] } }
     );
   }
   for (const stateKey in stateConfig) {
-    await adapter.extendObjectAsync(
+    const common = stateConfig[stateKey].common;
+    common.name = utils.I18n.getTranslatedObject(`${stateKey}_name`);
+    await adapter.extendObject(
       `${deviceId}.${stateKey}`,
       {
         type: "state",
-        common: stateConfig[stateKey].common,
+        common,
         native: {}
       },
       { preserve: { common: ["name"] } }
     );
   }
   devIdCache[deviceId] = "X";
+  adapter.log.debug(`initialization of states for device ${dev_id} completed`);
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

@@ -32,6 +32,8 @@ class HoymilesMs extends utils.Adapter {
         // Reset the connection indicator during startup
         await this.setState('info.connection', false, true);
 
+        await utils.I18n.init(`${__dirname}/..`, this);
+
         // init hoymileMqtt
         this.hoymilesMqtt = new HoymilesMqtt(this);
 
