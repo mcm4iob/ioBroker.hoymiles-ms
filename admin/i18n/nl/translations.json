@@ -1,7 +1,5 @@
 {
     "hoymiles-ms adapter settings": "Adapterinstellingen voor hoymiles-ms",
-    "option1": "Option1",
-    "option2": "Optie2",
     "lblClientMode": "Gebruik de clientmodus",
     "lblSrvNetwork": "MQTT Server Network",
     "lblSrvPort": "MQTT -serverpoort",
