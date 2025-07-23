@@ -36,6 +36,7 @@ class HoymilesMqtt {
     this.log.debug(`[hoymilesMqtt] initializing`);
   }
   async onMqttMessage(event) {
+    var _a;
     this.log.debug(`[hoymilesMqtt] process message ${event.topic}: ${event.payload.toString()}`);
     if (!event.topic) {
       this.log.debug(`[hoymilesMqtt] ignoring empty topic`);
@@ -50,14 +51,14 @@ class HoymilesMqtt {
     topicDetails[2] = "<dev_id>";
     const topic = topicDetails.join("/");
     await (0, import_states.initStates)(this.adapter, deviceId);
+    await (0, import_states.handleOnlineStatus)(this.adapter, deviceId);
     for (const stateKey in import_states.stateConfig) {
-      if (import_states.stateConfig[stateKey].mqtt.mqtt_publish !== topic) {
+      if (!import_states.stateConfig[stateKey].mqtt || import_states.stateConfig[stateKey].mqtt.mqtt_publish !== topic) {
         continue;
       }
-      this.log.debug(`[hoymilesMqtt] updateing state ${stateKey} from ${event.topic}`);
       const state = import_states.stateConfig[stateKey];
       const stateId = `${(0, import_states.filterDevId)(deviceId)}.${stateKey}`;
-      const mqtt_publish_func = state.mqtt.mqtt_publish_funct;
+      const mqtt_publish_func = (_a = state.mqtt) == null ? void 0 : _a.mqtt_publish_funct;
       let value = mqtt_publish_func(event.payload);
       if (state.common.type === "boolean" && value === "false") {
         value = false;
@@ -69,10 +70,12 @@ class HoymilesMqtt {
         value = Number(value);
       }
       if (value !== void 0) {
-        this.log.debug(`[hoymilesMqtt] updateing state ${stateId} using value ${value}`);
+        this.log.debug(`[hoymilesMqtt] updateing state ${stateId} from ${event.topic} using value ${value}`);
         await this.adapter.setState(stateId, value, true);
       } else {
-        this.log.warn(`[hoymilesMqtt] updateing state ${stateId} failed, value is undefined`);
+        this.log.warn(
+          `[hoymilesMqtt] updateing state ${stateId} from ${event.topic} failed, value is undefined`
+        );
       }
     }
   }

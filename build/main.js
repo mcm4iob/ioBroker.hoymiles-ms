@@ -24,9 +24,11 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var utils = __toESM(require("@iobroker/adapter-core"));
 var import_mqttServer = require("./lib/mqttServer");
 var import_hoymilesMqtt = require("./lib/hoymilesMqtt");
+var import_states = require("./lib/states");
 class HoymilesMs extends utils.Adapter {
   mqtt;
   hoymilesMqtt = null;
+  onlineInterval;
   constructor(options = {}) {
     super({
       ...options,
@@ -43,11 +45,10 @@ class HoymilesMs extends utils.Adapter {
     await this.setState("info.connection", false, true);
     await utils.I18n.init(`${__dirname}/..`, this);
     this.hoymilesMqtt = new import_hoymilesMqtt.HoymilesMqtt(this);
-    this.mqtt = new import_mqttServer.MqttServer(this, { port: 1883 });
-    this.mqtt.on("connect", this.onMqttConnect.bind(this));
-    this.mqtt.on("message", this.onMqttMessage.bind(this));
+    this.mqtt = new import_mqttServer.MqttServer(this, { port: 1883 }, this.mqttEventCallback.bind(this));
     await this.mqtt.start();
     this.log.info("[MQTT-Server] started");
+    this.onlineInterval = this.setInterval(import_states.checkOnlineStatus.bind(this), 15 * 1e3, this);
   }
   /**
    * Is called when adapter shuts down - callback has to be called under any circumstances!
@@ -56,27 +57,19 @@ class HoymilesMs extends utils.Adapter {
    */
   onUnload(callback) {
     try {
+      this.onlineInterval && this.clearInterval(this.onlineInterval);
       callback();
     } catch {
       callback();
     }
   }
-  /**
-   * onMqttConnect is called whenever a client connects
-   *
-   * @param event connection details
-   */
-  onMqttConnect(event) {
-    this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
-  }
-  /**
-   * onMqttMessage is called whenever a new message is received
-   *
-   * @param event message details
-   */
-  async onMqttMessage(event) {
+  async mqttEventCallback(name, event) {
     var _a;
-    await ((_a = this.hoymilesMqtt) == null ? void 0 : _a.onMqttMessage(event));
+    if (name === "connect") {
+      this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
+    } else if (name === "message") {
+      await ((_a = this.hoymilesMqtt) == null ? void 0 : _a.onMqttMessage(event));
+    }
   }
   /**
    * onStateChange is called if a subscribed state changes
@@ -91,21 +84,6 @@ class HoymilesMs extends utils.Adapter {
       this.log.info(`state ${id} deleted`);
     }
   }
-  // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
-  // /**
-  //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
-  //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
-  //  */
-  // private onMessage(obj: ioBroker.Message): void {
-  //     if (typeof obj === 'object' && obj.message) {
-  //         if (obj.command === 'send') {
-  //             // e.g. send email or pushover or whatever
-  //             this.log.info('send command');
-  //             // Send response in callback if required
-  //             if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-  //         }
-  //     }
-  // }
 }
 if (require.main !== module) {
   module.exports = (options) => new HoymilesMs(options);

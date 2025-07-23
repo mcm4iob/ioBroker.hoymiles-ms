@@ -1,6 +1,6 @@
-import { stateConfig, initStates, filterDevId } from './states';
+import { stateConfig, initStates, filterDevId, handleOnlineStatus } from './states';
 
-import type { /*MqttConnectEvent,*/ MqttMessageEvent } from './mqtt-events';
+import type { MqttMessageEvent } from './mqtt-events';
 
 /**
  * HoymilesMqtt - class to handle hoymiles mqtt topics within ioBroker
@@ -39,17 +39,17 @@ export class HoymilesMqtt {
         const topic = topicDetails.join('/');
 
         await initStates(this.adapter, deviceId);
+        await handleOnlineStatus(this.adapter, deviceId);
 
         for (const stateKey in stateConfig) {
-            if (stateConfig[stateKey].mqtt.mqtt_publish !== topic) {
+            if (!stateConfig[stateKey].mqtt || stateConfig[stateKey].mqtt.mqtt_publish !== topic) {
                 continue;
             }
 
-            this.log.debug(`[hoymilesMqtt] updateing state ${stateKey} from ${event.topic}`);
             const state = stateConfig[stateKey];
 
             const stateId = `${filterDevId(deviceId)}.${stateKey}`;
-            const mqtt_publish_func = state.mqtt.mqtt_publish_funct;
+            const mqtt_publish_func = state.mqtt?.mqtt_publish_funct;
             let value = mqtt_publish_func(event.payload);
             if (state.common.type === 'boolean' && value === 'false') {
                 value = false;
@@ -62,10 +62,12 @@ export class HoymilesMqtt {
             }
 
             if (value !== undefined) {
-                this.log.debug(`[hoymilesMqtt] updateing state ${stateId} using value ${value}`);
+                this.log.debug(`[hoymilesMqtt] updateing state ${stateId} from ${event.topic} using value ${value}`);
                 await this.adapter.setState(stateId, value, true);
             } else {
-                this.log.warn(`[hoymilesMqtt] updateing state ${stateId} failed, value is undefined`);
+                this.log.warn(
+                    `[hoymilesMqtt] updateing state ${stateId} from ${event.topic} failed, value is undefined`,
+                );
             }
         }
     }

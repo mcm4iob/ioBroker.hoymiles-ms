@@ -13,3 +13,6 @@ export interface MqttMessageEvent {
     retain: boolean;
     packet: Packet;
 }
+
+export type MqttEvent = MqttConnectEvent | MqttMessageEvent;
+export type MqttEventCallback = (name: string, event: MqttEvent) => Promise<void>;

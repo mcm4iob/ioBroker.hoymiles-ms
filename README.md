@@ -36,11 +36,32 @@ Note that this adapter is not related to the company mentioned above in any way 
 
 ## Configuration
 
-*to be added*
+### Configuration of the adapter
+The adapter can be configured as a dedicated mqtt server or as a mqtt client (Note: cleint mode not yet implemented). 
+
+To operate as a mqtt server the following patramaters must be configured:
+- mqtt network
+  Specify the network to listen on. Normally listening on all networks (0.0.0.0) is sufficient. 
+
+- mqtt port
+  Specify to (tcp)port to use. As standard mqtt port (1883) might be occopied by ioBroker.mqtt adapter and port 1882 is used by the adapter ioBroker.shelly per default this adapter uses port 1881 per default. But you can use any free port.
+
+### Configuration of the Hoymiles MS-A2
+
+To configure the Hoymiles MS-A2 unit open the S-Miles Home App. Select configuration page (using the gear icon on teh upper right corner) and scroll down to 'MQTT-Service'. Enable MQTT Service and enter 
+- Server Address
+  the IP Address of the ioBroker system (when using mqtt server mode) or the address of your mqtt Broker
+- Port
+  The por number configured your you mqtt broker
+- Optionally set a cleint prefix (default 'MSA')
+
+This adapter currently does not yet support authentification. So this must be disabled.
 
 ## Operation
 
-*to be added*
+Once the adapter is started it listens to mqtt packets received from the Hoymiles device. The adapter does not poll in any way - all activity is triggered by the Hoymiles unit. Note that configurationd ata is sent only once after connection shas been established while realtime data is sent every second. Systemwide statistics is typically uodated every five minutes. Note that these intervals are not configurable by the adapter - they are defined by the Hoymiles-Api.
+
+Controlling the device (setting the output power) is not yet implemented.
 
 ## FAQ
 
@@ -51,7 +72,8 @@ Note that this adapter is not related to the company mentioned above in any way 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 0.0.1-alpha.8 (2025-07-18)
+### **WORK IN PROGRESS**
+* (mcm1957) Missing data reported by device has been added
 * (mcm1957) data conversion has been fixed
 * (mcm1957) 'quick' states tree has been renamed to 'realtime'
 * (mcm1957) 'system' data added

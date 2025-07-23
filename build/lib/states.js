@@ -28,7 +28,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var states_exports = {};
 __export(states_exports, {
+  checkOnlineStatus: () => checkOnlineStatus,
   filterDevId: () => filterDevId,
+  handleOnlineStatus: () => handleOnlineStatus,
   initStates: () => initStates,
   stateConfig: () => stateConfig
 });
@@ -37,19 +39,7 @@ var utils = __toESM(require("@iobroker/adapter-core"));
 const channelConfig = {
   device: {
     common: {
-      name: {
-        en: "Device",
-        de: "Ger\xE4t",
-        ru: "\u0423\u0441\u0442\u0440\u043E\u0439\u0441\u0442\u0432\u043E",
-        pt: "Dispositivo",
-        nl: "Apparaat",
-        fr: "Appareil",
-        it: "Dispositivo",
-        es: "Dispositivo",
-        pl: "Urz\u0105dzenie",
-        uk: "\u041F\u0440\u0438\u0441\u0442\u0440\u0456\u0439",
-        "zh-cn": "\u8BBE\u5907"
-      }
+      name: ""
     }
   },
   "device.grid_on": {
@@ -69,76 +59,97 @@ const channelConfig = {
   },
   power_ctrl: {
     common: {
-      name: {
-        en: "Power-control",
-        de: "Leistungsregelung",
-        ru: "\u0423\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043C\u043E\u0449\u043D\u043E\u0441\u0442\u044C\u044E",
-        pt: "Controle de pot\xEAncia",
-        nl: "Vermogensregeling",
-        fr: "Contr\xF4le de puissance",
-        it: "Controllo di potenza",
-        es: "Control de potencia",
-        pl: "Kontrola mocy",
-        uk: "\u041A\u043E\u043D\u0442\u0440\u043E\u043B\u044C \u0436\u0438\u0432\u043B\u0435\u043D\u043D\u044F",
-        "zh-cn": "\u529F\u7387\u63A7\u5236"
-      }
+      name: ""
     }
   },
   realtime: {
     common: {
-      name: {
-        en: "Realtime Data",
-        de: "Echtzeitdaten",
-        ru: "\u0414\u0430\u043D\u043D\u044B\u0435 \u0432 \u0440\u0435\u0430\u043B\u044C\u043D\u043E\u043C \u0432\u0440\u0435\u043C\u0435\u043D\u0438",
-        pt: "Dados em tempo real",
-        nl: "Realtime gegevens",
-        fr: "Donn\xE9es en temps r\xE9el",
-        it: "Dati in tempo reale",
-        es: "Datos en tiempo real",
-        pl: "Dane w czasie rzeczywistym",
-        uk: "\u0414\u0430\u043D\u0456 \u0432 \u0440\u0435\u0430\u043B\u044C\u043D\u043E\u043C\u0443 \u0447\u0430\u0441\u0456",
-        "zh-cn": "\u5B9E\u65F6\u6570\u636E"
-      }
+      name: ""
     }
   },
   system: {
     common: {
-      name: {
-        en: "System Data",
-        de: "Systemdaten",
-        ru: "\u0421\u0438\u0441\u0442\u0435\u043C\u043D\u044B\u0435 \u0434\u0430\u043D\u043D\u044B\u0435",
-        pt: "Dados do sistema",
-        nl: "Systeemgegevens",
-        fr: "Donn\xE9es syst\xE8me",
-        it: "Dati di sistema",
-        es: "Datos del sistema",
-        pl: "Dane systemowe",
-        uk: "\u0421\u0438\u0441\u0442\u0435\u043C\u043D\u0456 \u0434\u0430\u043D\u0456",
-        "zh-cn": "\u7CFB\u7EDF\u6570\u636E"
-      }
+      name: ""
     }
   }
 };
 const folderConfig = {
   info: {
     common: {
-      name: {
-        en: "Status Information",
-        de: "Statusinformationen",
-        ru: "\u0418\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F \u043E \u0441\u0442\u0430\u0442\u0443\u0441\u0435",
-        pt: "Informa\xE7\xF5es de status",
-        nl: "Statusinformatie",
-        fr: "Informations sur le statut",
-        it: "Informazioni sullo stato",
-        es: "Informaci\xF3n de estado",
-        pl: "Informacje o statusie",
-        uk: "\u0406\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0456\u044F \u043F\u0440\u043E \u0441\u0442\u0430\u0442\u0443\u0441",
-        "zh-cn": "\u72B6\u6001\u4FE1\u606F"
-      }
+      name: ""
     }
   }
 };
 const stateConfig = {
+  "device.bat_i": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).bat_i
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.current",
+      read: true,
+      write: false,
+      unit: "A"
+    }
+  },
+  "device.bat_p": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).bat_p
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.power",
+      read: true,
+      write: false,
+      unit: "W"
+    }
+  },
+  "device.bat_temp": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).bat_temp
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.temperature",
+      read: true,
+      write: false,
+      unit: "\xB0C"
+    }
+  },
+  "device.bat_v": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).bat_v
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.voltage",
+      read: true,
+      write: false,
+      unit: "V"
+    }
+  },
+  "device.bat_sts": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).bat_sts
+    },
+    common: {
+      name: "",
+      type: "string",
+      role: "text",
+      read: true,
+      write: false
+    }
+  },
   "device.grid_off.ein": {
     mqtt: {
       mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
@@ -454,19 +465,7 @@ const stateConfig = {
       }
     },
     common: {
-      name: {
-        en: "Device Identifiers",
-        de: "Ger\xE4tekennungen",
-        ru: "\u0418\u0434\u0435\u043D\u0442\u0438\u0444\u0438\u043A\u0430\u0442\u043E\u0440\u044B \u0443\u0441\u0442\u0440\u043E\u0439\u0441\u0442\u0432",
-        pt: "Identificadores de dispositivos",
-        nl: "Apparaat-ID's",
-        fr: "Identifiants de p\xE9riph\xE9rique",
-        it: "Identificatori del dispositivo",
-        es: "Identificadores de dispositivos",
-        pl: "Identyfikatory urz\u0105dze\u0144",
-        uk: "\u0406\u0434\u0435\u043D\u0442\u0438\u0444\u0456\u043A\u0430\u0442\u043E\u0440\u0438 \u043F\u0440\u0438\u0441\u0442\u0440\u043E\u0457\u0432",
-        "zh-cn": "\u8BBE\u5907\u6807\u8BC6\u7B26"
-      },
+      name: "",
       type: "array",
       role: "list",
       read: true,
@@ -618,19 +617,7 @@ const stateConfig = {
       }
     },
     common: {
-      name: {
-        en: "Device Manufacturer",
-        de: "Ger\xE4tehersteller",
-        ru: "\u041F\u0440\u043E\u0438\u0437\u0432\u043E\u0434\u0438\u0442\u0435\u043B\u044C \u0443\u0441\u0442\u0440\u043E\u0439\u0441\u0442\u0432\u0430",
-        pt: "Fabricante do dispositivo",
-        nl: "Fabrikant van het apparaat",
-        fr: "Fabricant de l'appareil",
-        it: "Produttore del dispositivo",
-        es: "Fabricante del dispositivo",
-        pl: "Producent urz\u0105dzenia",
-        uk: "\u0412\u0438\u0440\u043E\u0431\u043D\u0438\u043A \u043F\u0440\u0438\u0441\u0442\u0440\u043E\u044E",
-        "zh-cn": "\u8BBE\u5907\u5236\u9020\u5546"
-      },
+      name: "",
       type: "string",
       role: "text",
       read: true,
@@ -646,19 +633,7 @@ const stateConfig = {
       }
     },
     common: {
-      name: {
-        en: "Device Model",
-        de: "Ger\xE4temodell",
-        ru: "\u041C\u043E\u0434\u0435\u043B\u044C \u0443\u0441\u0442\u0440\u043E\u0439\u0441\u0442\u0432\u0430",
-        pt: "Modelo do dispositivo",
-        nl: "Apparaatmodel",
-        fr: "Mod\xE8le d'appareil",
-        it: "Modello del dispositivo",
-        es: "Modelo del dispositivo",
-        pl: "Model urz\u0105dzenia",
-        uk: "\u041C\u043E\u0434\u0435\u043B\u044C \u043F\u0440\u0438\u0441\u0442\u0440\u043E\u044E",
-        "zh-cn": "\u8BBE\u5907\u578B\u53F7"
-      },
+      name: "",
       type: "string",
       role: "info.model",
       read: true,
@@ -674,23 +649,39 @@ const stateConfig = {
       }
     },
     common: {
-      name: {
-        en: "Device Name",
-        de: "Ger\xE4tename",
-        ru: "\u0418\u043C\u044F \u0443\u0441\u0442\u0440\u043E\u0439\u0441\u0442\u0432\u0430",
-        pt: "Nome do dispositivo",
-        nl: "Apparaatnaam",
-        fr: "Nom de l'appareil",
-        it: "Nome del dispositivo",
-        es: "Nombre del dispositivo",
-        pl: "Nazwa urz\u0105dzenia",
-        uk: "\u041D\u0430\u0437\u0432\u0430 \u043F\u0440\u0438\u0441\u0442\u0440\u043E\u044E",
-        "zh-cn": "\u8BBE\u5907\u540D\u79F0"
-      },
+      name: "",
       type: "string",
       role: "info.name",
       read: true,
       write: false
+    }
+  },
+  "device.rssi": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).rssi
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.voltage",
+      read: true,
+      write: false,
+      unit: "db"
+    }
+  },
+  "device.soc": {
+    mqtt: {
+      mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+      mqtt_publish_funct: (value) => JSON.parse(value).soc
+    },
+    common: {
+      name: "",
+      type: "number",
+      role: "value.voltage",
+      read: true,
+      write: false,
+      unit: "%"
     }
   },
   "device.sw_version": {
@@ -702,21 +693,27 @@ const stateConfig = {
       }
     },
     common: {
-      name: {
-        en: "Softwareversion",
-        de: "Softwareversion",
-        ru: "\u0412\u0435\u0440\u0441\u0438\u044F \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u043D\u043E\u0433\u043E \u043E\u0431\u0435\u0441\u043F\u0435\u0447\u0435\u043D\u0438\u044F",
-        pt: "Vers\xE3o do software",
-        nl: "Softwareversie",
-        fr: "Version du logiciel",
-        it: "Versione software",
-        es: "Versi\xF3n del software",
-        pl: "Wersja oprogramowania",
-        uk: "\u0412\u0435\u0440\u0441\u0456\u044F \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043D\u043E\u0433\u043E \u0437\u0430\u0431\u0435\u0437\u043F\u0435\u0447\u0435\u043D\u043D\u044F",
-        "zh-cn": "\u8F6F\u4EF6\u7248\u672C"
-      },
+      name: "",
       type: "string",
       role: "info.firmware",
+      read: true,
+      write: false
+    }
+  },
+  "info.online": {
+    common: {
+      name: "",
+      type: "boolean",
+      role: "indicator.reachable",
+      read: true,
+      write: false
+    }
+  },
+  "info.timestamp": {
+    common: {
+      name: "",
+      type: "number",
+      role: "date",
       read: true,
       write: false
     }
@@ -727,19 +724,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).min
     },
     common: {
-      name: {
-        en: "Maximum Input Power",
-        de: "Maximale Eingangsleistung",
-        ru: "\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u0430\u044F \u0432\u0445\u043E\u0434\u043D\u0430\u044F \u043C\u043E\u0449\u043D\u043E\u0441\u0442\u044C",
-        pt: "Pot\xEAncia m\xE1xima de entrada",
-        nl: "Maximaal ingangsvermogen",
-        fr: "Puissance d'entr\xE9e maximale",
-        it: "Potenza massima in ingresso",
-        es: "Potencia m\xE1xima de entrada",
-        pl: "Maksymalna moc wej\u015Bciowa",
-        uk: "\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u0430 \u0432\u0445\u0456\u0434\u043D\u0430 \u043F\u043E\u0442\u0443\u0436\u043D\u0456\u0441\u0442\u044C",
-        "zh-cn": "\u6700\u5927\u8F93\u5165\u529F\u7387"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -753,19 +738,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).max
     },
     common: {
-      name: {
-        en: "Maximum Output Power",
-        de: "Maximale Ausgangsleistung",
-        ru: "\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u0430\u044F \u0432\u044B\u0445\u043E\u0434\u043D\u0430\u044F \u043C\u043E\u0449\u043D\u043E\u0441\u0442\u044C",
-        pt: "Pot\xEAncia m\xE1xima de sa\xEDda",
-        nl: "Maximaal uitgangsvermogen",
-        fr: "Puissance de sortie maximale",
-        it: "Potenza massima in uscita",
-        es: "Potencia m\xE1xima de salida",
-        pl: "Maksymalna moc wyj\u015Bciowa",
-        uk: "\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u0430 \u0432\u0438\u0445\u0456\u0434\u043D\u0430 \u043F\u043E\u0442\u0443\u0436\u043D\u0456\u0441\u0442\u044C",
-        "zh-cn": "\u6700\u5927\u8F93\u51FA\u529F\u7387"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -779,19 +752,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).step
     },
     common: {
-      name: {
-        en: "Power Stepsize",
-        de: "Leistungsschrittweite",
-        ru: "\u041C\u043E\u0449\u043D\u043E\u0441\u0442\u044C Stepsize",
-        pt: "Tamanho do passo de pot\xEAncia",
-        nl: "Vermogen Stapgrootte",
-        fr: "Pas de puissance",
-        it: "Gradino di potenza",
-        es: "Tama\xF1o del paso de potencia",
-        pl: "Wielko\u015B\u0107 kroku mocy",
-        uk: "\u0420\u043E\u0437\u043C\u0456\u0440 \u043A\u0440\u043E\u043A\u0443 \u043F\u043E\u0442\u0443\u0436\u043D\u043E\u0441\u0442\u0456",
-        "zh-cn": "\u529F\u7387\u6B65\u957F"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -805,19 +766,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).bat_p
     },
     common: {
-      name: {
-        en: "Device Battery Power",
-        de: "Akkuleistung des Ger\xE4ts",
-        ru: "\u0417\u0430\u0440\u044F\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0438 \u0443\u0441\u0442\u0440\u043E\u0439\u0441\u0442\u0432\u0430",
-        pt: "Energia da bateria do dispositivo",
-        nl: "Batterijvermogen van het apparaat",
-        fr: "Puissance de la batterie de l'appareil",
-        it: "Potenza della batteria del dispositivo",
-        es: "Energ\xEDa de la bater\xEDa del dispositivo",
-        pl: "Moc baterii urz\u0105dzenia",
-        uk: "\u0417\u0430\u0440\u044F\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0457 \u043F\u0440\u0438\u0441\u0442\u0440\u043E\u044E",
-        "zh-cn": "\u8BBE\u5907\u7535\u6C60\u7535\u91CF"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -831,19 +780,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).bat_sts
     },
     common: {
-      name: {
-        en: "Device Battery Status",
-        de: "Batteriestatus des Ger\xE4ts",
-        ru: "\u0421\u043E\u0441\u0442\u043E\u044F\u043D\u0438\u0435 \u0431\u0430\u0442\u0430\u0440\u0435\u0438 \u0443\u0441\u0442\u0440\u043E\u0439\u0441\u0442\u0432\u0430",
-        pt: "Status da bateria do dispositivo",
-        nl: "Batterijstatus van het apparaat",
-        fr: "\xC9tat de la batterie de l'appareil",
-        it: "Stato della batteria del dispositivo",
-        es: "Estado de la bater\xEDa del dispositivo",
-        pl: "Stan baterii urz\u0105dzenia",
-        uk: "\u0421\u0442\u0430\u043D \u0431\u0430\u0442\u0430\u0440\u0435\u0457 \u043F\u0440\u0438\u0441\u0442\u0440\u043E\u044E",
-        "zh-cn": "\u8BBE\u5907\u7535\u6C60\u72B6\u6001"
-      },
+      name: "",
       type: "string",
       role: "text",
       read: true,
@@ -856,19 +793,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).grid_on_p
     },
     common: {
-      name: {
-        en: "Active Power to Grid",
-        de: "Wirkleistung zum Netz",
-        ru: "\u0410\u043A\u0442\u0438\u0432\u043D\u0430\u044F \u043C\u043E\u0449\u043D\u043E\u0441\u0442\u044C \u0432 \u0441\u0435\u0442\u044C",
-        pt: "Energia Ativa para Rede",
-        nl: "Actief vermogen TO-net",
-        fr: "Puissance active vers le r\xE9seau",
-        it: "Potenza attiva alla rete",
-        es: "Potencia activa a la red",
-        pl: "Moc czynna do sieci",
-        uk: "\u0410\u043A\u0442\u0438\u0432\u043D\u0430 \u043F\u043E\u0442\u0443\u0436\u043D\u0456\u0441\u0442\u044C \u0434\u043B\u044F \u043C\u0435\u0440\u0435\u0436\u0456",
-        "zh-cn": "\u6709\u529F\u529F\u7387\u5E76\u7F51"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -882,19 +807,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).grid_off_p
     },
     common: {
-      name: {
-        en: "Active Power from Grid",
-        de: "Wirkleistung aus dem Netz",
-        ru: "\u0410\u043A\u0442\u0438\u0432\u043D\u0430\u044F \u043C\u043E\u0449\u043D\u043E\u0441\u0442\u044C \u0438\u0437 \u0441\u0435\u0442\u0438",
-        pt: "Pot\xEAncia Ativa da Rede",
-        nl: "Actief vermogen van het net",
-        fr: "Puissance active du r\xE9seau",
-        it: "Potenza attiva dalla rete",
-        es: "Energ\xEDa activa de la red",
-        pl: "Moc czynna z sieci",
-        uk: "\u0410\u043A\u0442\u0438\u0432\u043D\u0430 \u043F\u043E\u0442\u0443\u0436\u043D\u0456\u0441\u0442\u044C \u0437 \u043C\u0435\u0440\u0435\u0436\u0456",
-        "zh-cn": "\u6765\u81EA\u7535\u7F51\u7684\u6709\u529F\u529F\u7387"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -908,19 +821,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).soc
     },
     common: {
-      name: {
-        en: "Battery SOC",
-        de: "Batterie-Ladezustand",
-        ru: "\u0423\u0440\u043E\u0432\u0435\u043D\u044C \u0437\u0430\u0440\u044F\u0434\u0430 \u0431\u0430\u0442\u0430\u0440\u0435\u0438",
-        pt: "SOC da bateria",
-        nl: "Batterij SOC",
-        fr: "SOC de la batterie",
-        it: "SOC della batteria",
-        es: "SOC de la bater\xEDa",
-        pl: "Stan baterii",
-        uk: "\u0417\u0430\u0440\u044F\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0457",
-        "zh-cn": "\u7535\u6C60SOC"
-      },
+      name: "",
       type: "number",
       role: "value",
       read: true,
@@ -934,19 +835,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).sys_bat_p
     },
     common: {
-      name: {
-        en: "System Battery SOC",
-        de: "Systemweiter Batterie-Ladezustand",
-        ru: "\u0421\u0438\u0441\u0442\u0435\u043C\u043D\u0430\u044F \u0431\u0430\u0442\u0430\u0440\u0435\u044F SOC",
-        pt: "SOC da bateria do sistema",
-        nl: "Systeembatterij SOC",
-        fr: "Syst\xE8me de surveillance de la batterie",
-        it: "SOC della batteria di sistema",
-        es: "SOC de la bater\xEDa del sistema",
-        pl: "Stan akumulatora systemowego SOC",
-        uk: "\u0417\u0430\u0440\u044F\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0457 \u0441\u0438\u0441\u0442\u0435\u043C\u0438",
-        "zh-cn": "\u7CFB\u7EDF\u7535\u6C60SOC"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -960,19 +849,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).sys_grid_p
     },
     common: {
-      name: {
-        en: "System Grid Power",
-        de: "Systemnetzstrom",
-        ru: "\u0421\u0438\u0441\u0442\u0435\u043C\u043D\u0430\u044F \u0441\u0435\u0442\u043A\u0430 \u043F\u0438\u0442\u0430\u043D\u0438\u044F",
-        pt: "Sistema de energia da rede el\xE9trica",
-        nl: "Systeemnetstroom",
-        fr: "R\xE9seau \xE9lectrique du syst\xE8me",
-        it: "Sistema di alimentazione della rete",
-        es: "Energ\xEDa de la red del sistema",
-        pl: "System zasilania sieciowego",
-        uk: "\u0421\u0438\u0441\u0442\u0435\u043C\u043D\u0430 \u043C\u0435\u0440\u0435\u0436\u0430 \u0436\u0438\u0432\u043B\u0435\u043D\u043D\u044F",
-        "zh-cn": "\u7CFB\u7EDF\u7535\u7F51\u529F\u7387"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -986,19 +863,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).sys_load_p
     },
     common: {
-      name: {
-        en: "System Load Power",
-        de: "Systemlastleistung",
-        ru: "\u041C\u043E\u0449\u043D\u043E\u0441\u0442\u044C \u043D\u0430\u0433\u0440\u0443\u0437\u043A\u0438 \u0441\u0438\u0441\u0442\u0435\u043C\u044B",
-        pt: "Pot\xEAncia de carga do sistema",
-        nl: "Systeembelastingvermogen",
-        fr: "Puissance de charge du syst\xE8me",
-        it: "Potenza del carico del sistema",
-        es: "Potencia de carga del sistema",
-        pl: "Moc obci\u0105\u017Cenia systemu",
-        uk: "\u041F\u043E\u0442\u0443\u0436\u043D\u0456\u0441\u0442\u044C \u0441\u0438\u0441\u0442\u0435\u043C\u043D\u043E\u0433\u043E \u043D\u0430\u0432\u0430\u043D\u0442\u0430\u0436\u0435\u043D\u043D\u044F",
-        "zh-cn": "\u7CFB\u7EDF\u8D1F\u8F7D\u529F\u7387"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -1012,19 +877,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).sys_plug_p
     },
     common: {
-      name: {
-        en: "System Socket Power",
-        de: "Systemsteckdosen-Leistung",
-        ru: "\u041C\u043E\u0449\u043D\u043E\u0441\u0442\u044C \u0441\u0438\u0441\u0442\u0435\u043C\u043D\u043E\u0439 \u0440\u043E\u0437\u0435\u0442\u043A\u0438",
-        pt: "Sistema de alimenta\xE7\xE3o de soquete",
-        nl: "Systeem Socket Power",
-        fr: "Prise d'alimentation du syst\xE8me",
-        it: "Presa di alimentazione del sistema",
-        es: "Alimentaci\xF3n del z\xF3calo del sistema",
-        pl: "Gniazdo zasilania systemu",
-        uk: "\u0416\u0438\u0432\u043B\u0435\u043D\u043D\u044F \u0441\u0438\u0441\u0442\u0435\u043C\u043D\u043E\u0457 \u0440\u043E\u0437\u0435\u0442\u043A\u0438",
-        "zh-cn": "\u7CFB\u7EDF\u63D2\u5EA7\u7535\u6E90"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -1038,19 +891,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).sys_pv_p
     },
     common: {
-      name: {
-        en: "System Photovoltaic Power",
-        de: "Photovoltaikleistung",
-        ru: "\u0421\u0438\u0441\u0442\u0435\u043C\u0430 \u0444\u043E\u0442\u043E\u044D\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u043E\u0439 \u044D\u043D\u0435\u0440\u0433\u0438\u0438",
-        pt: "Sistema de Energia Fotovoltaica",
-        nl: "Systeem Fotovolta\xEFsche Energie",
-        fr: "Syst\xE8me d'\xE9nergie photovolta\xEFque",
-        it: "Sistema di alimentazione fotovoltaica",
-        es: "Sistema de energ\xEDa fotovoltaica",
-        pl: "System zasilania fotowoltaicznego",
-        uk: "\u0421\u0438\u0441\u0442\u0435\u043C\u043D\u0430 \u0444\u043E\u0442\u043E\u0435\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u043D\u0430 \u0435\u043D\u0435\u0440\u0433\u0456\u044F",
-        "zh-cn": "\u7CFB\u7EDF\u5149\u4F0F\u53D1\u7535"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -1064,19 +905,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).sys_soc
     },
     common: {
-      name: {
-        en: "System battery SOC",
-        de: "Systembatterie-SOC",
-        ru: "\u0421\u0438\u0441\u0442\u0435\u043C\u043D\u0430\u044F \u0431\u0430\u0442\u0430\u0440\u0435\u044F SOC",
-        pt: "Bateria do sistema SOC",
-        nl: "Systeembatterij SOC",
-        fr: "SOC de la batterie du syst\xE8me",
-        it: "SOC della batteria di sistema",
-        es: "SOC de la bater\xEDa del sistema",
-        pl: "Stan baterii systemowej SOC",
-        uk: "\u0417\u0430\u0440\u044F\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0457 \u0441\u0438\u0441\u0442\u0435\u043C\u0438",
-        "zh-cn": "\u7CFB\u7EDF\u7535\u6C60SOC"
-      },
+      name: "",
       type: "number",
       role: "value",
       read: true,
@@ -1090,19 +919,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).sys_sp_p
     },
     common: {
-      name: {
-        en: "System Smart Socket Power",
-        de: "System Smart Socket Power",
-        ru: "\u0421\u0438\u0441\u0442\u0435\u043C\u0430 \u0438\u043D\u0442\u0435\u043B\u043B\u0435\u043A\u0442\u0443\u0430\u043B\u044C\u043D\u044B\u0445 \u0440\u043E\u0437\u0435\u0442\u043E\u043A Power",
-        pt: "Sistema Smart Socket Power",
-        nl: "Systeem Smart Socket Power",
-        fr: "Syst\xE8me Smart Socket Power",
-        it: "Sistema di alimentazione Smart Socket",
-        es: "Sistema de alimentaci\xF3n de enchufe inteligente",
-        pl: "System Smart Socket Power",
-        uk: "\u0421\u0438\u0441\u0442\u0435\u043C\u0430 \u0440\u043E\u0437\u0443\u043C\u043D\u043E\u0433\u043E \u0436\u0438\u0432\u043B\u0435\u043D\u043D\u044F \u0440\u043E\u0437\u0435\u0442\u043A\u0438",
-        "zh-cn": "\u7CFB\u7EDF\u667A\u80FD\u63D2\u5EA7\u7535\u6E90"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -1116,19 +933,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).bat_p
     },
     common: {
-      name: {
-        en: "Battery Power",
-        de: "Batterieleistung",
-        ru: "\u041C\u043E\u0449\u043D\u043E\u0441\u0442\u044C \u0430\u043A\u043A\u0443\u043C\u0443\u043B\u044F\u0442\u043E\u0440\u0430",
-        pt: "Energia da bateria",
-        nl: "Batterijvoeding",
-        fr: "Alimentation par batterie",
-        it: "Potenza della batteria",
-        es: "Energ\xEDa de la bater\xEDa",
-        pl: "Moc baterii",
-        uk: "\u0416\u0438\u0432\u043B\u0435\u043D\u043D\u044F \u0432\u0456\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0457",
-        "zh-cn": "\u7535\u6C60\u7535\u91CF"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -1142,19 +947,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).chg_e
     },
     common: {
-      name: {
-        en: "Battery Charge (Today)\n",
-        de: "Batterieladung (heute)\n",
-        ru: "\u0417\u0430\u0440\u044F\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0438 (\u0441\u0435\u0433\u043E\u0434\u043D\u044F)\n",
-        pt: "Carga da bateria (hoje)\n",
-        nl: "Batterijlading (vandaag)\n",
-        fr: "Charge de la batterie (aujourd'hui)\n",
-        it: "Carica della batteria (oggi)\n",
-        es: "Carga de la bater\xEDa (hoy)\n",
-        pl: "\u0141adowanie baterii (dzisiaj)\n",
-        uk: "\u0417\u0430\u0440\u044F\u0434 \u0430\u043A\u0443\u043C\u0443\u043B\u044F\u0442\u043E\u0440\u0430 (\u0441\u044C\u043E\u0433\u043E\u0434\u043D\u0456)\n",
-        "zh-cn": "\u7535\u6C60\u7535\u91CF\uFF08\u4ECA\u65E5\uFF09\n"
-      },
+      name: "",
       type: "number",
       role: "value.energy.consumed",
       read: true,
@@ -1168,19 +961,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).dchg_e
     },
     common: {
-      name: {
-        en: "Battery Decharge (Today)\n",
-        de: "Batterieentladung (Heute)\n",
-        ru: "\u0420\u0430\u0437\u0440\u044F\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0438 (\u0441\u0435\u0433\u043E\u0434\u043D\u044F)\n",
-        pt: "Descarga da bateria (hoje)\n",
-        nl: "Batterij ontladen (vandaag)\n",
-        fr: "D\xE9charge de la batterie (aujourd'hui)\n",
-        it: "Scarica della batteria (oggi)\n",
-        es: "Descarga de la bater\xEDa (hoy)\n",
-        pl: "Roz\u0142adowanie akumulatora (dzisiaj)\n",
-        uk: "\u0420\u043E\u0437\u0440\u044F\u0434\u043A\u0430 \u0430\u043A\u0443\u043C\u0443\u043B\u044F\u0442\u043E\u0440\u0430 (\u0441\u044C\u043E\u0433\u043E\u0434\u043D\u0456)\n",
-        "zh-cn": "\u7535\u6C60\u653E\u7535\uFF08\u4ECA\u5929\uFF09\n"
-      },
+      name: "",
       type: "number",
       role: "value.energy.produced",
       read: true,
@@ -1194,19 +975,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).grid_p
     },
     common: {
-      name: {
-        en: "Grid Power",
-        de: "Netzleistung",
-        ru: "\u0421\u0435\u0442\u0435\u0432\u0430\u044F \u043C\u043E\u0449\u043D\u043E\u0441\u0442\u044C",
-        pt: "Energia da rede",
-        nl: "Netstroom",
-        fr: "R\xE9seau \xE9lectrique",
-        it: "Potenza di rete",
-        es: "Energ\xEDa de red",
-        pl: "Moc sieciowa",
-        uk: "\u0415\u043D\u0435\u0440\u0433\u0456\u044F \u043C\u0435\u0440\u0435\u0436\u0456",
-        "zh-cn": "\u7535\u7F51\u7535\u529B"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -1220,19 +989,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).ems_mode
     },
     common: {
-      name: {
-        en: "EMS Mode",
-        de: "EMS-Modus",
-        ru: "\u0420\u0435\u0436\u0438\u043C EMS",
-        pt: "Modo EMS",
-        nl: "EMS-modus",
-        fr: "Mode EMS",
-        it: "Modalit\xE0 EMS",
-        es: "Modo EMS",
-        pl: "Tryb EMS",
-        uk: "\u0420\u0435\u0436\u0438\u043C \u0435\u043A\u0441\u0442\u0440\u0435\u043D\u043E\u0457 \u043C\u0435\u0434\u0438\u0447\u043D\u043E\u0457 \u0434\u043E\u043F\u043E\u043C\u043E\u0433\u0438",
-        "zh-cn": "EMS\u6A21\u5F0F"
-      },
+      name: "",
       type: "string",
       role: "state",
       read: true,
@@ -1245,19 +1002,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).plug_in_e
     },
     common: {
-      name: {
-        en: "Grid-Socket Input-Energy (Today)",
-        de: "Netz-Steckdosen-Eingangsenergie (Heute)",
-        ru: "\u0412\u0445\u043E\u0434\u043D\u0430\u044F \u043C\u043E\u0449\u043D\u043E\u0441\u0442\u044C \u0441\u0435\u0442\u0438-\u0440\u043E\u0437\u0435\u0442\u043A\u0438 (\u0441\u0435\u0433\u043E\u0434\u043D\u044F)",
-        pt: "Entrada de energia na rede el\xE9trica (hoje)",
-        nl: "Netstroom-ingangsenergie (vandaag)",
-        fr: "\xC9nergie d'entr\xE9e du r\xE9seau (aujourd'hui)",
-        it: "Energia in ingresso alla rete elettrica (oggi)",
-        es: "Energ\xEDa de entrada de la toma de red (hoy)",
-        pl: "Wej\u015Bcie-energia sieciowa-gniazdkowa (dzisiaj)",
-        uk: "\u0412\u0445\u0456\u0434\u043D\u0430 \u0435\u043D\u0435\u0440\u0433\u0456\u044F \u0440\u043E\u0437\u0435\u0442\u043A\u0438 \u043C\u0435\u0440\u0435\u0436\u0456 (\u0441\u044C\u043E\u0433\u043E\u0434\u043D\u0456)",
-        "zh-cn": "\u7535\u7F51\u63D2\u5EA7\u8F93\u5165\u80FD\u91CF\uFF08\u4ECA\u65E5\uFF09"
-      },
+      name: "",
       type: "number",
       role: "value.enery.consumed",
       read: true,
@@ -1271,19 +1016,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).plug_out_e
     },
     common: {
-      name: {
-        en: "Grid-Socket Output-Energy (Today)",
-        de: "Netz-Steckdosen-Ausgangsenergie (Heute)",
-        ru: "\u0412\u044B\u0445\u043E\u0434 \u044D\u043D\u0435\u0440\u0433\u0438\u0438 \u0438\u0437 \u0441\u0435\u0442\u0438 (\u0441\u0435\u0433\u043E\u0434\u043D\u044F)",
-        pt: "Sa\xEDda de energia da rede el\xE9trica (hoje)",
-        nl: "Netstroom-energie (vandaag)",
-        fr: "\xC9nergie de sortie du r\xE9seau (aujourd'hui)",
-        it: "Energia in uscita dalla rete elettrica (oggi)",
-        es: "Energ\xEDa de salida de la toma de red (hoy)",
-        pl: "Wyj\u015Bcie sieciowe-energia (obecnie)",
-        uk: "\u0412\u0438\u0445\u0456\u0434\u043D\u0430 \u0435\u043D\u0435\u0440\u0433\u0456\u044F \u0440\u043E\u0437\u0435\u0442\u043A\u0438 \u043C\u0435\u0440\u0435\u0436\u0456 (\u0441\u044C\u043E\u0433\u043E\u0434\u043D\u0456)",
-        "zh-cn": "\u7535\u7F51\u63D2\u5EA7\u8F93\u51FA\u80FD\u91CF\uFF08\u4ECA\u65E5\uFF09"
-      },
+      name: "",
       type: "number",
       role: "value.energy.produced",
       read: true,
@@ -1297,19 +1030,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).pv_e
     },
     common: {
-      name: {
-        en: "Photovoltaic Energyproduction (Today)",
-        de: "Photovoltaik-Energieerzeugung (heute)",
-        ru: "\u041F\u0440\u043E\u0438\u0437\u0432\u043E\u0434\u0441\u0442\u0432\u043E \u0444\u043E\u0442\u043E\u044D\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u043E\u0439 \u044D\u043D\u0435\u0440\u0433\u0438\u0438 (\u0441\u0435\u0433\u043E\u0434\u043D\u044F)",
-        pt: "Produ\xE7\xE3o de Energia Fotovoltaica (Hoje)",
-        nl: "Fotovolta\xEFsche energieproductie (vandaag)",
-        fr: "Production d'\xE9nergie photovolta\xEFque (aujourd'hui)",
-        it: "Produzione di energia fotovoltaica (oggi)",
-        es: "Producci\xF3n de energ\xEDa fotovoltaica (hoy)",
-        pl: "Produkcja energii fotowoltaicznej (dzisiaj)",
-        uk: "\u0412\u0438\u0440\u043E\u0431\u043D\u0438\u0446\u0442\u0432\u043E \u0444\u043E\u0442\u043E\u0435\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u043D\u043E\u0457 \u0435\u043D\u0435\u0440\u0433\u0456\u0457 (\u0441\u044C\u043E\u0433\u043E\u0434\u043D\u0456)",
-        "zh-cn": "\u5149\u4F0F\u53D1\u7535\uFF08\u4ECA\u5929\uFF09"
-      },
+      name: "",
       type: "number",
       role: "value.energy.produced",
       read: true,
@@ -1323,19 +1044,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).pv_p
     },
     common: {
-      name: {
-        en: "Photovoltaic Power",
-        de: "Photovoltaik Leistung",
-        ru: "\u0424\u043E\u0442\u043E\u044D\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u0430\u044F \u044D\u043D\u0435\u0440\u0433\u0438\u044F",
-        pt: "Energia Fotovoltaica",
-        nl: "Fotovolta\xEFsche energie",
-        fr: "\xC9nergie photovolta\xEFque",
-        it: "Energia fotovoltaica",
-        es: "Energ\xEDa fotovoltaica",
-        pl: "Energia fotowoltaiczna",
-        uk: "\u0424\u043E\u0442\u043E\u0435\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u043D\u0430 \u0435\u043D\u0435\u0440\u0433\u0456\u044F",
-        "zh-cn": "\u5149\u4F0F\u53D1\u7535"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -1349,19 +1058,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).soc
     },
     common: {
-      name: {
-        en: "Battery SOC",
-        de: "Batterie-SOC",
-        ru: "\u0423\u0440\u043E\u0432\u0435\u043D\u044C \u0437\u0430\u0440\u044F\u0434\u0430 \u0431\u0430\u0442\u0430\u0440\u0435\u0438",
-        pt: "SOC da bateria",
-        nl: "Batterij SOC",
-        fr: "SOC de la batterie",
-        it: "SOC della batteria",
-        es: "SOC de la bater\xEDa",
-        pl: "Stan baterii",
-        uk: "\u0417\u0430\u0440\u044F\u0434 \u0431\u0430\u0442\u0430\u0440\u0435\u0457",
-        "zh-cn": "\u7535\u6C60SOC"
-      },
+      name: "",
       type: "number",
       role: "value",
       read: true,
@@ -1375,19 +1072,7 @@ const stateConfig = {
       mqtt_publish_funct: (value) => JSON.parse(value).sp_p
     },
     common: {
-      name: {
-        en: "Smart-Socket Power",
-        de: "Smart-Socket Leistung",
-        ru: "\u0423\u043C\u043D\u0430\u044F \u0440\u043E\u0437\u0435\u0442\u043A\u0430 Power",
-        pt: "Energia Smart-Socket",
-        nl: "Slimme stopcontactvoeding",
-        fr: "Prise de courant intelligente",
-        it: "Potenza della presa intelligente",
-        es: "Alimentaci\xF3n mediante enchufe inteligente",
-        pl: "Smart-Socket Power",
-        uk: "\u0416\u0438\u0432\u043B\u0435\u043D\u043D\u044F \u0432\u0456\u0434 \u0441\u043C\u0430\u0440\u0442-\u0440\u043E\u0437\u0435\u0442\u043E\u043A",
-        "zh-cn": "\u667A\u80FD\u63D2\u5EA7\u7535\u6E90"
-      },
+      name: "",
       type: "number",
       role: "value.power",
       read: true,
@@ -1402,19 +1087,32 @@ function filterDevId(devId) {
 }
 async function initStates(adapter, dev_id) {
   const deviceId = filterDevId(dev_id);
-  if (devIdCache[deviceId]) {
+  if (!devIdCache[deviceId]) {
+    devIdCache[deviceId] = {
+      initializing: false,
+      ready: false,
+      online: false,
+      ts: 0
+    };
+  }
+  while (devIdCache[deviceId].initializing) {
+    adapter.log.debug(`initialization of states for device ${dev_id} in progress...`);
+    await adapter.delay(250);
+  }
+  if (devIdCache[deviceId].ready) {
     return;
   }
-  adapter.log.debug(`initializing states for device ${dev_id}`);
+  devIdCache[deviceId].initializing = true;
+  adapter.log.info(`Device ${dev_id} is initializing states`);
   await adapter.extendObject(
     `${deviceId}`,
     {
       type: "device",
       common: {
-        name: deviceId
-        // statusStates: {
-        //     onlineId: `${this.name}.${this.instance}.${deviceId}.info.online`,
-        // },
+        name: deviceId,
+        statusStates: {
+          onlineId: `${adapter.name}.${adapter.instance}.${deviceId}.info.online`
+        }
       },
       native: {}
     },
@@ -1423,6 +1121,7 @@ async function initStates(adapter, dev_id) {
   for (const channelKey in channelConfig) {
     const common = channelConfig[channelKey].common;
     common.name = utils.I18n.getTranslatedObject(`${channelKey}_name`);
+    common.desc = utils.I18n.getTranslatedObject(`${channelKey}_desc`);
     await adapter.extendObject(
       `${deviceId}.${channelKey}`,
       {
@@ -1436,6 +1135,7 @@ async function initStates(adapter, dev_id) {
   for (const folderKey in folderConfig) {
     const common = folderConfig[folderKey].common;
     common.name = utils.I18n.getTranslatedObject(`${folderKey}_name`);
+    common.desc = utils.I18n.getTranslatedObject(`${folderKey}_desc`);
     await adapter.extendObject(
       `${deviceId}.${folderKey}`,
       {
@@ -1449,6 +1149,7 @@ async function initStates(adapter, dev_id) {
   for (const stateKey in stateConfig) {
     const common = stateConfig[stateKey].common;
     common.name = utils.I18n.getTranslatedObject(`${stateKey}_name`);
+    common.desc = utils.I18n.getTranslatedObject(`${stateKey}_desc`);
     await adapter.extendObject(
       `${deviceId}.${stateKey}`,
       {
@@ -1459,12 +1160,48 @@ async function initStates(adapter, dev_id) {
       { preserve: { common: ["name"] } }
     );
   }
-  devIdCache[deviceId] = "X";
+  devIdCache[deviceId].ready = true;
+  devIdCache[deviceId].initializing = false;
   adapter.log.debug(`initialization of states for device ${dev_id} completed`);
+}
+async function handleOnlineStatus(adapter, dev_id) {
+  const deviceId = filterDevId(dev_id);
+  const ts = Date.now();
+  if (!devIdCache[deviceId]) {
+    return;
+  }
+  await adapter.setState(`${deviceId}.info.timestamp`, ts, true);
+  devIdCache[deviceId].ts = ts;
+  const oldState = devIdCache[deviceId].online;
+  devIdCache[deviceId].online = true;
+  if (!oldState) {
+    await adapter.setState(`${deviceId}.info.online`, true, true);
+    adapter.log.info(`Device ${deviceId} is online`);
+    await adapter.setState(`info.connection`, true, true);
+  }
+}
+async function checkOnlineStatus(adapter) {
+  const now = Date.now();
+  let connected = false;
+  for (const deviceId in devIdCache) {
+    if (!devIdCache[deviceId].online) {
+      continue;
+    }
+    if (now - devIdCache[deviceId].ts > 30 * 1e3) {
+      await adapter.setState(`${deviceId}.info.online`, false, true);
+      adapter.log.warn(`Device ${deviceId} is offline`);
+      devIdCache[deviceId].online = false;
+    } else {
+      connected = true;
+    }
+  }
+  await adapter.setState(`info.connection`, connected, true);
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  checkOnlineStatus,
   filterDevId,
+  handleOnlineStatus,
   initStates,
   stateConfig
 });

@@ -1,4 +1,3 @@
-import { EventEmitter } from 'node:events';
 import type { Server as NetServer, Socket } from 'node:net';
 // eslint-disable-next-line no-duplicate-imports
 import net from 'node:net';
@@ -7,7 +6,7 @@ import type { MqttClient, Packet } from 'mqtt-connection';
 // eslint-disable-next-line no-duplicate-imports
 import mqttCon from 'mqtt-connection';
 
-import type { MqttConnectEvent, MqttMessageEvent } from './mqtt-events';
+import type { MqttConnectEvent, MqttMessageEvent, MqttEventCallback } from './mqtt-events';
 
 type MqttClient = typeof MqttClient;
 type Packet = typeof Packet;
@@ -17,21 +16,24 @@ export interface MqttServerOptions {
     host?: string;
 }
 
-export class MqttServer extends EventEmitter {
+export class MqttServer /*extends EventEmitter*/ {
     private server: NetServer;
     private port: number;
     private host: string;
     //private adapter: ioBroker.Adapter;
     private log: ioBroker.Log;
+    private mqttEventCallback: MqttEventCallback;
 
-    constructor(adapter: ioBroker.Adapter, options: MqttServerOptions = {}) {
-        super();
+    constructor(adapter: ioBroker.Adapter, options: MqttServerOptions = {}, callback: MqttEventCallback) {
+        //super();
         this.log = adapter.log;
         this.host = options.host ?? '0.0.0.0';
         this.port = options.port ?? 1883;
 
         this.log.silly(`[MQTT-Server] init server at ${this.host}:${this.port}`);
         this.server = net.createServer(this.handleConnection.bind(this));
+
+        this.mqttEventCallback = callback;
     }
 
     private handleConnection(stream: Socket): void {
@@ -41,7 +43,7 @@ export class MqttServer extends EventEmitter {
         const client: MqttClient = mqttCon(stream);
         let clientId: any;
 
-        client.on('connect', (packet: Packet) => {
+        client.on('connect', async (packet: Packet) => {
             clientId = packet.clientId;
             this.log.silly(
                 `[MQTT-Server] (${clientId}) client connected with id ${packet.clientId} connected from ${remoteAddress}`,
@@ -51,14 +53,14 @@ export class MqttServer extends EventEmitter {
             client.connack({ returnCode: 0 });
 
             // report connection
-            this.emit('connect', {
+            await this.mqttEventCallback('connect', {
                 clientId: packet.clientId,
                 ip: remoteAddress,
                 packet,
             } as MqttConnectEvent);
         });
 
-        client.on('publish', (packet: Packet) => {
+        client.on('publish', async (packet: Packet) => {
             this.log.silly(
                 `[MQTT-Server] (${clientId}) received message on topic "${packet.topic}": ${packet.payload?.toString()}`,
             );
@@ -68,7 +70,7 @@ export class MqttServer extends EventEmitter {
             }
 
             // report message
-            this.emit('message', {
+            await this.mqttEventCallback('message', {
                 clientId: client.id || '',
                 ip: remoteAddress,
                 topic: packet.topic,
@@ -140,10 +142,3 @@ export class MqttServer extends EventEmitter {
         });
     }
 }
-
-// Example usage:
-// (async () => {
-//   const mqttServer = new MqttAsyncServer({ port: 1883 });
-//   await mqttServer.start();
-//   // To stop: await mqttServer.stop();
-// })();

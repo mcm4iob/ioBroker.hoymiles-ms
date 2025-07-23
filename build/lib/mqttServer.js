@@ -31,42 +31,42 @@ __export(mqttServer_exports, {
   MqttServer: () => MqttServer
 });
 module.exports = __toCommonJS(mqttServer_exports);
-var import_node_events = require("node:events");
 var import_node_net = __toESM(require("node:net"));
 var import_mqtt_connection = __toESM(require("mqtt-connection"));
-class MqttServer extends import_node_events.EventEmitter {
+class MqttServer {
   server;
   port;
   host;
   //private adapter: ioBroker.Adapter;
   log;
-  constructor(adapter, options = {}) {
+  mqttEventCallback;
+  constructor(adapter, options = {}, callback) {
     var _a, _b;
-    super();
     this.log = adapter.log;
     this.host = (_a = options.host) != null ? _a : "0.0.0.0";
     this.port = (_b = options.port) != null ? _b : 1883;
     this.log.silly(`[MQTT-Server] init server at ${this.host}:${this.port}`);
     this.server = import_node_net.default.createServer(this.handleConnection.bind(this));
+    this.mqttEventCallback = callback;
   }
   handleConnection(stream) {
     const remoteAddress = stream.remoteAddress || "unknown";
     this.log.silly(`[MQTT-Server] client connect from  ${remoteAddress}`);
     const client = (0, import_mqtt_connection.default)(stream);
     let clientId;
-    client.on("connect", (packet) => {
+    client.on("connect", async (packet) => {
       clientId = packet.clientId;
       this.log.silly(
         `[MQTT-Server] (${clientId}) client connected with id ${packet.clientId} connected from ${remoteAddress}`
       );
       client.connack({ returnCode: 0 });
-      this.emit("connect", {
+      await this.mqttEventCallback("connect", {
         clientId: packet.clientId,
         ip: remoteAddress,
         packet
       });
     });
-    client.on("publish", (packet) => {
+    client.on("publish", async (packet) => {
       var _a, _b, _c;
       this.log.silly(
         `[MQTT-Server] (${clientId}) received message on topic "${packet.topic}": ${(_a = packet.payload) == null ? void 0 : _a.toString()}`
@@ -74,7 +74,7 @@ class MqttServer extends import_node_events.EventEmitter {
       if (packet.qos && packet.qos > 0) {
         client.puback({ messageId: packet.messageId });
       }
-      this.emit("message", {
+      await this.mqttEventCallback("message", {
         clientId: client.id || "",
         ip: remoteAddress,
         topic: packet.topic,

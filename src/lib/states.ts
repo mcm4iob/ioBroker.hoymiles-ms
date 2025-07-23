@@ -14,7 +14,7 @@ type FolderConfig = {
 
 type StateConfig = {
     [key: string]: {
-        mqtt: {
+        mqtt?: {
             mqtt_publish: string;
             mqtt_publish_funct: any;
         };
@@ -28,9 +28,9 @@ type GridObj = {
     i: number;
     f: number;
     p: number;
-    q:  number;
-    ein:  number;
-    eout:  number;
+    q: number;
+    ein: number;
+    eout: number;
     etin: number;
     etout: number;
 };
@@ -38,19 +38,7 @@ type GridObj = {
 const channelConfig: ChannelConfig = {
     device: {
         common: {
-            name: {
-                en: 'Device',
-                de: 'Gerät',
-                ru: 'Устройство',
-                pt: 'Dispositivo',
-                nl: 'Apparaat',
-                fr: 'Appareil',
-                it: 'Dispositivo',
-                es: 'Dispositivo',
-                pl: 'Urządzenie',
-                uk: 'Пристрій',
-                'zh-cn': '设备',
-            },
+            name: '',
         },
     },
 
@@ -74,55 +62,19 @@ const channelConfig: ChannelConfig = {
 
     power_ctrl: {
         common: {
-            name: {
-                en: 'Power-control',
-                de: 'Leistungsregelung',
-                ru: 'Управление мощностью',
-                pt: 'Controle de potência',
-                nl: 'Vermogensregeling',
-                fr: 'Contrôle de puissance',
-                it: 'Controllo di potenza',
-                es: 'Control de potencia',
-                pl: 'Kontrola mocy',
-                uk: 'Контроль живлення',
-                'zh-cn': '功率控制',
-            },
+            name: '',
         },
     },
 
     realtime: {
         common: {
-            name: {
-                en: 'Realtime Data',
-                de: 'Echtzeitdaten',
-                ru: 'Данные в реальном времени',
-                pt: 'Dados em tempo real',
-                nl: 'Realtime gegevens',
-                fr: 'Données en temps réel',
-                it: 'Dati in tempo reale',
-                es: 'Datos en tiempo real',
-                pl: 'Dane w czasie rzeczywistym',
-                uk: 'Дані в реальному часі',
-                'zh-cn': '实时数据',
-            },
+            name: '',
         },
     },
 
     system: {
         common: {
-            name: {
-                en: 'System Data',
-                de: 'Systemdaten',
-                ru: 'Системные данные',
-                pt: 'Dados do sistema',
-                nl: 'Systeemgegevens',
-                fr: 'Données système',
-                it: 'Dati di sistema',
-                es: 'Datos del sistema',
-                pl: 'Dane systemowe',
-                uk: 'Системні дані',
-                'zh-cn': '系统数据',
-            },
+            name: '',
         },
     },
 };
@@ -130,24 +82,86 @@ const channelConfig: ChannelConfig = {
 const folderConfig: FolderConfig = {
     info: {
         common: {
-            name: {
-                en: 'Status Information',
-                de: 'Statusinformationen',
-                ru: 'Информация о статусе',
-                pt: 'Informações de status',
-                nl: 'Statusinformatie',
-                fr: 'Informations sur le statut',
-                it: 'Informazioni sullo stato',
-                es: 'Información de estado',
-                pl: 'Informacje o statusie',
-                uk: 'Інформація про статус',
-                'zh-cn': '状态信息',
-            },
+            name: '',
         },
     },
 };
 
 export const stateConfig: StateConfig = {
+    'device.bat_i': {
+        mqtt: {
+            mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+            mqtt_publish_funct: (value: string): any => JSON.parse(value).bat_i,
+        },
+        common: {
+            name: '',
+            type: 'number',
+            role: 'value.current',
+            read: true,
+            write: false,
+            unit: 'A',
+        },
+    },
+
+    'device.bat_p': {
+        mqtt: {
+            mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+            mqtt_publish_funct: (value: string): any => JSON.parse(value).bat_p,
+        },
+        common: {
+            name: '',
+            type: 'number',
+            role: 'value.power',
+            read: true,
+            write: false,
+            unit: 'W',
+        },
+    },
+
+    'device.bat_temp': {
+        mqtt: {
+            mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+            mqtt_publish_funct: (value: string): any => JSON.parse(value).bat_temp,
+        },
+        common: {
+            name: '',
+            type: 'number',
+            role: 'value.temperature',
+            read: true,
+            write: false,
+            unit: '°C',
+        },
+    },
+
+    'device.bat_v': {
+        mqtt: {
+            mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+            mqtt_publish_funct: (value: string): any => JSON.parse(value).bat_v,
+        },
+        common: {
+            name: '',
+            type: 'number',
+            role: 'value.voltage',
+            read: true,
+            write: false,
+            unit: 'V',
+        },
+    },
+
+    'device.bat_sts': {
+        mqtt: {
+            mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+            mqtt_publish_funct: (value: string): any => JSON.parse(value).bat_sts,
+        },
+        common: {
+            name: '',
+            type: 'string',
+            role: 'text',
+            read: true,
+            write: false,
+        },
+    },
+
     'device.grid_off.ein': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
@@ -442,19 +456,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.stringify(JSON.parse(value).device?.identifiers),
         },
         common: {
-            name: {
-                en: 'Device Identifiers',
-                de: 'Gerätekennungen',
-                ru: 'Идентификаторы устройств',
-                pt: 'Identificadores de dispositivos',
-                nl: "Apparaat-ID's",
-                fr: 'Identifiants de périphérique',
-                it: 'Identificatori del dispositivo',
-                es: 'Identificadores de dispositivos',
-                pl: 'Identyfikatory urządzeń',
-                uk: 'Ідентифікатори пристроїв',
-                'zh-cn': '设备标识符',
-            },
+            name: '',
             type: 'array',
             role: 'list',
             read: true,
@@ -596,19 +598,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).device?.manufacturer,
         },
         common: {
-            name: {
-                en: 'Device Manufacturer',
-                de: 'Gerätehersteller',
-                ru: 'Производитель устройства',
-                pt: 'Fabricante do dispositivo',
-                nl: 'Fabrikant van het apparaat',
-                fr: "Fabricant de l'appareil",
-                it: 'Produttore del dispositivo',
-                es: 'Fabricante del dispositivo',
-                pl: 'Producent urządzenia',
-                uk: 'Виробник пристрою',
-                'zh-cn': '设备制造商',
-            },
+            name: '',
             type: 'string',
             role: 'text',
             read: true,
@@ -622,19 +612,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).device?.model,
         },
         common: {
-            name: {
-                en: 'Device Model',
-                de: 'Gerätemodell',
-                ru: 'Модель устройства',
-                pt: 'Modelo do dispositivo',
-                nl: 'Apparaatmodel',
-                fr: "Modèle d'appareil",
-                it: 'Modello del dispositivo',
-                es: 'Modelo del dispositivo',
-                pl: 'Model urządzenia',
-                uk: 'Модель пристрою',
-                'zh-cn': '设备型号',
-            },
+            name: '',
             type: 'string',
             role: 'info.model',
             read: true,
@@ -648,23 +626,41 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).device?.name,
         },
         common: {
-            name: {
-                en: 'Device Name',
-                de: 'Gerätename',
-                ru: 'Имя устройства',
-                pt: 'Nome do dispositivo',
-                nl: 'Apparaatnaam',
-                fr: "Nom de l'appareil",
-                it: 'Nome del dispositivo',
-                es: 'Nombre del dispositivo',
-                pl: 'Nazwa urządzenia',
-                uk: 'Назва пристрою',
-                'zh-cn': '设备名称',
-            },
+            name: '',
             type: 'string',
             role: 'info.name',
             read: true,
             write: false,
+        },
+    },
+
+    'device.rssi': {
+        mqtt: {
+            mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+            mqtt_publish_funct: (value: string): any => JSON.parse(value).rssi,
+        },
+        common: {
+            name: '',
+            type: 'number',
+            role: 'value.voltage',
+            read: true,
+            write: false,
+            unit: 'db',
+        },
+    },
+
+    'device.soc': {
+        mqtt: {
+            mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
+            mqtt_publish_funct: (value: string): any => JSON.parse(value).soc,
+        },
+        common: {
+            name: '',
+            type: 'number',
+            role: 'value.voltage',
+            read: true,
+            write: false,
+            unit: '%',
         },
     },
 
@@ -674,21 +670,29 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).device?.sw_version,
         },
         common: {
-            name: {
-                en: 'Softwareversion',
-                de: 'Softwareversion',
-                ru: 'Версия программного обеспечения',
-                pt: 'Versão do software',
-                nl: 'Softwareversie',
-                fr: 'Version du logiciel',
-                it: 'Versione software',
-                es: 'Versión del software',
-                pl: 'Wersja oprogramowania',
-                uk: 'Версія програмного забезпечення',
-                'zh-cn': '软件版本',
-            },
+            name: '',
             type: 'string',
             role: 'info.firmware',
+            read: true,
+            write: false,
+        },
+    },
+
+    'info.online': {
+        common: {
+            name: '',
+            type: 'boolean',
+            role: 'indicator.reachable',
+            read: true,
+            write: false,
+        },
+    },
+
+    'info.timestamp': {
+        common: {
+            name: '',
+            type: 'number',
+            role: 'date',
             read: true,
             write: false,
         },
@@ -700,19 +704,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).min,
         },
         common: {
-            name: {
-                en: 'Maximum Input Power',
-                de: 'Maximale Eingangsleistung',
-                ru: 'Максимальная входная мощность',
-                pt: 'Potência máxima de entrada',
-                nl: 'Maximaal ingangsvermogen',
-                fr: "Puissance d'entrée maximale",
-                it: 'Potenza massima in ingresso',
-                es: 'Potencia máxima de entrada',
-                pl: 'Maksymalna moc wejściowa',
-                uk: 'Максимальна вхідна потужність',
-                'zh-cn': '最大输入功率',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -727,19 +719,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).max,
         },
         common: {
-            name: {
-                en: 'Maximum Output Power',
-                de: 'Maximale Ausgangsleistung',
-                ru: 'Максимальная выходная мощность',
-                pt: 'Potência máxima de saída',
-                nl: 'Maximaal uitgangsvermogen',
-                fr: 'Puissance de sortie maximale',
-                it: 'Potenza massima in uscita',
-                es: 'Potencia máxima de salida',
-                pl: 'Maksymalna moc wyjściowa',
-                uk: 'Максимальна вихідна потужність',
-                'zh-cn': '最大输出功率',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -754,19 +734,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).step,
         },
         common: {
-            name: {
-                en: 'Power Stepsize',
-                de: 'Leistungsschrittweite',
-                ru: 'Мощность Stepsize',
-                pt: 'Tamanho do passo de potência',
-                nl: 'Vermogen Stapgrootte',
-                fr: 'Pas de puissance',
-                it: 'Gradino di potenza',
-                es: 'Tamaño del paso de potencia',
-                pl: 'Wielkość kroku mocy',
-                uk: 'Розмір кроку потужності',
-                'zh-cn': '功率步长',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -781,19 +749,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).bat_p,
         },
         common: {
-            name: {
-                en: 'Device Battery Power',
-                de: 'Akkuleistung des Geräts',
-                ru: 'Заряд батареи устройства',
-                pt: 'Energia da bateria do dispositivo',
-                nl: 'Batterijvermogen van het apparaat',
-                fr: "Puissance de la batterie de l'appareil",
-                it: 'Potenza della batteria del dispositivo',
-                es: 'Energía de la batería del dispositivo',
-                pl: 'Moc baterii urządzenia',
-                uk: 'Заряд батареї пристрою',
-                'zh-cn': '设备电池电量',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -808,19 +764,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).bat_sts,
         },
         common: {
-            name: {
-                en: 'Device Battery Status',
-                de: 'Batteriestatus des Geräts',
-                ru: 'Состояние батареи устройства',
-                pt: 'Status da bateria do dispositivo',
-                nl: 'Batterijstatus van het apparaat',
-                fr: "État de la batterie de l'appareil",
-                it: 'Stato della batteria del dispositivo',
-                es: 'Estado de la batería del dispositivo',
-                pl: 'Stan baterii urządzenia',
-                uk: 'Стан батареї пристрою',
-                'zh-cn': '设备电池状态',
-            },
+            name: '',
             type: 'string',
             role: 'text',
             read: true,
@@ -834,19 +778,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).grid_on_p,
         },
         common: {
-            name: {
-                en: 'Active Power to Grid',
-                de: 'Wirkleistung zum Netz',
-                ru: 'Активная мощность в сеть',
-                pt: 'Energia Ativa para Rede',
-                nl: 'Actief vermogen TO-net',
-                fr: 'Puissance active vers le réseau',
-                it: 'Potenza attiva alla rete',
-                es: 'Potencia activa a la red',
-                pl: 'Moc czynna do sieci',
-                uk: 'Активна потужність для мережі',
-                'zh-cn': '有功功率并网',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -861,19 +793,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).grid_off_p,
         },
         common: {
-            name: {
-                en: 'Active Power from Grid',
-                de: 'Wirkleistung aus dem Netz',
-                ru: 'Активная мощность из сети',
-                pt: 'Potência Ativa da Rede',
-                nl: 'Actief vermogen van het net',
-                fr: 'Puissance active du réseau',
-                it: 'Potenza attiva dalla rete',
-                es: 'Energía activa de la red',
-                pl: 'Moc czynna z sieci',
-                uk: 'Активна потужність з мережі',
-                'zh-cn': '来自电网的有功功率',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -888,19 +808,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).soc,
         },
         common: {
-            name: {
-                en: 'Battery SOC',
-                de: 'Batterie-Ladezustand',
-                ru: 'Уровень заряда батареи',
-                pt: 'SOC da bateria',
-                nl: 'Batterij SOC',
-                fr: 'SOC de la batterie',
-                it: 'SOC della batteria',
-                es: 'SOC de la batería',
-                pl: 'Stan baterii',
-                uk: 'Заряд батареї',
-                'zh-cn': '电池SOC',
-            },
+            name: '',
             type: 'number',
             role: 'value',
             read: true,
@@ -915,19 +823,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).sys_bat_p,
         },
         common: {
-            name: {
-                en: 'System Battery SOC',
-                de: 'Systemweiter Batterie-Ladezustand',
-                ru: 'Системная батарея SOC',
-                pt: 'SOC da bateria do sistema',
-                nl: 'Systeembatterij SOC',
-                fr: 'Système de surveillance de la batterie',
-                it: 'SOC della batteria di sistema',
-                es: 'SOC de la batería del sistema',
-                pl: 'Stan akumulatora systemowego SOC',
-                uk: 'Заряд батареї системи',
-                'zh-cn': '系统电池SOC',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -942,19 +838,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).sys_grid_p,
         },
         common: {
-            name: {
-                en: 'System Grid Power',
-                de: 'Systemnetzstrom',
-                ru: 'Системная сетка питания',
-                pt: 'Sistema de energia da rede elétrica',
-                nl: 'Systeemnetstroom',
-                fr: 'Réseau électrique du système',
-                it: 'Sistema di alimentazione della rete',
-                es: 'Energía de la red del sistema',
-                pl: 'System zasilania sieciowego',
-                uk: 'Системна мережа живлення',
-                'zh-cn': '系统电网功率',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -969,19 +853,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).sys_load_p,
         },
         common: {
-            name: {
-                en: 'System Load Power',
-                de: 'Systemlastleistung',
-                ru: 'Мощность нагрузки системы',
-                pt: 'Potência de carga do sistema',
-                nl: 'Systeembelastingvermogen',
-                fr: 'Puissance de charge du système',
-                it: 'Potenza del carico del sistema',
-                es: 'Potencia de carga del sistema',
-                pl: 'Moc obciążenia systemu',
-                uk: 'Потужність системного навантаження',
-                'zh-cn': '系统负载功率',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -996,19 +868,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).sys_plug_p,
         },
         common: {
-            name: {
-                en: 'System Socket Power',
-                de: 'Systemsteckdosen-Leistung',
-                ru: 'Мощность системной розетки',
-                pt: 'Sistema de alimentação de soquete',
-                nl: 'Systeem Socket Power',
-                fr: "Prise d'alimentation du système",
-                it: 'Presa di alimentazione del sistema',
-                es: 'Alimentación del zócalo del sistema',
-                pl: 'Gniazdo zasilania systemu',
-                uk: 'Живлення системної розетки',
-                'zh-cn': '系统插座电源',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -1023,19 +883,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).sys_pv_p,
         },
         common: {
-            name: {
-                en: 'System Photovoltaic Power',
-                de: 'Photovoltaikleistung',
-                ru: 'Система фотоэлектрической энергии',
-                pt: 'Sistema de Energia Fotovoltaica',
-                nl: 'Systeem Fotovoltaïsche Energie',
-                fr: "Système d'énergie photovoltaïque",
-                it: 'Sistema di alimentazione fotovoltaica',
-                es: 'Sistema de energía fotovoltaica',
-                pl: 'System zasilania fotowoltaicznego',
-                uk: 'Системна фотоелектрична енергія',
-                'zh-cn': '系统光伏发电',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -1050,19 +898,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).sys_soc,
         },
         common: {
-            name: {
-                en: 'System battery SOC',
-                de: 'Systembatterie-SOC',
-                ru: 'Системная батарея SOC',
-                pt: 'Bateria do sistema SOC',
-                nl: 'Systeembatterij SOC',
-                fr: 'SOC de la batterie du système',
-                it: 'SOC della batteria di sistema',
-                es: 'SOC de la batería del sistema',
-                pl: 'Stan baterii systemowej SOC',
-                uk: 'Заряд батареї системи',
-                'zh-cn': '系统电池SOC',
-            },
+            name: '',
             type: 'number',
             role: 'value',
             read: true,
@@ -1077,19 +913,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).sys_sp_p,
         },
         common: {
-            name: {
-                en: 'System Smart Socket Power',
-                de: 'System Smart Socket Power',
-                ru: 'Система интеллектуальных розеток Power',
-                pt: 'Sistema Smart Socket Power',
-                nl: 'Systeem Smart Socket Power',
-                fr: 'Système Smart Socket Power',
-                it: 'Sistema di alimentazione Smart Socket',
-                es: 'Sistema de alimentación de enchufe inteligente',
-                pl: 'System Smart Socket Power',
-                uk: 'Система розумного живлення розетки',
-                'zh-cn': '系统智能插座电源',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -1104,19 +928,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).bat_p,
         },
         common: {
-            name: {
-                en: 'Battery Power',
-                de: 'Batterieleistung',
-                ru: 'Мощность аккумулятора',
-                pt: 'Energia da bateria',
-                nl: 'Batterijvoeding',
-                fr: 'Alimentation par batterie',
-                it: 'Potenza della batteria',
-                es: 'Energía de la batería',
-                pl: 'Moc baterii',
-                uk: 'Живлення від батареї',
-                'zh-cn': '电池电量',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -1131,19 +943,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).chg_e,
         },
         common: {
-            name: {
-                en: 'Battery Charge (Today)\n',
-                de: 'Batterieladung (heute)\n',
-                ru: 'Заряд батареи (сегодня)\n',
-                pt: 'Carga da bateria (hoje)\n',
-                nl: 'Batterijlading (vandaag)\n',
-                fr: "Charge de la batterie (aujourd'hui)\n",
-                it: 'Carica della batteria (oggi)\n',
-                es: 'Carga de la batería (hoy)\n',
-                pl: 'Ładowanie baterii (dzisiaj)\n',
-                uk: 'Заряд акумулятора (сьогодні)\n',
-                'zh-cn': '电池电量（今日）\n',
-            },
+            name: '',
             type: 'number',
             role: 'value.energy.consumed',
             read: true,
@@ -1158,19 +958,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).dchg_e,
         },
         common: {
-            name: {
-                en: 'Battery Decharge (Today)\n',
-                de: 'Batterieentladung (Heute)\n',
-                ru: 'Разряд батареи (сегодня)\n',
-                pt: 'Descarga da bateria (hoje)\n',
-                nl: 'Batterij ontladen (vandaag)\n',
-                fr: "Décharge de la batterie (aujourd'hui)\n",
-                it: 'Scarica della batteria (oggi)\n',
-                es: 'Descarga de la batería (hoy)\n',
-                pl: 'Rozładowanie akumulatora (dzisiaj)\n',
-                uk: 'Розрядка акумулятора (сьогодні)\n',
-                'zh-cn': '电池放电（今天）\n',
-            },
+            name: '',
             type: 'number',
             role: 'value.energy.produced',
             read: true,
@@ -1185,19 +973,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).grid_p,
         },
         common: {
-            name: {
-                en: 'Grid Power',
-                de: 'Netzleistung',
-                ru: 'Сетевая мощность',
-                pt: 'Energia da rede',
-                nl: 'Netstroom',
-                fr: 'Réseau électrique',
-                it: 'Potenza di rete',
-                es: 'Energía de red',
-                pl: 'Moc sieciowa',
-                uk: 'Енергія мережі',
-                'zh-cn': '电网电力',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -1212,19 +988,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).ems_mode,
         },
         common: {
-            name: {
-                en: 'EMS Mode',
-                de: 'EMS-Modus',
-                ru: 'Режим EMS',
-                pt: 'Modo EMS',
-                nl: 'EMS-modus',
-                fr: 'Mode EMS',
-                it: 'Modalità EMS',
-                es: 'Modo EMS',
-                pl: 'Tryb EMS',
-                uk: 'Режим екстреної медичної допомоги',
-                'zh-cn': 'EMS模式',
-            },
+            name: '',
             type: 'string',
             role: 'state',
             read: true,
@@ -1238,19 +1002,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).plug_in_e,
         },
         common: {
-            name: {
-                en: 'Grid-Socket Input-Energy (Today)',
-                de: 'Netz-Steckdosen-Eingangsenergie (Heute)',
-                ru: 'Входная мощность сети-розетки (сегодня)',
-                pt: 'Entrada de energia na rede elétrica (hoje)',
-                nl: 'Netstroom-ingangsenergie (vandaag)',
-                fr: "Énergie d'entrée du réseau (aujourd'hui)",
-                it: 'Energia in ingresso alla rete elettrica (oggi)',
-                es: 'Energía de entrada de la toma de red (hoy)',
-                pl: 'Wejście-energia sieciowa-gniazdkowa (dzisiaj)',
-                uk: 'Вхідна енергія розетки мережі (сьогодні)',
-                'zh-cn': '电网插座输入能量（今日）',
-            },
+            name: '',
             type: 'number',
             role: 'value.enery.consumed',
             read: true,
@@ -1265,19 +1017,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).plug_out_e,
         },
         common: {
-            name: {
-                en: 'Grid-Socket Output-Energy (Today)',
-                de: 'Netz-Steckdosen-Ausgangsenergie (Heute)',
-                ru: 'Выход энергии из сети (сегодня)',
-                pt: 'Saída de energia da rede elétrica (hoje)',
-                nl: 'Netstroom-energie (vandaag)',
-                fr: "Énergie de sortie du réseau (aujourd'hui)",
-                it: 'Energia in uscita dalla rete elettrica (oggi)',
-                es: 'Energía de salida de la toma de red (hoy)',
-                pl: 'Wyjście sieciowe-energia (obecnie)',
-                uk: 'Вихідна енергія розетки мережі (сьогодні)',
-                'zh-cn': '电网插座输出能量（今日）',
-            },
+            name: '',
             type: 'number',
             role: 'value.energy.produced',
             read: true,
@@ -1292,19 +1032,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).pv_e,
         },
         common: {
-            name: {
-                en: 'Photovoltaic Energyproduction (Today)',
-                de: 'Photovoltaik-Energieerzeugung (heute)',
-                ru: 'Производство фотоэлектрической энергии (сегодня)',
-                pt: 'Produção de Energia Fotovoltaica (Hoje)',
-                nl: 'Fotovoltaïsche energieproductie (vandaag)',
-                fr: "Production d'énergie photovoltaïque (aujourd'hui)",
-                it: 'Produzione di energia fotovoltaica (oggi)',
-                es: 'Producción de energía fotovoltaica (hoy)',
-                pl: 'Produkcja energii fotowoltaicznej (dzisiaj)',
-                uk: 'Виробництво фотоелектричної енергії (сьогодні)',
-                'zh-cn': '光伏发电（今天）',
-            },
+            name: '',
             type: 'number',
             role: 'value.energy.produced',
             read: true,
@@ -1319,19 +1047,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).pv_p,
         },
         common: {
-            name: {
-                en: 'Photovoltaic Power',
-                de: 'Photovoltaik Leistung',
-                ru: 'Фотоэлектрическая энергия',
-                pt: 'Energia Fotovoltaica',
-                nl: 'Fotovoltaïsche energie',
-                fr: 'Énergie photovoltaïque',
-                it: 'Energia fotovoltaica',
-                es: 'Energía fotovoltaica',
-                pl: 'Energia fotowoltaiczna',
-                uk: 'Фотоелектрична енергія',
-                'zh-cn': '光伏发电',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -1346,19 +1062,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).soc,
         },
         common: {
-            name: {
-                en: 'Battery SOC',
-                de: 'Batterie-SOC',
-                ru: 'Уровень заряда батареи',
-                pt: 'SOC da bateria',
-                nl: 'Batterij SOC',
-                fr: 'SOC de la batterie',
-                it: 'SOC della batteria',
-                es: 'SOC de la batería',
-                pl: 'Stan baterii',
-                uk: 'Заряд батареї',
-                'zh-cn': '电池SOC',
-            },
+            name: '',
             type: 'number',
             role: 'value',
             read: true,
@@ -1373,19 +1077,7 @@ export const stateConfig: StateConfig = {
             mqtt_publish_funct: (value: string): any => JSON.parse(value).sp_p,
         },
         common: {
-            name: {
-                en: 'Smart-Socket Power',
-                de: 'Smart-Socket Leistung',
-                ru: 'Умная розетка Power',
-                pt: 'Energia Smart-Socket',
-                nl: 'Slimme stopcontactvoeding',
-                fr: 'Prise de courant intelligente',
-                it: 'Potenza della presa intelligente',
-                es: 'Alimentación mediante enchufe inteligente',
-                pl: 'Smart-Socket Power',
-                uk: 'Живлення від смарт-розеток',
-                'zh-cn': '智能插座电源',
-            },
+            name: '',
             type: 'number',
             role: 'value.power',
             read: true,
@@ -1395,7 +1087,16 @@ export const stateConfig: StateConfig = {
     },
 };
 
-const devIdCache: { [key: string]: string } = {};
+type DevIdCache = {
+    [key: string]: {
+        initializing: boolean;
+        ready: boolean;
+        online: boolean;
+        ts: number;
+    };
+};
+
+const devIdCache: DevIdCache = {};
 
 /**
  * remove invalid characters from devId
@@ -1406,17 +1107,32 @@ export function filterDevId(devId: string): string {
     return devId.replace(/[^a-zA-Z0-9-]/g, '_');
 }
 
-/**
- *
- */
 export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Promise<void> {
     const deviceId = filterDevId(dev_id);
-    if (devIdCache[deviceId]) {
+
+    if (!devIdCache[deviceId]) {
+        devIdCache[deviceId] = {
+            initializing: false,
+            ready: false,
+            online: false,
+            ts: 0,
+        };
+    }
+
+    // Events are raised faster than initialization completes. So lets wait is init is already in progress.
+    while (devIdCache[deviceId].initializing) {
+        adapter.log.debug(`initialization of states for device ${dev_id} in progress...`);
+        await adapter.delay(250);
+    }
+
+    if (devIdCache[deviceId].ready) {
         // nothing to do if already processed
         return;
     }
 
-    adapter.log.debug(`initializing states for device ${dev_id}`);
+    devIdCache[deviceId].initializing = true;
+
+    adapter.log.info(`Device ${dev_id} is initializing states`);
 
     // create device object
     await adapter.extendObject(
@@ -1425,9 +1141,9 @@ export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Pro
             type: 'device',
             common: {
                 name: deviceId,
-                // statusStates: {
-                //     onlineId: `${this.name}.${this.instance}.${deviceId}.info.online`,
-                // },
+                statusStates: {
+                    onlineId: `${adapter.name}.${adapter.instance}.${deviceId}.info.online`,
+                },
             },
             native: {},
         },
@@ -1437,6 +1153,7 @@ export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Pro
     for (const channelKey in channelConfig) {
         const common = channelConfig[channelKey].common;
         common.name = utils.I18n.getTranslatedObject(`${channelKey}_name`);
+        common.desc = utils.I18n.getTranslatedObject(`${channelKey}_desc`);
         await adapter.extendObject(
             `${deviceId}.${channelKey}`,
             {
@@ -1451,6 +1168,7 @@ export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Pro
     for (const folderKey in folderConfig) {
         const common = folderConfig[folderKey].common;
         common.name = utils.I18n.getTranslatedObject(`${folderKey}_name`);
+        common.desc = utils.I18n.getTranslatedObject(`${folderKey}_desc`);
         await adapter.extendObject(
             `${deviceId}.${folderKey}`,
             {
@@ -1464,7 +1182,8 @@ export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Pro
 
     for (const stateKey in stateConfig) {
         const common = stateConfig[stateKey].common;
-        common.name = utils.I18n.getTranslatedObject(`${stateKey}_name`)
+        common.name = utils.I18n.getTranslatedObject(`${stateKey}_name`);
+        common.desc = utils.I18n.getTranslatedObject(`${stateKey}_desc`);
         await adapter.extendObject(
             `${deviceId}.${stateKey}`,
             {
@@ -1476,7 +1195,48 @@ export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Pro
         );
     }
 
-    devIdCache[deviceId] = 'X';
+    devIdCache[deviceId].ready = true;
+    devIdCache[deviceId].initializing = false;
     adapter.log.debug(`initialization of states for device ${dev_id} completed`);
+}
 
+export async function handleOnlineStatus(adapter: ioBroker.Adapter, dev_id: string): Promise<void> {
+    const deviceId = filterDevId(dev_id);
+    const ts = Date.now();
+
+    if (!devIdCache[deviceId]) {
+        return;
+    }
+
+    await adapter.setState(`${deviceId}.info.timestamp`, ts, true);
+    devIdCache[deviceId].ts = ts;
+
+    const oldState = devIdCache[deviceId].online;
+    devIdCache[deviceId].online = true;
+
+    if (!oldState) {
+        await adapter.setState(`${deviceId}.info.online`, true, true);
+        adapter.log.info(`Device ${deviceId} is online`);
+        await adapter.setState(`info.connection`, true, true);
+    }
+}
+
+export async function checkOnlineStatus(adapter: ioBroker.Adapter): Promise<void> {
+    const now = Date.now();
+    let connected = false;
+
+    for (const deviceId in devIdCache) {
+        if (!devIdCache[deviceId].online) {
+            continue;
+        }
+        if (now - devIdCache[deviceId].ts > 30 * 1000 /* 30s */) {
+            await adapter.setState(`${deviceId}.info.online`, false, true);
+            adapter.log.warn(`Device ${deviceId} is offline`);
+            devIdCache[deviceId].online = false;
+        } else {
+            connected = true;
+        }
+    }
+
+    await adapter.setState(`info.connection`, connected, true);
 }

@@ -6,13 +6,15 @@
 // you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
 
-import type { MqttConnectEvent, MqttMessageEvent } from './lib/mqtt-events';
+import type { MqttMessageEvent, MqttEvent } from './lib/mqtt-events';
 import { MqttServer } from './lib/mqttServer';
 import { HoymilesMqtt } from './lib/hoymilesMqtt';
+import { checkOnlineStatus } from './lib/states';
 
 class HoymilesMs extends utils.Adapter {
     private mqtt: any;
     private hoymilesMqtt: HoymilesMqtt | null = null;
+    private onlineInterval: ioBroker.Interval | undefined;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -38,12 +40,13 @@ class HoymilesMs extends utils.Adapter {
         this.hoymilesMqtt = new HoymilesMqtt(this);
 
         // init mqttServer
-        this.mqtt = new MqttServer(this, { port: 1883 });
-        this.mqtt.on('connect', this.onMqttConnect.bind(this));
-        this.mqtt.on('message', this.onMqttMessage.bind(this));
-        //this.mqtt.on('message', this.hoymilesMqtt.onMqttMessage.bind(this.hoymilesMqtt));
+        this.mqtt = new MqttServer(this, { port: 1883 }, this.mqttEventCallback.bind(this));
+        // this.mqtt.on('connect', this.onMqttConnect.bind(this));
+        // this.mqtt.on('message', this.onMqttMessage.bind(this));
         await this.mqtt.start();
         this.log.info('[MQTT-Server] started');
+
+        this.onlineInterval = this.setInterval(checkOnlineStatus.bind(this), 15 * 1000, this);
     }
 
     /**
@@ -53,11 +56,7 @@ class HoymilesMs extends utils.Adapter {
      */
     private onUnload(callback: () => void): void {
         try {
-            // Here you must clear all timeouts or intervals that may still be active
-            // clearTimeout(timeout1);
-            // clearTimeout(timeout2);
-            // ...
-            // clearInterval(interval1);
+            this.onlineInterval && this.clearInterval(this.onlineInterval);
 
             callback();
         } catch {
@@ -65,22 +64,12 @@ class HoymilesMs extends utils.Adapter {
         }
     }
 
-    /**
-     * onMqttConnect is called whenever a client connects
-     *
-     * @param event connection details
-     */
-    private onMqttConnect(event: MqttConnectEvent): void {
-        this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
-    }
-
-    /**
-     * onMqttMessage is called whenever a new message is received
-     *
-     * @param event message details
-     */
-    private async onMqttMessage(event: MqttMessageEvent): Promise<void> {
-        await this.hoymilesMqtt?.onMqttMessage(event);
+    private async mqttEventCallback(name: string, event: MqttEvent): Promise<void> {
+        if (name === 'connect') {
+            this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
+        } else if (name === 'message') {
+            await this.hoymilesMqtt?.onMqttMessage(event as MqttMessageEvent);
+        }
     }
 
     /**
@@ -98,23 +87,6 @@ class HoymilesMs extends utils.Adapter {
             this.log.info(`state ${id} deleted`);
         }
     }
-
-    // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
-    // /**
-    //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
-    //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
-    //  */
-    // private onMessage(obj: ioBroker.Message): void {
-    //     if (typeof obj === 'object' && obj.message) {
-    //         if (obj.command === 'send') {
-    //             // e.g. send email or pushover or whatever
-    //             this.log.info('send command');
-
-    //             // Send response in callback if required
-    //             if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-    //         }
-    //     }
-    // }
 }
 
 if (require.main !== module) {
