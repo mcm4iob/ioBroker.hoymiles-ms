@@ -53,11 +53,11 @@ class HoymilesMs extends utils.Adapter {
     try {
       await this.mqtt.start();
       this.log.info("[MQTT-Server] started");
-      this.onlineInterval = this.setInterval(import_states.checkOnlineStatus.bind(this), 15 * 1e3, this);
     } catch (e) {
       this.log.error(`[MQTT-Server] cannot start server - ${e.message}`);
-      this.terminate(utils.EXIT_CODES.INVALID_ADAPTER_CONFIG);
+      this.terminate("check adapter configuration", utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
     }
+    this.onlineInterval = this.setInterval(import_states.checkOnlineStatus.bind(this), 15 * 1e3, this);
   }
   /**
    * Is called when adapter shuts down - callback has to be called under any circumstances!
