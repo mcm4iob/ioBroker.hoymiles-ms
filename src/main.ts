@@ -45,18 +45,15 @@ class HoymilesMs extends utils.Adapter {
             { network: this.config.srvNetwork, port: this.config.srvPort },
             this.mqttEventCallback.bind(this),
         );
-        // this.mqtt.on('connect', this.onMqttConnect.bind(this));
-        // this.mqtt.on('message', this.onMqttMessage.bind(this));
+
         try {
             await this.mqtt.start();
+            this.log.info('[MQTT-Server] started');
+            this.onlineInterval = this.setInterval(checkOnlineStatus.bind(this), 15 * 1000, this);
         } catch (e: any) {
             this.log.error(`[MQTT-Server] cannot start server - ${e.message}`);
-            this.terminate();
-            return; /* code after terminate might be executed anyway */
+            this.terminate(utils.EXIT_CODES.INVALID_ADAPTER_CONFIG);
         }
-        this.log.info('[MQTT-Server] started');
-
-        this.onlineInterval = this.setInterval(checkOnlineStatus.bind(this), 15 * 1000, this);
     }
 
     /**
