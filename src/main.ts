@@ -52,6 +52,7 @@ class HoymilesMs extends utils.Adapter {
         } catch (e: any) {
             this.log.error(`[MQTT-Server] cannot start server - ${e.message}`);
             this.terminate();
+            return; /* code after terminate might be executed anyway */
         }
         this.log.info('[MQTT-Server] started');
 
