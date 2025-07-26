@@ -82,7 +82,13 @@
       }
     ]
   },
-  "native": {},
+  "native": {
+        "clientMode": false,
+        "srvNetwork": "0.0.0.0",
+        "srvPort": 1881,
+        "brokerIp": "127.0.0.1",
+        "brokerPort": 1883
+  },
   "objects": [],
   "instanceObjects": [
     {

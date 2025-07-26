@@ -13,13 +13,13 @@ type Packet = typeof Packet;
 
 export interface MqttServerOptions {
     port?: number;
-    host?: string;
+    network?: string;
 }
 
 export class MqttServer /*extends EventEmitter*/ {
     private server: NetServer;
     private port: number;
-    private host: string;
+    private network: string;
     //private adapter: ioBroker.Adapter;
     private log: ioBroker.Log;
     private mqttEventCallback: MqttEventCallback;
@@ -27,10 +27,10 @@ export class MqttServer /*extends EventEmitter*/ {
     constructor(adapter: ioBroker.Adapter, options: MqttServerOptions = {}, callback: MqttEventCallback) {
         //super();
         this.log = adapter.log;
-        this.host = options.host ?? '0.0.0.0';
+        this.network = options.network ?? '0.0.0.0';
         this.port = options.port ?? 1883;
 
-        this.log.silly(`[MQTT-Server] init server at ${this.host}:${this.port}`);
+        this.log.silly(`[MQTT-Server] init server at ${this.network}:${this.port}`);
         this.server = net.createServer(this.handleConnection.bind(this));
 
         this.mqttEventCallback = callback;
@@ -121,8 +121,8 @@ export class MqttServer /*extends EventEmitter*/ {
 
     public async start(): Promise<void> {
         await new Promise<void>((resolve, reject) => {
-            this.server.listen(this.port, this.host, () => {
-                this.log.info(`MQTT server is running on ${this.host}:${this.port}`);
+            this.server.listen(this.port, this.network, () => {
+                this.log.info(`MQTT server is running on ${this.network}:${this.port}`);
                 resolve();
             });
             this.server.on('error', err => reject(err));

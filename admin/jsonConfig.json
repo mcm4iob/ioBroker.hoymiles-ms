@@ -6,7 +6,12 @@
             "type": "checkbox",
             "label": "lblClientMode",
             "newLine": true,
-            "hidden":"true"
+            "hidden":"true",
+            "xl": 1,
+            "lg": 2,
+            "md": 3,
+            "sm": 6,
+            "xs": 12
         },
         "srvNetwork": {
             "type": "ip",
@@ -15,24 +20,44 @@
             "onlyIp4": true,
             "default": "0.0.0.0",
             "hidden":"data.clientMode",
-            "newLine": true
+            "newLine": true,
+            "xl": 2,
+            "lg": 4,
+            "md": 8,
+            "sm": 12,
+            "xs": 12
         },
         "srvPort": {
             "type": "port",
             "label": "lblSrvPort",
             "default": "1881",
-            "hidden":"data.clientMode"
+            "hidden":"data.clientMode",
+            "xl": 1,
+            "lg": 2,
+            "md": 3,
+            "sm": 6,
+            "xs": 12
         },
         "brokerIp": {
             "type": "text",
             "label": "lblbrokerIp",
             "hidden":"!data.clientMode",
-            "newLine": true
+            "newLine": true,
+            "xl": 2,
+            "lg": 4,
+            "md": 8,
+            "sm": 12,
+            "xs": 12
         },
         "brokerPort": {
             "type": "port",
             "label": "lblbrokerPort",
-            "hidden":"!data.clientMode"
+            "hidden":"!data.clientMode",
+            "xl": 1,
+            "lg": 2,
+            "md": 3,
+            "sm": 6,
+            "xs": 12
         }
     }
 }

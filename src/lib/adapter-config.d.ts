@@ -4,8 +4,11 @@
 declare global {
     namespace ioBroker {
         interface AdapterConfig {
-            option1: boolean;
-            option2: string;
+        "clientMode": boolean,
+        "srvNetwork": string,
+        "srvPort": number,
+        "brokerIp": string,
+        "brokerPort": number,
         }
     }
 }

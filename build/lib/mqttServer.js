@@ -36,16 +36,16 @@ var import_mqtt_connection = __toESM(require("mqtt-connection"));
 class MqttServer {
   server;
   port;
-  host;
+  network;
   //private adapter: ioBroker.Adapter;
   log;
   mqttEventCallback;
   constructor(adapter, options = {}, callback) {
     var _a, _b;
     this.log = adapter.log;
-    this.host = (_a = options.host) != null ? _a : "0.0.0.0";
+    this.network = (_a = options.network) != null ? _a : "0.0.0.0";
     this.port = (_b = options.port) != null ? _b : 1883;
-    this.log.silly(`[MQTT-Server] init server at ${this.host}:${this.port}`);
+    this.log.silly(`[MQTT-Server] init server at ${this.network}:${this.port}`);
     this.server = import_node_net.default.createServer(this.handleConnection.bind(this));
     this.mqttEventCallback = callback;
   }
@@ -120,8 +120,8 @@ class MqttServer {
   }
   async start() {
     await new Promise((resolve, reject) => {
-      this.server.listen(this.port, this.host, () => {
-        this.log.info(`MQTT server is running on ${this.host}:${this.port}`);
+      this.server.listen(this.port, this.network, () => {
+        this.log.info(`MQTT server is running on ${this.network}:${this.port}`);
         resolve();
       });
       this.server.on("error", (err) => reject(err));
