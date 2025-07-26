@@ -33,9 +33,9 @@
             "default": "1881",
             "hidden":"data.clientMode",
             "xl": 1,
-            "lg": 2,
-            "md": 3,
-            "sm": 6,
+            "lg": 3,
+            "md": 6,
+            "sm": 8,
             "xs": 12
         },
         "brokerIp": {
@@ -54,9 +54,9 @@
             "label": "lblbrokerPort",
             "hidden":"!data.clientMode",
             "xl": 1,
-            "lg": 2,
-            "md": 3,
-            "sm": 6,
+            "lg": 3,
+            "md": 6,
+            "sm": 8,
             "xs": 12
         }
     }
