@@ -72,14 +72,8 @@ Controlling the device (setting the output power) is not yet implemented.
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 0.1.0-alpha.0 (2025-07-23)
-* (mcm1957) Missing data reported by device has been added
-* (mcm1957) data conversion has been fixed
-* (mcm1957) 'quick' states tree has been renamed to 'realtime'
-* (mcm1957) 'system' data added
-
-### 0.0.1-alpha.7 (2025-07-17)
-* (mcm1957) initial testing
+### **WORK IN PROGRESS**
+* (mcm1957) initial release
 
 ## License
 MIT License
