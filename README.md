@@ -69,7 +69,7 @@ Controlling the device (setting the output power) is not yet implemented.
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.1.1 (2025-07-27)
 * (mcm1957) Handling of configuration has been corrected
 * (mcm1957) Translations have been adapted
 

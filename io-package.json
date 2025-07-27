@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hoymiles-ms",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "news": {
+      "0.1.1": {
+        "en": "Handling of configuration has been corrected\nTranslations have been adapted",
+        "de": "Die Handhabung der Konfiguration wurde korrigiert\nÜbersetzungen wurden angepasst",
+        "ru": "Обработка конфигурации была исправлена\nПереводы были адаптированы",
+        "pt": "O tratamento da configuração foi corrigido\nAs traduções foram adaptadas",
+        "nl": "De configuratie is gecorrigeerd\nVertalingen zijn aangepast",
+        "fr": "La manipulation de la configuration a été corrigée\nLes traductions ont été adaptées",
+        "it": "La gestione della configurazione è stata corretta\nLe traduzioni sono state adattate",
+        "es": "Se ha corregido el manejo de la configuración\nSe han adaptado las traducciones",
+        "pl": "Obsługa konfiguracji została poprawiona\nTłumaczenia zostały dostosowane",
+        "uk": "Обробка конфігурації було виправлено\nПереклади адаптовані",
+        "zh-cn": "配置的处理已纠正\n翻译已改编"
+      },
       "0.1.0": {
         "en": "initial release",
         "de": "erstausstrahlung",
@@ -83,11 +96,11 @@
     ]
   },
   "native": {
-        "clientMode": false,
-        "srvNetwork": "0.0.0.0",
-        "srvPort": 1881,
-        "brokerIp": "127.0.0.1",
-        "brokerPort": 1883
+    "clientMode": false,
+    "srvNetwork": "0.0.0.0",
+    "srvPort": 1881,
+    "brokerIp": "127.0.0.1",
+    "brokerPort": 1883
   },
   "objects": [],
   "instanceObjects": [
