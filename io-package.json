@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hoymiles-ms",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "news": {
+      "0.1.2": {
+        "en": "Warnings raised from slave systems have been removed\nDependencies have been updated",
+        "de": "Warnungen aus Slave-Systemen wurden entfernt\nAbhängigkeiten wurden aktualisiert",
+        "ru": "Предупреждения, полученные из рабских систем, были удалены\nЗависимости были обновлены",
+        "pt": "Avisos levantados dos sistemas de escravos foram removidos\nAs dependências foram atualizadas",
+        "nl": "Waarschuwingen uit slavensystemen zijn verwijderd\nAfhankelijkheden zijn bijgewerkt",
+        "fr": "Les avertissements tirés des systèmes d'esclavage ont été supprimés\nLes dépendances ont été actualisées",
+        "it": "I avvertimenti sollevati dai sistemi slave sono stati rimossi\nLe dipendenze sono state aggiornate",
+        "es": "Se han eliminado las advertencias de los sistemas de esclavos\nSe han actualizado las dependencias",
+        "pl": "Ostrzeżenia z systemów niewolniczych zostały usunięte\nZaktualizowano zależności",
+        "uk": "Попередження, отримані від рабських систем, були видалені\nЗалежність було оновлено",
+        "zh-cn": "从奴隶系统发出的警告已经消除\n依赖关系已更新"
+      },
       "0.1.1": {
         "en": "Handling of configuration has been corrected\nTranslations have been adapted",
         "de": "Die Handhabung der Konfiguration wurde korrigiert\nÜbersetzungen wurden angepasst",
