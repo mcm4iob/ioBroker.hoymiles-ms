@@ -66,7 +66,7 @@ Controlling the device (setting the output power) is not yet implemented.
 
 **************************************************************************************************************
 
-**If you like it, please consider a donation:**
+**If you like this adapter, please consider a donation:**
   
 [![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://paypal.me/mcm1957atIoBroker)
 
