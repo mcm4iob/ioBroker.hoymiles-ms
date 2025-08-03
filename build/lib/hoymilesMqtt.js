@@ -73,7 +73,7 @@ class HoymilesMqtt {
         this.log.debug(`[hoymilesMqtt] updateing state ${stateId} from ${event.topic} using value ${value}`);
         await this.adapter.setState(stateId, value, true);
       } else {
-        this.log.warn(
+        this.log.debug(
           `[hoymilesMqtt] updateing state ${stateId} from ${event.topic} failed, value is undefined`
         );
       }
