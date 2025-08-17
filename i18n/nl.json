@@ -142,5 +142,11 @@
     "device.rssi_desc": "WLAN -verbindingskwaliteit (RSSI)",
     "device.rssi_name": "Wlan rssi",
     "device.soc_desc": "SOC of Device Battery",
-    "device.soc_name": "SOC"
+    "device.soc_name": "SOC",
+    "ems_mode_desc": "Configuratiemap voor EMS -gegevens",
+    "ems_mode_name": "EMS -configuratie",
+    "ems_mode.command_desc": "Gebruik algemeen voor automatische modus of mqtt_ctrl voor de MQTT -controller -modus",
+    "ems_mode.command_name": "EMS -configuratieparamater",
+    "power_ctrl.set_desc": "Vermogenswaarde die moet worden gebruikt voor uitvoerregeling.",
+    "power_ctrl.set_name": "Krachtwaarde"
 }

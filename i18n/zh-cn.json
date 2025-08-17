@@ -142,5 +142,11 @@
     "device.rssi_desc": "WLAN连接质量（RSSI）",
     "device.rssi_name": "wlan rssi",
     "device.soc_desc": "设备电池的SOC",
-    "device.soc_name": "Soc"
+    "device.soc_name": "Soc",
+    "ems_mode_desc": "EMS数据的配置文件夹",
+    "ems_mode_name": "EMS配置",
+    "ems_mode.command_desc": "使用General进行自动模式或MQTT_CTRL用于MQTT控制器模式",
+    "ems_mode.command_name": "EMS配置Paramater",
+    "power_ctrl.set_desc": "用于输出控制的功率值。",
+    "power_ctrl.set_name": "功率值"
 }

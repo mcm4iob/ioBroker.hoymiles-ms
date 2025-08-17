@@ -142,5 +142,11 @@
     "device.rssi_desc": "Qualité de connexion WLAN (RSSI)",
     "device.rssi_name": "Wlan RSSI",
     "device.soc_desc": "Soc de batterie de l'appareil",
-    "device.soc_name": "Soc"
+    "device.soc_name": "Soc",
+    "ems_mode_desc": "Dossier de configuration pour les données EMS",
+    "ems_mode_name": "Configuration EMS",
+    "ems_mode.command_desc": "Utilisez Général pour le mode automatique ou MQTT_CTRL pour le mode contrôleur MQTT",
+    "ems_mode.command_name": "Paramater de configuration EMS",
+    "power_ctrl.set_desc": "Valeur de puissance à utiliser pour le contrôle de sortie.",
+    "power_ctrl.set_name": "Valeur de puissance"
 }

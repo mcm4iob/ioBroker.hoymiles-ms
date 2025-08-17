@@ -142,5 +142,11 @@
     "device.rssi_desc": "Якість підключення WLAN (RSSI)",
     "device.rssi_name": "WLAN RSSI",
     "device.soc_desc": "Soc від акумулятора пристрою",
-    "device.soc_name": "Соц"
+    "device.soc_name": "Соц",
+    "ems_mode_desc": "Папка конфігурації для даних EMS",
+    "ems_mode_name": "Конфігурація EMS",
+    "ems_mode.command_desc": "Використовуйте General для автоматичного режиму або MQTT_CTRL для режиму контролера MQTT",
+    "ems_mode.command_name": "Параматер конфігурації EMS",
+    "power_ctrl.set_desc": "Значення потужності, яке буде використовуватися для контролю виходу.",
+    "power_ctrl.set_name": "Значення потужності"
 }
