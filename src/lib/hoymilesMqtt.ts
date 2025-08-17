@@ -1,6 +1,6 @@
 import { stateConfig, initState, initStates, filterDevId, handleOnlineStatus } from './states';
 
-import type { MqttMessageEvent } from './mqtt-events';
+import type { MqttMessageEvent, MqttSubscribeEvent } from './mqtt-events';
 
 /**
  * HoymilesMqtt - class to handle hoymiles mqtt topics within ioBroker
@@ -21,6 +21,9 @@ export class HoymilesMqtt {
         this.log.debug(`[hoymilesMqtt] initializing`);
     }
 
+    /**
+     *
+     */
     public async onMqttMessage(event: MqttMessageEvent): Promise<void> {
         this.log.debug(`[hoymilesMqtt] process message ${event.topic}: ${event.payload.toString()}`);
 
@@ -71,5 +74,37 @@ export class HoymilesMqtt {
                 );
             }
         }
+    }
+
+    public async onMqttSubscribe(event: MqttSubscribeEvent): Promise<void> {
+        this.log.debug(`[hoymilesMqtt] process subscription ${event.topic}`);
+
+        if (!event.topic) {
+            this.log.debug(`[hoymilesMqtt] ignoring empty topic`);
+            return;
+        }
+
+        const topicDetails = event.topic.split('/');
+        if (topicDetails.length < 2) {
+            this.log.debug(`[hoymilesMqtt] ignoring invalid topic ${event.topic}`);
+            return;
+        }
+        const deviceId = topicDetails[2];
+        topicDetails[2] = '<dev_id>';
+        const topic = topicDetails.join('/');
+
+        await initStates(this.adapter, deviceId);
+        await handleOnlineStatus(this.adapter, deviceId);
+
+        const stateKey = event.topic.split('/').slice(3).join('.');
+        if (!stateConfig[stateKey]) {
+            this.adapter.log.warn(
+                `[hoymilesMqtt] ignoring subscription to unknown key ${stateKey} / topic ${event.topic}`,
+            );
+            return;
+        }
+        this.adapter.log.info(`[hoymilesMqtt] device ${deviceId} subscribing to topic ${event.topic}`);
+        const stateId = `${filterDevId(deviceId)}.${stateKey}`;
+        await initState(this.adapter, stateId);
     }
 }

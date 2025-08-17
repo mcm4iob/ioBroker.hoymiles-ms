@@ -35,6 +35,9 @@ class HoymilesMqtt {
     this.log = adapter.log;
     this.log.debug(`[hoymilesMqtt] initializing`);
   }
+  /**
+   *
+   */
   async onMqttMessage(event) {
     var _a;
     this.log.debug(`[hoymilesMqtt] process message ${event.topic}: ${event.payload.toString()}`);
@@ -79,6 +82,33 @@ class HoymilesMqtt {
         );
       }
     }
+  }
+  async onMqttSubscribe(event) {
+    this.log.debug(`[hoymilesMqtt] process subscription ${event.topic}`);
+    if (!event.topic) {
+      this.log.debug(`[hoymilesMqtt] ignoring empty topic`);
+      return;
+    }
+    const topicDetails = event.topic.split("/");
+    if (topicDetails.length < 2) {
+      this.log.debug(`[hoymilesMqtt] ignoring invalid topic ${event.topic}`);
+      return;
+    }
+    const deviceId = topicDetails[2];
+    topicDetails[2] = "<dev_id>";
+    const topic = topicDetails.join("/");
+    await (0, import_states.initStates)(this.adapter, deviceId);
+    await (0, import_states.handleOnlineStatus)(this.adapter, deviceId);
+    const stateKey = event.topic.split("/").slice(3).join(".");
+    if (!import_states.stateConfig[stateKey]) {
+      this.adapter.log.warn(
+        `[hoymilesMqtt] ignoring subscription to unknown key ${stateKey} / topic ${event.topic}`
+      );
+      return;
+    }
+    this.adapter.log.info(`[hoymilesMqtt] device ${deviceId} subscribing to topic ${event.topic}`);
+    const stateId = `${(0, import_states.filterDevId)(deviceId)}.${stateKey}`;
+    await (0, import_states.initState)(this.adapter, stateId);
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

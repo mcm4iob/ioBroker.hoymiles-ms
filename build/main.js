@@ -74,11 +74,13 @@ class HoymilesMs extends utils.Adapter {
     }
   }
   async mqttEventCallback(name, event) {
-    var _a;
+    var _a, _b;
     if (name === "connect") {
       this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
     } else if (name === "message") {
       await ((_a = this.hoymilesMqtt) == null ? void 0 : _a.onMqttMessage(event));
+    } else if (name === "subscribe") {
+      await ((_b = this.hoymilesMqtt) == null ? void 0 : _b.onMqttSubscribe(event));
     }
   }
   /**

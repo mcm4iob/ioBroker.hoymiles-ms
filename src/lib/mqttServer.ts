@@ -6,7 +6,7 @@ import type { MqttClient, Packet } from 'mqtt-connection';
 // eslint-disable-next-line no-duplicate-imports
 import mqttCon from 'mqtt-connection';
 
-import type { MqttConnectEvent, MqttMessageEvent, MqttEventCallback } from './mqtt-events';
+import type { MqttConnectEvent, MqttMessageEvent, MqttSubscribeEvent, MqttEventCallback } from './mqtt-events';
 
 type MqttClient = typeof MqttClient;
 type Packet = typeof Packet;
@@ -16,7 +16,7 @@ export interface MqttServerOptions {
     network?: string;
 }
 
-export class MqttServer /*extends EventEmitter*/ {
+export class MqttServer {
     private server: NetServer;
     private port: number;
     private network: string;
@@ -41,12 +41,11 @@ export class MqttServer /*extends EventEmitter*/ {
         this.log.silly(`[MQTT-Server] client connect from  ${remoteAddress}`);
 
         const client: MqttClient = mqttCon(stream);
-        let clientId: any;
+        // let clientId: any;
 
         client.on('connect', async (packet: Packet) => {
-            clientId = packet.clientId;
             this.log.silly(
-                `[MQTT-Server] (${clientId}) client connected with id ${packet.clientId} connected from ${remoteAddress}`,
+                `[MQTT-Server] (${client.id}) client connected with id ${packet.clientId} connected from ${remoteAddress}`,
             );
 
             // Acknowledge connection
@@ -62,7 +61,7 @@ export class MqttServer /*extends EventEmitter*/ {
 
         client.on('publish', async (packet: Packet) => {
             this.log.silly(
-                `[MQTT-Server] (${clientId}) received message on topic "${packet.topic}": ${packet.payload?.toString()}`,
+                `[MQTT-Server] (${client.id}) received message from client ${packet.clientId} on topic "${packet.topic}": ${packet.payload?.toString()}`,
             );
 
             if (packet.qos && packet.qos > 0) {
@@ -82,9 +81,18 @@ export class MqttServer /*extends EventEmitter*/ {
         });
 
         client.on('subscribe', (packet: Packet) => {
-            packet.subscriptions.forEach((sub: any) => {
-                this.log.silly(`[MQTT-Server] (${clientId}) client ${packet.clientId} subscribed to "${sub.topic}"`);
+            packet.subscriptions.forEach(async (sub: any) => {
+                this.log.silly(`[MQTT-Server] (${client.id}) client ${packet.clientId} subscribed to "${sub.topic}"`);
+                await this.mqttEventCallback('subscribe', {
+                    clientId: packet.clientId || '',
+                    ip: remoteAddress,
+                    topic: sub.topic,
+                    qos: packet.qos ?? 0,
+                    retain: packet.retain ?? false,
+                    packet,
+                } as MqttSubscribeEvent);
             });
+
             // Grant all requested QoS levels
             client.suback({
                 granted: packet.subscriptions.map((sub: any) => sub.qos ?? 0),
@@ -94,27 +102,27 @@ export class MqttServer /*extends EventEmitter*/ {
 
         client.on('unsubscribe', (unsubscriptions: any[]) => {
             unsubscriptions.forEach(topic => {
-                this.log.silly(`[MQTT-Server] (${clientId}) client unsubscribed from "${topic}"`);
+                this.log.silly(`[MQTT-Server] (${client.id}) client unsubscribed from "${topic}"`);
             });
             client.unsuback({ messageId: client._lastUnsubscribeId || 1 });
         });
 
         client.on('pingreq', () => {
-            this.log.silly(`[MQTT-Server] (${clientId}) client ping`);
+            this.log.silly(`[MQTT-Server] (${client.id}) client ping`);
             client.pingresp();
         });
 
         client.on('disconnect', () => {
-            this.log.silly(`[MQTT-Server] (${clientId}) client disconnect from  ${remoteAddress}`);
+            this.log.silly(`[MQTT-Server] (${client.id}) client disconnect from  ${remoteAddress}`);
             client.stream.end();
         });
 
         client.on('close', () => {
-            this.log.silly(`[MQTT-Server] (${clientId}) client ${remoteAddress} closed connection`);
+            this.log.silly(`[MQTT-Server] (${client.id}) client ${remoteAddress} closed connection`);
         });
 
         client.on('error', (err: any) => {
-            this.log.error(`[MQTT-Server] (${clientId}) client error  ${err}`);
+            this.log.error(`[MQTT-Server] (${client.id}) client error  ${err}`);
             client.stream.end();
         });
     }

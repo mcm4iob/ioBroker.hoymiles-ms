@@ -53,11 +53,9 @@ class MqttServer {
     const remoteAddress = stream.remoteAddress || "unknown";
     this.log.silly(`[MQTT-Server] client connect from  ${remoteAddress}`);
     const client = (0, import_mqtt_connection.default)(stream);
-    let clientId;
     client.on("connect", async (packet) => {
-      clientId = packet.clientId;
       this.log.silly(
-        `[MQTT-Server] (${clientId}) client connected with id ${packet.clientId} connected from ${remoteAddress}`
+        `[MQTT-Server] (${client.id}) client connected with id ${packet.clientId} connected from ${remoteAddress}`
       );
       client.connack({ returnCode: 0 });
       await this.mqttEventCallback("connect", {
@@ -69,7 +67,7 @@ class MqttServer {
     client.on("publish", async (packet) => {
       var _a, _b, _c;
       this.log.silly(
-        `[MQTT-Server] (${clientId}) received message on topic "${packet.topic}": ${(_a = packet.payload) == null ? void 0 : _a.toString()}`
+        `[MQTT-Server] (${client.id}) received message from client ${packet.clientId} on topic "${packet.topic}": ${(_a = packet.payload) == null ? void 0 : _a.toString()}`
       );
       if (packet.qos && packet.qos > 0) {
         client.puback({ messageId: packet.messageId });
@@ -85,8 +83,17 @@ class MqttServer {
       });
     });
     client.on("subscribe", (packet) => {
-      packet.subscriptions.forEach((sub) => {
-        this.log.silly(`[MQTT-Server] (${clientId}) client ${packet.clientId} subscribed to "${sub.topic}"`);
+      packet.subscriptions.forEach(async (sub) => {
+        var _a, _b;
+        this.log.silly(`[MQTT-Server] (${client.id}) client ${packet.clientId} subscribed to "${sub.topic}"`);
+        await this.mqttEventCallback("subscribe", {
+          clientId: packet.clientId || "",
+          ip: remoteAddress,
+          topic: sub.topic,
+          qos: (_a = packet.qos) != null ? _a : 0,
+          retain: (_b = packet.retain) != null ? _b : false,
+          packet
+        });
       });
       client.suback({
         granted: packet.subscriptions.map((sub) => {
@@ -98,23 +105,23 @@ class MqttServer {
     });
     client.on("unsubscribe", (unsubscriptions) => {
       unsubscriptions.forEach((topic) => {
-        this.log.silly(`[MQTT-Server] (${clientId}) client unsubscribed from "${topic}"`);
+        this.log.silly(`[MQTT-Server] (${client.id}) client unsubscribed from "${topic}"`);
       });
       client.unsuback({ messageId: client._lastUnsubscribeId || 1 });
     });
     client.on("pingreq", () => {
-      this.log.silly(`[MQTT-Server] (${clientId}) client ping`);
+      this.log.silly(`[MQTT-Server] (${client.id}) client ping`);
       client.pingresp();
     });
     client.on("disconnect", () => {
-      this.log.silly(`[MQTT-Server] (${clientId}) client disconnect from  ${remoteAddress}`);
+      this.log.silly(`[MQTT-Server] (${client.id}) client disconnect from  ${remoteAddress}`);
       client.stream.end();
     });
     client.on("close", () => {
-      this.log.silly(`[MQTT-Server] (${clientId}) client ${remoteAddress} closed connection`);
+      this.log.silly(`[MQTT-Server] (${client.id}) client ${remoteAddress} closed connection`);
     });
     client.on("error", (err) => {
-      this.log.error(`[MQTT-Server] (${clientId}) client error  ${err}`);
+      this.log.error(`[MQTT-Server] (${client.id}) client error  ${err}`);
       client.stream.end();
     });
   }

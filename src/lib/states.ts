@@ -62,6 +62,12 @@ const channelConfig: ChannelConfig = {
         },
     },
 
+    ems_mode: {
+        common: {
+            name: '',
+        },
+    },
+
     power_ctrl: {
         common: {
             name: '',
@@ -756,6 +762,18 @@ export const stateConfig: StateConfig = {
         },
     },
 
+    'ems_mode.command': {
+        preInit: false,
+        keepValue: false,
+        common: {
+            name: '',
+            type: 'boolean',
+            role: 'state',
+            read: true,
+            write: true,
+        },
+    },
+
     'info.online': {
         preInit: true,
         keepValue: false,
@@ -814,6 +832,18 @@ export const stateConfig: StateConfig = {
         },
     },
 
+    'power_ctrl.set': {
+        preInit: false,
+        keepValue: false,
+        common: {
+            name: '',
+            type: 'number',
+            role: 'level.power',
+            read: true,
+            write: true,
+            unit: 'W',
+        },
+    },
     'power_ctrl.step': {
         mqtt: {
             mqtt_publish: `homeassistant/number/<dev_id>/power_ctrl/config`,

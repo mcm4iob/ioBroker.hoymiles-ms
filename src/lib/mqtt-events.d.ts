@@ -50,5 +50,35 @@ export interface MqttMessageEvent {
     packet: Packet;
 }
 
-export type MqttEvent = MqttConnectEvent | MqttMessageEvent;
+/**
+ *
+ */
+export interface MqttSubscribeEvent {
+    /**
+     *
+     */
+    clientId: string;
+    /**
+     *
+     */
+    ip: string;
+    /**
+     *
+     */
+    topic: string;
+    /**
+     *
+     */
+    qos: number;
+    /**
+     *
+     */
+    retain: boolean;
+    /**
+     *
+     */
+    packet: Packet;
+}
+
+export type MqttEvent = MqttConnectEvent | MqttMessageEvent | MqttSubscribeEvent;
 export type MqttEventCallback = (name: string, event: MqttEvent) => Promise<void>;

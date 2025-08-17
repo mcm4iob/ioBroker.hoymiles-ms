@@ -59,6 +59,11 @@ const channelConfig = {
       name: ""
     }
   },
+  ems_mode: {
+    common: {
+      name: ""
+    }
+  },
   power_ctrl: {
     common: {
       name: ""
@@ -778,6 +783,17 @@ const stateConfig = {
       write: false
     }
   },
+  "ems_mode.command": {
+    preInit: false,
+    keepValue: false,
+    common: {
+      name: "",
+      type: "boolean",
+      role: "state",
+      read: true,
+      write: true
+    }
+  },
   "info.online": {
     preInit: true,
     keepValue: false,
@@ -829,6 +845,18 @@ const stateConfig = {
       role: "value.power",
       read: true,
       write: false,
+      unit: "W"
+    }
+  },
+  "power_ctrl.set": {
+    preInit: false,
+    keepValue: false,
+    common: {
+      name: "",
+      type: "number",
+      role: "level.power",
+      read: true,
+      write: true,
       unit: "W"
     }
   },

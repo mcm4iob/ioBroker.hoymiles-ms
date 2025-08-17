@@ -80,6 +80,8 @@ class HoymilesMs extends utils.Adapter {
             this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
         } else if (name === 'message') {
             await this.hoymilesMqtt?.onMqttMessage(event as MqttMessageEvent);
+        } else if (name === 'subscribe') {
+            await this.hoymilesMqtt?.onMqttSubscribe(event as MqttMessageEvent);
         }
     }
 
