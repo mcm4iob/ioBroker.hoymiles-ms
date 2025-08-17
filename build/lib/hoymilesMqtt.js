@@ -71,6 +71,7 @@ class HoymilesMqtt {
       }
       if (value !== void 0) {
         this.log.debug(`[hoymilesMqtt] updateing state ${stateId} from ${event.topic} using value ${value}`);
+        await (0, import_states.initState)(this.adapter, stateId);
         await this.adapter.setState(stateId, value, true);
       } else {
         this.log.debug(

@@ -31,7 +31,9 @@ __export(states_exports, {
   checkOnlineStatus: () => checkOnlineStatus,
   filterDevId: () => filterDevId,
   handleOnlineStatus: () => handleOnlineStatus,
+  initState: () => initState,
   initStates: () => initStates,
+  resetStates: () => resetStates,
   stateConfig: () => stateConfig
 });
 module.exports = __toCommonJS(states_exports);
@@ -86,6 +88,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).bat_i
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -100,6 +104,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).bat_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -114,6 +120,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).bat_temp
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -128,6 +136,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).bat_v
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -142,6 +152,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).bat_sts
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "string",
@@ -158,6 +170,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.ein;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -175,6 +189,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.eout;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -192,6 +208,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.etin;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -209,6 +227,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.etout;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -226,6 +246,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.i;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -243,6 +265,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.f;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -260,6 +284,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.p;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -277,6 +303,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.q;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -294,6 +322,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_off")[0]) == null ? void 0 : _b.v;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -311,6 +341,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.ein;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -328,6 +360,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.eout;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -345,6 +379,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.etin;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -362,6 +398,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.etout;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -379,6 +417,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.i;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -396,6 +436,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.f;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -413,6 +455,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.p;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -430,6 +474,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.q;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -447,6 +493,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "grid_on")[0]) == null ? void 0 : _b.v;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -464,6 +512,8 @@ const stateConfig = {
         return JSON.stringify((_a = JSON.parse(value).device) == null ? void 0 : _a.identifiers);
       }
     },
+    preInit: false,
+    keepValue: true,
     common: {
       name: "",
       type: "array",
@@ -480,6 +530,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.ein;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -497,6 +549,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.eout;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -514,6 +568,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.etin;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -531,6 +587,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.etout;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -548,6 +606,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.i;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -565,6 +625,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.p;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -582,6 +644,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.q;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -599,6 +663,8 @@ const stateConfig = {
         return (_b = (_a = JSON.parse(value).grid) == null ? void 0 : _a.filter((obj) => obj.type === "inv")[0]) == null ? void 0 : _b.v;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -616,6 +682,8 @@ const stateConfig = {
         return (_a = JSON.parse(value).device) == null ? void 0 : _a.manufacturer;
       }
     },
+    preInit: true,
+    keepValue: true,
     common: {
       name: "",
       type: "string",
@@ -632,6 +700,8 @@ const stateConfig = {
         return (_a = JSON.parse(value).device) == null ? void 0 : _a.model;
       }
     },
+    preInit: true,
+    keepValue: true,
     common: {
       name: "",
       type: "string",
@@ -648,6 +718,8 @@ const stateConfig = {
         return (_a = JSON.parse(value).device) == null ? void 0 : _a.name;
       }
     },
+    preInit: true,
+    keepValue: true,
     common: {
       name: "",
       type: "string",
@@ -661,6 +733,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).rssi
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -675,6 +749,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).soc
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -692,6 +768,8 @@ const stateConfig = {
         return (_a = JSON.parse(value).device) == null ? void 0 : _a.sw_version;
       }
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "string",
@@ -701,6 +779,8 @@ const stateConfig = {
     }
   },
   "info.online": {
+    preInit: true,
+    keepValue: false,
     common: {
       name: "",
       type: "boolean",
@@ -710,6 +790,8 @@ const stateConfig = {
     }
   },
   "info.timestamp": {
+    preInit: true,
+    keepValue: true,
     common: {
       name: "",
       type: "number",
@@ -723,6 +805,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/number/<dev_id>/power_ctrl/config`,
       mqtt_publish_funct: (value) => JSON.parse(value).min
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -737,6 +821,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/number/<dev_id>/power_ctrl/config`,
       mqtt_publish_funct: (value) => JSON.parse(value).max
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -751,6 +837,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/number/<dev_id>/power_ctrl/config`,
       mqtt_publish_funct: (value) => JSON.parse(value).step
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -765,6 +853,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).bat_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -779,6 +869,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).bat_sts
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "string",
@@ -792,6 +884,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).grid_on_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -806,6 +900,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).grid_off_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -820,6 +916,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).soc
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -834,6 +932,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_bat_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -848,6 +948,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_grid_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -862,6 +964,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_load_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -876,6 +980,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_plug_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -890,6 +996,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_pv_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -904,6 +1012,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_soc
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -918,6 +1028,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sys_sp_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -932,6 +1044,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).bat_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -946,6 +1060,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).chg_e
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -960,6 +1076,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).dchg_e
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -974,6 +1092,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).grid_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -988,6 +1108,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).ems_mode
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "string",
@@ -1001,6 +1123,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).plug_in_e
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -1015,6 +1139,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).plug_out_e
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -1029,6 +1155,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).pv_e
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -1043,6 +1171,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).pv_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -1057,6 +1187,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).soc
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -1071,6 +1203,8 @@ const stateConfig = {
       mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
       mqtt_publish_funct: (value) => JSON.parse(value).sp_p
     },
+    preInit: false,
+    keepValue: false,
     common: {
       name: "",
       type: "number",
@@ -1082,6 +1216,7 @@ const stateConfig = {
   }
 };
 const devIdCache = {};
+const stateIdCache = {};
 function filterDevId(devId) {
   return devId.replace(/[^a-zA-Z0-9-]/g, "_");
 }
@@ -1147,22 +1282,54 @@ async function initStates(adapter, dev_id) {
     );
   }
   for (const stateKey in stateConfig) {
-    const common = stateConfig[stateKey].common;
-    common.name = utils.I18n.getTranslatedObject(`${stateKey}_name`);
-    common.desc = utils.I18n.getTranslatedObject(`${stateKey}_desc`);
-    await adapter.extendObject(
-      `${deviceId}.${stateKey}`,
-      {
-        type: "state",
-        common,
-        native: {}
-      },
-      { preserve: { common: ["name"] } }
-    );
+    if (stateConfig[stateKey].preInit) {
+      await initState(adapter, `${deviceId}.${stateKey}`);
+    }
   }
   devIdCache[deviceId].ready = true;
   devIdCache[deviceId].initializing = false;
   adapter.log.debug(`initialization of states for device ${dev_id} completed`);
+}
+async function resetStates(adapter) {
+  adapter.log.debug(`reset of states in progress...`);
+  const states = await adapter.getStatesAsync("*");
+  for (const id in states) {
+    const key = id.split(".").slice(3).join(".");
+    if (!(key && stateConfig[key])) {
+      adapter.log.warn(`state id ${id} detected - key ${key} is no known state key`);
+      continue;
+    }
+    if (stateConfig[key].keepValue) {
+      continue;
+    }
+    adapter.log.debug(`resetting id ${id}`);
+    await adapter.setState(id, null, true);
+  }
+}
+async function initState(adapter, stateId) {
+  var _a;
+  if ((_a = stateIdCache[stateId]) == null ? void 0 : _a.initialized) {
+    return;
+  }
+  const stateKey = stateId.split(".").slice(1).join(".");
+  if (!(stateKey && stateConfig[stateKey])) {
+    adapter.log.warn(`creation of state id "${stateId}" requested but key "${stateKey}" is no known state key`);
+    return;
+  }
+  adapter.log.debug(`creation of state "${stateId}" in progress`);
+  const common = stateConfig[stateKey].common;
+  common.name = utils.I18n.getTranslatedObject(`${stateKey}_name`);
+  common.desc = utils.I18n.getTranslatedObject(`${stateKey}_desc`);
+  await adapter.extendObject(
+    `${stateId}`,
+    {
+      type: "state",
+      common,
+      native: {}
+    },
+    { preserve: { common: ["name"] } }
+  );
+  stateIdCache[stateId] = { initialized: true };
 }
 async function handleOnlineStatus(adapter, dev_id) {
   const deviceId = filterDevId(dev_id);
@@ -1202,7 +1369,9 @@ async function checkOnlineStatus(adapter) {
   checkOnlineStatus,
   filterDevId,
   handleOnlineStatus,
+  initState,
   initStates,
+  resetStates,
   stateConfig
 });
 //# sourceMappingURL=states.js.map

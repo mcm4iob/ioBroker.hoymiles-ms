@@ -1,4 +1,4 @@
-import { stateConfig, initStates, filterDevId, handleOnlineStatus } from './states';
+import { stateConfig, initState, initStates, filterDevId, handleOnlineStatus } from './states';
 
 import type { MqttMessageEvent } from './mqtt-events';
 
@@ -63,6 +63,7 @@ export class HoymilesMqtt {
 
             if (value !== undefined) {
                 this.log.debug(`[hoymilesMqtt] updateing state ${stateId} from ${event.topic} using value ${value}`);
+                await initState(this.adapter, stateId);
                 await this.adapter.setState(stateId, value, true);
             } else {
                 this.log.debug(

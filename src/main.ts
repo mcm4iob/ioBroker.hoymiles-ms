@@ -9,7 +9,7 @@ import * as utils from '@iobroker/adapter-core';
 import type { MqttMessageEvent, MqttEvent } from './lib/mqtt-events';
 import { MqttServer } from './lib/mqttServer';
 import { HoymilesMqtt } from './lib/hoymilesMqtt';
-import { checkOnlineStatus } from './lib/states';
+import { checkOnlineStatus, resetStates } from './lib/states';
 
 class HoymilesMs extends utils.Adapter {
     private mqtt: any;
@@ -35,6 +35,9 @@ class HoymilesMs extends utils.Adapter {
         await this.setState('info.connection', false, true);
 
         await utils.I18n.init(`${__dirname}/..`, this);
+
+        // reset existing states
+        await resetStates(this);
 
         // init hoymileMqtt
         this.hoymilesMqtt = new HoymilesMqtt(this);

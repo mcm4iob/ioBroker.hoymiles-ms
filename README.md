@@ -76,6 +76,10 @@ Controlling the device (setting the output power) is not yet implemented.
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (mcm1957) State are created dynamically now. So no states should be created if a system does not provide data for it (i.e slave micro storage):
+* (mcm1957) Dependencies have been updated
+
 ### 0.1.2 (2025-08-03)
 * (mcm1957) Warnings raised from slave systems have been removed
 * (mcm1957) Dependencies have been updated

@@ -44,6 +44,7 @@ class HoymilesMs extends utils.Adapter {
   async onReady() {
     await this.setState("info.connection", false, true);
     await utils.I18n.init(`${__dirname}/..`, this);
+    await (0, import_states.resetStates)(this);
     this.hoymilesMqtt = new import_hoymilesMqtt.HoymilesMqtt(this);
     this.mqtt = new import_mqttServer.MqttServer(
       this,
