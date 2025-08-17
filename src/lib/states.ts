@@ -1107,6 +1107,9 @@ export function filterDevId(devId: string): string {
     return devId.replace(/[^a-zA-Z0-9-]/g, '_');
 }
 
+/**
+ *
+ */
 export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Promise<void> {
     const deviceId = filterDevId(dev_id);
 
@@ -1200,6 +1203,9 @@ export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Pro
     adapter.log.debug(`initialization of states for device ${dev_id} completed`);
 }
 
+/**
+ *
+ */
 export async function handleOnlineStatus(adapter: ioBroker.Adapter, dev_id: string): Promise<void> {
     const deviceId = filterDevId(dev_id);
     const ts = Date.now();
@@ -1221,6 +1227,9 @@ export async function handleOnlineStatus(adapter: ioBroker.Adapter, dev_id: stri
     }
 }
 
+/**
+ *
+ */
 export async function checkOnlineStatus(adapter: ioBroker.Adapter): Promise<void> {
     const now = Date.now();
     let connected = false;
