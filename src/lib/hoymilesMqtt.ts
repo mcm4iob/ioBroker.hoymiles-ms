@@ -90,8 +90,8 @@ export class HoymilesMqtt {
             return;
         }
         const deviceId = topicDetails[2];
-        topicDetails[2] = '<dev_id>';
-        const topic = topicDetails.join('/');
+        //topicDetails[2] = '<dev_id>';
+        //const topic = topicDetails.join('/');
 
         await initStates(this.adapter, deviceId);
         await handleOnlineStatus(this.adapter, deviceId);
@@ -105,6 +105,7 @@ export class HoymilesMqtt {
         }
         this.adapter.log.info(`[hoymilesMqtt] device ${deviceId} subscribing to topic ${event.topic}`);
         const stateId = `${filterDevId(deviceId)}.${stateKey}`;
-        await initState(this.adapter, stateId);
+        await initState(this.adapter, stateId, event.topic);
+        await this.adapter.subscribeStatesAsync(stateId);
     }
 }

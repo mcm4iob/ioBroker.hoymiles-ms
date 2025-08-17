@@ -90,11 +90,10 @@ class HoymilesMs extends utils.Adapter {
    * @param state state details
    */
   onStateChange(id, state) {
-    if (state) {
-      this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-    } else {
-      this.log.info(`state ${id} deleted`);
+    if (!state || state.ack) {
+      return;
     }
+    this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
   }
 }
 if (require.main !== module) {

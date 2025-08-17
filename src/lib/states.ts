@@ -767,8 +767,10 @@ export const stateConfig: StateConfig = {
         keepValue: false,
         common: {
             name: '',
-            type: 'boolean',
+            type: 'string',
             role: 'state',
+            states: ['general', 'mqtt_control'],
+            def: 'general',
             read: true,
             write: true,
         },
@@ -1265,6 +1267,7 @@ const devIdCache: DevIdCache = {};
 type StateIdCache = {
     [key: string]: {
         initialized: boolean;
+        topic: string | null;
     };
 };
 
@@ -1357,7 +1360,7 @@ export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Pro
 
     for (const stateKey in stateConfig) {
         if (stateConfig[stateKey].preInit) {
-            await initState( adapter, `${deviceId}.${stateKey}`)
+            await initState(adapter, `${deviceId}.${stateKey}`);
         }
         // const common = stateConfig[stateKey].common;
         // common.name = utils.I18n.getTranslatedObject(`${stateKey}_name`);
@@ -1402,7 +1405,11 @@ export async function resetStates(adapter: ioBroker.Adapter): Promise<void> {
 /**
  *
  */
-export async function initState(adapter: ioBroker.Adapter, stateId: string): Promise<void> {
+export async function initState(
+    adapter: ioBroker.Adapter,
+    stateId: string,
+    topic: string | null = null,
+): Promise<void> {
     if (stateIdCache[stateId]?.initialized) {
         return;
     }
@@ -1426,7 +1433,7 @@ export async function initState(adapter: ioBroker.Adapter, stateId: string): Pro
         { preserve: { common: ['name'] } },
     );
 
-    stateIdCache[stateId] = { initialized: true };
+    stateIdCache[stateId] = { initialized: true, topic: topic };
 }
 
 /**

@@ -92,13 +92,10 @@ class HoymilesMs extends utils.Adapter {
      * @param state state details
      */
     private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
-        if (state) {
-            // The state was changed
-            this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-        } else {
-            // The state was deleted
-            this.log.info(`state ${id} deleted`);
+        if (!state || state.ack) {
+            return;
         }
+        this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
     }
 }
 

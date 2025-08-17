@@ -788,8 +788,10 @@ const stateConfig = {
     keepValue: false,
     common: {
       name: "",
-      type: "boolean",
+      type: "string",
       role: "state",
+      states: ["general", "mqtt_control"],
+      def: "general",
       read: true,
       write: true
     }
@@ -1334,7 +1336,7 @@ async function resetStates(adapter) {
     await adapter.setState(id, null, true);
   }
 }
-async function initState(adapter, stateId) {
+async function initState(adapter, stateId, topic = null) {
   var _a;
   if ((_a = stateIdCache[stateId]) == null ? void 0 : _a.initialized) {
     return;
@@ -1357,7 +1359,7 @@ async function initState(adapter, stateId) {
     },
     { preserve: { common: ["name"] } }
   );
-  stateIdCache[stateId] = { initialized: true };
+  stateIdCache[stateId] = { initialized: true, topic };
 }
 async function handleOnlineStatus(adapter, dev_id) {
   const deviceId = filterDevId(dev_id);

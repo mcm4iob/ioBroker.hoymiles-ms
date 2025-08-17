@@ -95,8 +95,6 @@ class HoymilesMqtt {
       return;
     }
     const deviceId = topicDetails[2];
-    topicDetails[2] = "<dev_id>";
-    const topic = topicDetails.join("/");
     await (0, import_states.initStates)(this.adapter, deviceId);
     await (0, import_states.handleOnlineStatus)(this.adapter, deviceId);
     const stateKey = event.topic.split("/").slice(3).join(".");
@@ -108,7 +106,8 @@ class HoymilesMqtt {
     }
     this.adapter.log.info(`[hoymilesMqtt] device ${deviceId} subscribing to topic ${event.topic}`);
     const stateId = `${(0, import_states.filterDevId)(deviceId)}.${stateKey}`;
-    await (0, import_states.initState)(this.adapter, stateId);
+    await (0, import_states.initState)(this.adapter, stateId, event.topic);
+    await this.adapter.subscribeStatesAsync(stateId);
   }
 }
 // Annotate the CommonJS export names for ESM import in node:
