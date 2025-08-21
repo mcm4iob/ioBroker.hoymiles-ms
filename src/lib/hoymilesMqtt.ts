@@ -1,5 +1,3 @@
-import { Buffer } from 'node:buffer';
-
 import { stateConfig, initState, initStates, filterDevId, handleOnlineStatus } from './states';
 import type { HoymilesMsAdapter } from '../main';
 import type { MqttMessageEvent, MqttSubscribeEvent } from './mqtt-event-types';
