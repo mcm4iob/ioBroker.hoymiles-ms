@@ -1,29 +1,23 @@
-import { stateConfig, initState, initStates, filterDevId, handleOnlineStatus } from './states';
+import { Buffer } from 'node:buffer';
 
-import type { MqttMessageEvent, MqttSubscribeEvent } from './mqtt-events';
+import { stateConfig, initState, initStates, filterDevId, handleOnlineStatus } from './states';
+import type { HoymilesMsAdapter } from '../main';
+import type { MqttMessageEvent, MqttSubscribeEvent } from './mqtt-event-types';
 
 /**
  * HoymilesMqtt - class to handle hoymiles mqtt topics within ioBroker
  *
  */
 export class HoymilesMqtt {
-    private adapter: ioBroker.Adapter;
+    private adapter: HoymilesMsAdapter; /*ioBroker.Adapter;*/
     private log: ioBroker.Log;
 
-    /**
-     * class constructor
-     *
-     * @param adapter reference to ioBroker aapter class
-     */
-    constructor(adapter: ioBroker.Adapter) {
+    constructor(adapter: HoymilesMsAdapter /* ioBroker.Adapter */) {
         this.adapter = adapter;
         this.log = adapter.log;
         this.log.debug(`[hoymilesMqtt] initializing`);
     }
 
-    /**
-     *
-     */
     public async onMqttMessage(event: MqttMessageEvent): Promise<void> {
         this.log.debug(`[hoymilesMqtt] process message ${event.topic}: ${event.payload.toString()}`);
 
@@ -41,7 +35,7 @@ export class HoymilesMqtt {
         topicDetails[2] = '<dev_id>';
         const topic = topicDetails.join('/');
 
-        await initStates(this.adapter, deviceId);
+        await initStates(this.adapter, deviceId, { clientId: event.clientId });
         await handleOnlineStatus(this.adapter, deviceId);
 
         for (const stateKey in stateConfig) {
@@ -66,7 +60,7 @@ export class HoymilesMqtt {
 
             if (value !== undefined) {
                 this.log.debug(`[hoymilesMqtt] updateing state ${stateId} from ${event.topic} using value ${value}`);
-                await initState(this.adapter, stateId);
+                await initState(this.adapter, stateId, { clientId: event.clientId });
                 await this.adapter.setState(stateId, value, true);
             } else {
                 this.log.debug(
@@ -93,7 +87,7 @@ export class HoymilesMqtt {
         //topicDetails[2] = '<dev_id>';
         //const topic = topicDetails.join('/');
 
-        await initStates(this.adapter, deviceId);
+        await initStates(this.adapter, deviceId, { clientId: event.clientId });
         await handleOnlineStatus(this.adapter, deviceId);
 
         const stateKey = event.topic.split('/').slice(3).join('.');
@@ -105,7 +99,32 @@ export class HoymilesMqtt {
         }
         this.adapter.log.info(`[hoymilesMqtt] device ${deviceId} subscribing to topic ${event.topic}`);
         const stateId = `${filterDevId(deviceId)}.${stateKey}`;
-        await initState(this.adapter, stateId, event.topic);
+        await initState(this.adapter, stateId, { clientId: event.clientId, topic: event.topic });
         await this.adapter.subscribeStatesAsync(stateId);
+    }
+
+    public async onMqttStateChange(id: string, state: ioBroker.State): Promise<void> {
+        const deviceId = id.split('.')[2];
+        const val = state.val;
+        const stateObject = await this.adapter.getObjectAsync(id);
+        const clientId = stateObject?.native?.clientId;
+        const topic = stateObject?.native?.topic;
+
+        if (!clientId) {
+            this.adapter.log.debug(`[hoymilesMqtt] state ${id} has no clientId set, ignoring change`);
+            return;
+        }
+
+        if (!topic) {
+            this.adapter.log.debug(`[hoymilesMqtt] state ${id} has no registered topic, ignoring change`);
+            return;
+        }
+
+        this.adapter.log.debug(
+            `[hoymilesMqtt] device ${deviceId} changed value (${val}) at ${id} will be published at ${topic}`,
+        );
+
+        const payload = val?.toString() || '';
+        this.adapter.mqttPublish(clientId, { topic: topic, payload: payload, qos: 0, retain: false });
     }
 }

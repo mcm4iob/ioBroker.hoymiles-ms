@@ -2,21 +2,20 @@
  * Created with @iobroker/create-adapter v2.6.5
  */
 
-// The adapter-core module gives you access to the core ioBroker functions
-// you need to create an adapter
-import * as utils from '@iobroker/adapter-core';
+import { Adapter, type AdapterOptions, I18n, EXIT_CODES } from '@iobroker/adapter-core';
 
-import type { MqttMessageEvent, MqttEvent } from './lib/mqtt-events';
+import { type MqttMessageEvent, type MqttEvent } from './lib/mqtt-event-types';
+import { type MqttPublishOptions } from './lib/mqtt-connection-types';
 import { MqttServer } from './lib/mqttServer';
 import { HoymilesMqtt } from './lib/hoymilesMqtt';
 import { checkOnlineStatus, resetStates } from './lib/states';
 
-class HoymilesMs extends utils.Adapter {
-    private mqtt: any;
-    private hoymilesMqtt: HoymilesMqtt | null = null;
-    private onlineInterval: ioBroker.Interval | undefined;
+export class HoymilesMsAdapter extends Adapter {
+    #mqtt: any;
+    #hoymilesMqtt: HoymilesMqtt | null = null;
+    #onlineInterval: ioBroker.Interval | undefined;
 
-    public constructor(options: Partial<utils.AdapterOptions> = {}) {
+    public constructor(options: Partial</*utils.*/ AdapterOptions> = {}) {
         super({
             ...options,
             name: 'hoymiles-ms',
@@ -27,82 +26,77 @@ class HoymilesMs extends utils.Adapter {
         this.on('unload', this.onUnload.bind(this));
     }
 
-    /**
-     * Is called when databases are connected and adapter received configuration.
-     */
     private async onReady(): Promise<void> {
         // Reset the connection indicator during startup
         await this.setState('info.connection', false, true);
 
-        await utils.I18n.init(`${__dirname}/..`, this);
+        await I18n.init(`${__dirname}/..`, this);
 
         // reset existing states
         await resetStates(this);
 
         // init hoymileMqtt
-        this.hoymilesMqtt = new HoymilesMqtt(this);
+        this.#hoymilesMqtt = new HoymilesMqtt(this);
 
         // init mqttServer
-        this.mqtt = new MqttServer(
-            this,
-            { network: this.config.srvNetwork, port: this.config.srvPort },
-            this.mqttEventCallback.bind(this),
-        );
-
+        this.#mqtt = new MqttServer(this, { network: this.config.srvNetwork, port: this.config.srvPort });
         try {
-            await this.mqtt.start();
+            await this.#mqtt.start();
             this.log.info('[MQTT-Server] started');
         } catch (e: any) {
             this.log.error(`[MQTT-Server] cannot start server - ${e.message}`);
-            this.terminate('check adapter configuration', utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+            this.terminate('check adapter configuration', EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
         }
 
-        this.onlineInterval = this.setInterval(checkOnlineStatus.bind(this), 15 * 1000, this);
+        this.#onlineInterval = this.setInterval(checkOnlineStatus.bind(this), 15 * 1000, this);
     }
 
-    /**
-     * Is called when adapter shuts down - callback has to be called under any circumstances!
-     *
-     * @param callback standard iobroker callback
-     */
     private onUnload(callback: () => void): void {
         try {
-            this.onlineInterval && this.clearInterval(this.onlineInterval);
-
+            this.#onlineInterval && this.clearInterval(this.#onlineInterval);
             callback();
         } catch {
             callback();
         }
     }
 
-    private async mqttEventCallback(name: string, event: MqttEvent): Promise<void> {
-        if (name === 'connect') {
-            this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
-        } else if (name === 'message') {
-            await this.hoymilesMqtt?.onMqttMessage(event as MqttMessageEvent);
-        } else if (name === 'subscribe') {
-            await this.hoymilesMqtt?.onMqttSubscribe(event as MqttMessageEvent);
-        }
-    }
-
-    /**
-     * onStateChange is called if a subscribed state changes
-     *
-     * @param id id of state
-     * @param state state details
-     */
-    private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
+    private async onStateChange(id: string, state: ioBroker.State | null | undefined): Promise<void> {
         if (!state || state.ack) {
             return;
         }
         this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+
+        if (!this.#hoymilesMqtt) {
+            this.log.warn(`hoymilesMqtt not initialized, ignoreing state change`);
+            return;
+        }
+
+        await this.#hoymilesMqtt.onMqttStateChange(id, state);
+    }
+
+    public async mqttEventCallback(name: string, event: MqttEvent): Promise<void> {
+        if (name === 'connect') {
+            this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
+        } else if (name === 'message') {
+            this.#hoymilesMqtt && (await this.#hoymilesMqtt.onMqttMessage(event as MqttMessageEvent));
+        } else if (name === 'subscribe') {
+            this.#hoymilesMqtt && (await this.#hoymilesMqtt.onMqttSubscribe(event as MqttMessageEvent));
+        } else {
+            this.log.warn(
+                `[MQTT] unknown event ${name} received from client ${event.clientId} connected from ${event.ip}`,
+            );
+        }
+    }
+
+    public mqttPublish(clientId: string, publishOptions: MqttPublishOptions): void /*Promise<void>*/ {
+        this.#mqtt.publish(clientId, publishOptions);
     }
 }
 
 if (require.main !== module) {
     // Export the constructor in compact mode
-    module.exports = (options: Partial<utils.AdapterOptions> | undefined) => new HoymilesMs(options);
+    module.exports = (options: Partial</*utils.*/ AdapterOptions> | undefined) => new HoymilesMsAdapter(options);
 } else {
     // otherwise start the instance directly
-    (() => new HoymilesMs())();
+    (() => new HoymilesMsAdapter())();
 }

@@ -1,104 +1,92 @@
 "use strict";
-var __create = Object.create;
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
-var utils = __toESM(require("@iobroker/adapter-core"));
-var import_mqttServer = require("./lib/mqttServer");
-var import_hoymilesMqtt = require("./lib/hoymilesMqtt");
-var import_states = require("./lib/states");
-class HoymilesMs extends utils.Adapter {
-  mqtt;
-  hoymilesMqtt = null;
-  onlineInterval;
-  constructor(options = {}) {
-    super({
-      ...options,
-      name: "hoymiles-ms"
-    });
-    this.on("ready", this.onReady.bind(this));
-    this.on("stateChange", this.onStateChange.bind(this));
-    this.on("unload", this.onUnload.bind(this));
-  }
-  /**
-   * Is called when databases are connected and adapter received configuration.
-   */
-  async onReady() {
-    await this.setState("info.connection", false, true);
-    await utils.I18n.init(`${__dirname}/..`, this);
-    await (0, import_states.resetStates)(this);
-    this.hoymilesMqtt = new import_hoymilesMqtt.HoymilesMqtt(this);
-    this.mqtt = new import_mqttServer.MqttServer(
-      this,
-      { network: this.config.srvNetwork, port: this.config.srvPort },
-      this.mqttEventCallback.bind(this)
-    );
-    try {
-      await this.mqtt.start();
-      this.log.info("[MQTT-Server] started");
-    } catch (e) {
-      this.log.error(`[MQTT-Server] cannot start server - ${e.message}`);
-      this.terminate("check adapter configuration", utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+/*
+ * Created with @iobroker/create-adapter v2.6.5
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.HoymilesMsAdapter = void 0;
+const adapter_core_1 = require("@iobroker/adapter-core");
+const mqttServer_1 = require("./lib/mqttServer");
+const hoymilesMqtt_1 = require("./lib/hoymilesMqtt");
+const states_1 = require("./lib/states");
+class HoymilesMsAdapter extends adapter_core_1.Adapter {
+    #mqtt;
+    #hoymilesMqtt = null;
+    #onlineInterval;
+    constructor(options = {}) {
+        super({
+            ...options,
+            name: 'hoymiles-ms',
+        });
+        this.on('ready', this.onReady.bind(this));
+        this.on('stateChange', this.onStateChange.bind(this));
+        // this.on('message', this.onMessage.bind(this));
+        this.on('unload', this.onUnload.bind(this));
     }
-    this.onlineInterval = this.setInterval(import_states.checkOnlineStatus.bind(this), 15 * 1e3, this);
-  }
-  /**
-   * Is called when adapter shuts down - callback has to be called under any circumstances!
-   *
-   * @param callback standard iobroker callback
-   */
-  onUnload(callback) {
-    try {
-      this.onlineInterval && this.clearInterval(this.onlineInterval);
-      callback();
-    } catch {
-      callback();
+    async onReady() {
+        // Reset the connection indicator during startup
+        await this.setState('info.connection', false, true);
+        await adapter_core_1.I18n.init(`${__dirname}/..`, this);
+        // reset existing states
+        await (0, states_1.resetStates)(this);
+        // init hoymileMqtt
+        this.#hoymilesMqtt = new hoymilesMqtt_1.HoymilesMqtt(this);
+        // init mqttServer
+        this.#mqtt = new mqttServer_1.MqttServer(this, { network: this.config.srvNetwork, port: this.config.srvPort });
+        try {
+            await this.#mqtt.start();
+            this.log.info('[MQTT-Server] started');
+        }
+        catch (e) {
+            this.log.error(`[MQTT-Server] cannot start server - ${e.message}`);
+            this.terminate('check adapter configuration', adapter_core_1.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+        }
+        this.#onlineInterval = this.setInterval(states_1.checkOnlineStatus.bind(this), 15 * 1000, this);
     }
-  }
-  async mqttEventCallback(name, event) {
-    var _a, _b;
-    if (name === "connect") {
-      this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
-    } else if (name === "message") {
-      await ((_a = this.hoymilesMqtt) == null ? void 0 : _a.onMqttMessage(event));
-    } else if (name === "subscribe") {
-      await ((_b = this.hoymilesMqtt) == null ? void 0 : _b.onMqttSubscribe(event));
+    onUnload(callback) {
+        try {
+            this.#onlineInterval && this.clearInterval(this.#onlineInterval);
+            callback();
+        }
+        catch {
+            callback();
+        }
     }
-  }
-  /**
-   * onStateChange is called if a subscribed state changes
-   *
-   * @param id id of state
-   * @param state state details
-   */
-  onStateChange(id, state) {
-    if (!state || state.ack) {
-      return;
+    async onStateChange(id, state) {
+        if (!state || state.ack) {
+            return;
+        }
+        this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+        if (!this.#hoymilesMqtt) {
+            this.log.warn(`hoymilesMqtt not initialized, ignoreing state change`);
+            return;
+        }
+        await this.#hoymilesMqtt.onMqttStateChange(id, state);
     }
-    this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-  }
+    async mqttEventCallback(name, event) {
+        if (name === 'connect') {
+            this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
+        }
+        else if (name === 'message') {
+            this.#hoymilesMqtt && (await this.#hoymilesMqtt.onMqttMessage(event));
+        }
+        else if (name === 'subscribe') {
+            this.#hoymilesMqtt && (await this.#hoymilesMqtt.onMqttSubscribe(event));
+        }
+        else {
+            this.log.warn(`[MQTT] unknown event ${name} received from client ${event.clientId} connected from ${event.ip}`);
+        }
+    }
+    mqttPublish(clientId, publishOptions) {
+        this.#mqtt.publish(clientId, publishOptions);
+    }
 }
+exports.HoymilesMsAdapter = HoymilesMsAdapter;
 if (require.main !== module) {
-  module.exports = (options) => new HoymilesMs(options);
-} else {
-  (() => new HoymilesMs())();
+    // Export the constructor in compact mode
+    module.exports = (options) => new HoymilesMsAdapter(options);
+}
+else {
+    // otherwise start the instance directly
+    (() => new HoymilesMsAdapter())();
 }
 //# sourceMappingURL=main.js.map

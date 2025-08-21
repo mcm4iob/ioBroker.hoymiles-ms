@@ -769,7 +769,7 @@ export const stateConfig: StateConfig = {
             name: '',
             type: 'string',
             role: 'state',
-            states: ['general', 'mqtt_control'],
+            states: ['general', 'mqtt_ctrl'],
             def: 'general',
             read: true,
             write: true,
@@ -1267,7 +1267,7 @@ const devIdCache: DevIdCache = {};
 type StateIdCache = {
     [key: string]: {
         initialized: boolean;
-        topic: string | null;
+        native: object;
     };
 };
 
@@ -1282,10 +1282,7 @@ export function filterDevId(devId: string): string {
     return devId.replace(/[^a-zA-Z0-9-]/g, '_');
 }
 
-/**
- *
- */
-export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Promise<void> {
+export async function initStates(adapter: ioBroker.Adapter, dev_id: string, native: object = {}): Promise<void> {
     const deviceId = filterDevId(dev_id);
 
     if (!devIdCache[deviceId]) {
@@ -1323,7 +1320,7 @@ export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Pro
                     onlineId: `${adapter.name}.${adapter.instance}.${deviceId}.info.online`,
                 },
             },
-            native: {},
+            native: native,
         },
         { preserve: { common: ['name'] } },
     );
@@ -1337,7 +1334,7 @@ export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Pro
             {
                 type: 'channel',
                 common: common,
-                native: {},
+                native: native,
             },
             { preserve: { common: ['name'] } },
         );
@@ -1352,7 +1349,7 @@ export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Pro
             {
                 type: 'folder',
                 common: common,
-                native: {},
+                native: native,
             },
             { preserve: { common: ['name'] } },
         );
@@ -1360,20 +1357,8 @@ export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Pro
 
     for (const stateKey in stateConfig) {
         if (stateConfig[stateKey].preInit) {
-            await initState(adapter, `${deviceId}.${stateKey}`);
+            await initState(adapter, `${deviceId}.${stateKey}`, native);
         }
-        // const common = stateConfig[stateKey].common;
-        // common.name = utils.I18n.getTranslatedObject(`${stateKey}_name`);
-        // common.desc = utils.I18n.getTranslatedObject(`${stateKey}_desc`);
-        // await adapter.extendObject(
-        //     `${deviceId}.${stateKey}`,
-        //     {
-        //         type: 'state',
-        //         common: common,
-        //         native: {},
-        //     },
-        //     { preserve: { common: ['name'] } },
-        // );
     }
 
     devIdCache[deviceId].ready = true;
@@ -1381,14 +1366,11 @@ export async function initStates(adapter: ioBroker.Adapter, dev_id: string): Pro
     adapter.log.debug(`initialization of states for device ${dev_id} completed`);
 }
 
-/**
- *
- */
 export async function resetStates(adapter: ioBroker.Adapter): Promise<void> {
     adapter.log.debug(`reset of states in progress...`);
 
     const states = await adapter.getStatesAsync('*');
-    for (const id in states){
+    for (const id in states) {
         const key = id.split('.').slice(3).join('.');
         if (!(key && stateConfig[key])) {
             adapter.log.warn(`state id ${id} detected - key ${key} is no known state key`);
@@ -1398,18 +1380,11 @@ export async function resetStates(adapter: ioBroker.Adapter): Promise<void> {
             continue;
         }
         adapter.log.debug(`resetting id ${id}`);
-        await adapter.setState( id, null, true);
+        await adapter.setState(id, null, true);
     }
 }
 
-/**
- *
- */
-export async function initState(
-    adapter: ioBroker.Adapter,
-    stateId: string,
-    topic: string | null = null,
-): Promise<void> {
+export async function initState(adapter: ioBroker.Adapter, stateId: string, native: object = {}): Promise<void> {
     if (stateIdCache[stateId]?.initialized) {
         return;
     }
@@ -1428,17 +1403,14 @@ export async function initState(
         {
             type: 'state',
             common: common,
-            native: {},
+            native: native,
         },
         { preserve: { common: ['name'] } },
     );
 
-    stateIdCache[stateId] = { initialized: true, topic: topic };
+    stateIdCache[stateId] = { initialized: true, native: native };
 }
 
-/**
- *
- */
 export async function handleOnlineStatus(adapter: ioBroker.Adapter, dev_id: string): Promise<void> {
     const deviceId = filterDevId(dev_id);
     const ts = Date.now();
@@ -1460,9 +1432,6 @@ export async function handleOnlineStatus(adapter: ioBroker.Adapter, dev_id: stri
     }
 }
 
-/**
- *
- */
 export async function checkOnlineStatus(adapter: ioBroker.Adapter): Promise<void> {
     const now = Date.now();
     let connected = false;
