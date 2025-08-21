@@ -148,5 +148,11 @@
     "ems_mode.command_desc": "Verwenden Sie allgemein für den automatischen Modus oder MQTT_Ctrl für den MQTT -Controller -Modus",
     "ems_mode.command_name": "EMS -Konfigurationsparamater",
     "power_ctrl.set_desc": "Leistungswert für die Ausgangskontrolle verwendet werden.",
-    "power_ctrl.set_name": "Leistungswert"
+    "power_ctrl.set_name": "Leistungswert",
+    "info.ip_desc": "IP-Addesse",
+    "info.ip_name": "IP-Addesse des Geräts",
+    "info.online_desc": "Indikator, um den tatsächlichen Online -Gerätestatus anzuzeigen",
+    "info.online_name": "Online -Staat",
+    "info.timestamp_desc": "Zeitstempel der zuletzt empfangenen Nachricht",
+    "info.timestamp_name": "Letzter Zeitstempel"
 }

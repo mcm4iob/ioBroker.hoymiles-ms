@@ -148,5 +148,11 @@
     "ems_mode.command_desc": "使用General进行自动模式或MQTT_CTRL用于MQTT控制器模式",
     "ems_mode.command_name": "EMS配置Paramater",
     "power_ctrl.set_desc": "用于输出控制的功率值。",
-    "power_ctrl.set_name": "功率值"
+    "power_ctrl.set_name": "功率值",
+    "info.ip_desc": "IP地址",
+    "info.ip_name": "设备的IP地址",
+    "info.online_desc": "显示实际在线设备状态的指标",
+    "info.online_name": "在线状态",
+    "info.timestamp_desc": "收到最后一条消息的时间戳",
+    "info.timestamp_name": "最后时间戳"
 }

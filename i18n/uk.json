@@ -148,5 +148,11 @@
     "ems_mode.command_desc": "Використовуйте General для автоматичного режиму або MQTT_CTRL для режиму контролера MQTT",
     "ems_mode.command_name": "Параматер конфігурації EMS",
     "power_ctrl.set_desc": "Значення потужності, яке буде використовуватися для контролю виходу.",
-    "power_ctrl.set_name": "Значення потужності"
+    "power_ctrl.set_name": "Значення потужності",
+    "info.ip_desc": "IP-адреса",
+    "info.ip_name": "IP-адреса пристрою",
+    "info.online_desc": "Індикатор для показу фактичного онлайн -стану пристрою",
+    "info.online_name": "Інтернет -держава",
+    "info.timestamp_desc": "Часова позначка останнього повідомлення отримано",
+    "info.timestamp_name": "Остання часова позначка"
 }

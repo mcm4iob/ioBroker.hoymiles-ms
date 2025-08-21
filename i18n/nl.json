@@ -148,5 +148,11 @@
     "ems_mode.command_desc": "Gebruik algemeen voor automatische modus of mqtt_ctrl voor de MQTT -controller -modus",
     "ems_mode.command_name": "EMS -configuratieparamater",
     "power_ctrl.set_desc": "Vermogenswaarde die moet worden gebruikt voor uitvoerregeling.",
-    "power_ctrl.set_name": "Krachtwaarde"
+    "power_ctrl.set_name": "Krachtwaarde",
+    "info.ip_desc": "Ip-adres",
+    "info.ip_name": "IP-adres van apparaat",
+    "info.online_desc": "Indicator om de werkelijke online status van apparaat weer te geven",
+    "info.online_name": "Online staat",
+    "info.timestamp_desc": "Tijdstempel van het laatste bericht ontvangen",
+    "info.timestamp_name": "Laatste tijdstempel"
 }
