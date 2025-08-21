@@ -788,6 +788,18 @@ export const stateConfig: StateConfig = {
         },
     },
 
+    'info.ip': {
+        preInit: true,
+        keepValue: false,
+        common: {
+            name: '',
+            type: 'string',
+            role: 'info.ip',
+            read: true,
+            write: false,
+        },
+    },
+
     'info.timestamp': {
         preInit: true,
         keepValue: true,
