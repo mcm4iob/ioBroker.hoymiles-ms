@@ -77,7 +77,7 @@ export class HoymilesMsAdapter extends Adapter {
 
     public async mqttEventCallback(name: string, event: MqttEvent): Promise<void> {
         if (name === 'connect') {
-            this.#hoymilesMqtt && (await this.#hoymilesMqtt.onMqttConnect(event as MqttConnectEvent));
+            this.#hoymilesMqtt && this.#hoymilesMqtt.onMqttConnect(event as MqttConnectEvent);
         } else if (name === 'message') {
             this.#hoymilesMqtt && (await this.#hoymilesMqtt.onMqttMessage(event as MqttMessageEvent));
         } else if (name === 'subscribe') {
