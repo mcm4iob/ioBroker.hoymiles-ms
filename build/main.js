@@ -65,7 +65,7 @@ class HoymilesMsAdapter extends adapter_core_1.Adapter {
     }
     async mqttEventCallback(name, event) {
         if (name === 'connect') {
-            this.#hoymilesMqtt && (await this.#hoymilesMqtt.onMqttConnect(event));
+            this.#hoymilesMqtt && this.#hoymilesMqtt.onMqttConnect(event);
         }
         else if (name === 'message') {
             this.#hoymilesMqtt && (await this.#hoymilesMqtt.onMqttMessage(event));
