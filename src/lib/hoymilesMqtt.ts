@@ -2,6 +2,8 @@ import { stateConfig, initState, initStates, filterDevId, handleOnlineStatus } f
 import type { HoymilesMsAdapter } from '../main';
 import type { MqttConnectEvent, MqttMessageEvent, MqttSubscribeEvent } from './mqtt-event-types';
 
+const REFRESH_TIMEOUT = 20_000; //20s
+
 /**
  * HoymilesMqtt - class to handle hoymiles mqtt topics within ioBroker
  *
@@ -11,6 +13,7 @@ export class HoymilesMqtt {
     #log: ioBroker.Log;
     #refreshTimer: ioBroker.Interval | undefined;
     #watchedDevices: string[] = [];
+    #watchFlag = false;
 
     constructor(adapter: HoymilesMsAdapter /* ioBroker.Adapter */) {
         this.#adapter = adapter;
@@ -109,13 +112,16 @@ export class HoymilesMqtt {
         await initState(this.#adapter, stateId, { clientId: event.clientId, topic: event.topic });
         await this.#adapter.subscribeStatesAsync(stateId);
 
+        const state = await this.#adapter.getStateAsync(stateId);
+        state && (await this.#adapter.setState(stateId, state.val, false)); // trigger publish of actual value
+
         if (!this.#watchedDevices.includes(filteredDeviceId)) {
             this.#watchedDevices.push(filteredDeviceId);
         }
 
         if (!this.#refreshTimer) {
-            this.#adapter.log.info(`[hoymilesMqtt] starting refreh timer`);
-            this.#refreshTimer = this.#adapter.setInterval(this.doRefresh.bind(this), 20 * 1000);
+            this.#adapter.log.info(`[hoymilesMqtt] starting refresh timer`);
+            this.#refreshTimer = this.#adapter.setInterval(this.doRefresh.bind(this), REFRESH_TIMEOUT);
         }
     }
 
@@ -125,6 +131,8 @@ export class HoymilesMqtt {
         const stateObject = await this.#adapter.getObjectAsync(id);
         const clientId = stateObject?.native?.clientId;
         const topic = stateObject?.native?.topic;
+
+        this.#watchFlag = true; // do not stop refresh timer
 
         if (!clientId) {
             this.#adapter.log.debug(`[hoymilesMqtt] state ${id} has no clientId set, ignoring change`);
@@ -142,12 +150,19 @@ export class HoymilesMqtt {
 
         const payload = val?.toString() || '';
         this.#adapter.mqttPublish(clientId, { topic: topic, payload: payload, qos: 0, retain: false });
+
+        if (!this.#refreshTimer) {
+            this.#refreshTimer = this.#adapter.setInterval(this.doRefresh.bind(this), REFRESH_TIMEOUT);
+            this.#log(`[hoymilesMQTT] refresh timer started`);
+        }
     }
 
     #refreshCnt = 0;
     private async doRefresh(): Promise<void> {
         this.#log.debug(`[hoymilesMqtt] doRrefresh starting check`);
         this.#refreshCnt = (this.#refreshCnt + 1) % 2;
+
+        this.#watchFlag = false; // note: might by set async by publish too
 
         for (const deviceId of this.#watchedDevices) {
             let state: ioBroker.State | null | undefined;
@@ -156,6 +171,8 @@ export class HoymilesMqtt {
                 this.#log.debug(`[hoymilesMqtt] ${deviceId} - mqtt_ctrl disabled (${state?.val}), skipping update`);
                 continue;
             }
+
+            this.#watchFlag = true;
 
             const id = `${deviceId}.power_ctrl.set`;
             state = await this.#adapter.getStateAsync(`${deviceId}.power_ctrl.set`);
@@ -189,6 +206,12 @@ export class HoymilesMqtt {
 
             const payload = val?.toString() || '';
             this.#adapter.mqttPublish(clientId, { topic: topic, payload: payload, qos: 0, retain: false });
+        }
+
+        if (!this.#watchFlag) {
+            this.#adapter.clearInterval(this.#refreshTimer);
+            this.#refreshTimer = null;
+            this.#log(`[hoymilesMQTT] refresh timer cancelled`);
         }
     }
 }

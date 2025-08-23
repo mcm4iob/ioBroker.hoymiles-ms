@@ -21,6 +21,7 @@ type StateConfig = {
         };
         preInit: boolean;
         keepValue: boolean;
+        resetValue?: ioBroker.StateValue;
         common: ioBroker.StateCommon;
     };
 };
@@ -767,6 +768,7 @@ export const stateConfig: StateConfig = {
     'ems_mode.command': {
         preInit: false,
         keepValue: false,
+        resetValue: 'general',
         common: {
             name: '',
             type: 'string',
@@ -1420,7 +1422,7 @@ export async function initState(adapter: ioBroker.Adapter, stateId: string, nati
     common.name = utils.I18n.getTranslatedObject(`${stateKey}_name`);
     common.desc = utils.I18n.getTranslatedObject(`${stateKey}_desc`);
     await adapter.extendObject(
-        `${stateId}`,
+        stateId,
         {
             type: 'state',
             common: common,
@@ -1428,6 +1430,11 @@ export async function initState(adapter: ioBroker.Adapter, stateId: string, nati
         },
         { preserve: { common: ['name'] } },
     );
+
+    const resetValue = stateConfig[stateKey].resetValue;
+    if (resetValue) {
+        await adapter.setState(stateId, resetValue, true);
+    }
 
     stateIdCache[stateId] = { initialized: true, native: native };
 }

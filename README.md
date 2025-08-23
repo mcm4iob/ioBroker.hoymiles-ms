@@ -74,9 +74,8 @@ Controlling the device (setting the output power) is not yet implemented.
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
-    ### **WORK IN PROGRESS**
 -->
-### 0.2.0-alpha.2 (2025-08-23)
+### **WORK IN PROGRESS**
 * (mcm1957) States are created dynamically now. So no states should be created if a system does not provide data for it (i.e slave micro storage).
 * (mcm1957) State values are reset during startup now to prevent stale information.
 * (mcm1957) Support to control power consumption and delivery has been added.

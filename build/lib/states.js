@@ -696,6 +696,7 @@ exports.stateConfig = {
     'ems_mode.command': {
         preInit: false,
         keepValue: false,
+        resetValue: 'general',
         common: {
             name: '',
             type: 'string',
@@ -1273,11 +1274,15 @@ async function initState(adapter, stateId, native = {}) {
     const common = exports.stateConfig[stateKey].common;
     common.name = utils.I18n.getTranslatedObject(`${stateKey}_name`);
     common.desc = utils.I18n.getTranslatedObject(`${stateKey}_desc`);
-    await adapter.extendObject(`${stateId}`, {
+    await adapter.extendObject(stateId, {
         type: 'state',
         common: common,
         native: native,
     }, { preserve: { common: ['name'] } });
+    const resetValue = exports.stateConfig[stateKey].resetValue;
+    if (resetValue) {
+        await adapter.setState(stateId, resetValue, true);
+    }
     stateIdCache[stateId] = { initialized: true, native: native };
 }
 async function handleOnlineStatus(adapter, dev_id) {
