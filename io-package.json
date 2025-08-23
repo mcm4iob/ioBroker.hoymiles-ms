@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hoymiles-ms",
-    "version": "0.1.2",
+    "version": "0.2.0-alpha.0",
     "news": {
+      "0.2.0-alpha.0": {
+        "en": "State are created dynamically now. So no states should be created if a system does not provide data for it (i.e slave micro storage):\nDependencies have been updated",
+        "de": "Der Staat wird jetzt dynamisch angelegt. Es sollten also keine Zustände erzeugt werden, wenn ein System keine Daten dafür liefert (d.h. die Mikrospeicherung von Slave):\nAbhängigkeiten wurden aktualisiert",
+        "ru": "Сейчас государство создается динамично. Таким образом, никакие состояния не должны создаваться, если система не предоставляет данные для нее (т.е. рабовладельческое микрохранилище):\nЗависимости были обновлены",
+        "pt": "Estado são criados dinamicamente agora. Portanto, nenhum estado deve ser criado se um sistema não fornecer dados para ele (ou seja, micro armazenamento escravo):\nAs dependências foram atualizadas",
+        "nl": "De staat wordt nu dynamisch gecreëerd. Dus geen staten moeten worden gecreëerd als een systeem geen gegevens voor het (d.w.z. slave micro-opslag):\nAfhankelijkheden zijn bijgewerkt",
+        "fr": "L'État est créé dynamiquement maintenant. Aucun état ne devrait donc être créé si un système ne fournit pas de données à ce sujet (c'est-à-dire un microstockage esclave):\nLes dépendances ont été actualisées",
+        "it": "Lo stato viene creato dinamicamente ora. Quindi nessun stato dovrebbe essere creato se un sistema non fornisce dati per esso (cioè slave micro storage):\nLe dipendenze sono state aggiornate",
+        "es": "El Estado se crea dinámicamente ahora. Así que no se deben crear estados si un sistema no proporciona datos para él (es decir, almacenamiento microesclavo):\nSe han actualizado las dependencias",
+        "pl": "Stan powstaje dynamicznie. Tak więc nie powinno się tworzyć żadnych stanów, jeśli system nie dostarcza danych do niego (tzn\nZaktualizowano zależności",
+        "uk": "Стан створюються динамічно. Так не варто створювати стани, якщо система не надає даних для неї (тобто невірний мікронакопичувач):\nЗалежність було оновлено",
+        "zh-cn": "国家现在生机勃勃。 因此,如果一个系统不提供数据(即奴隶微存储),则不应建立州:\n依赖关系已更新"
+      },
       "0.1.2": {
         "en": "Warnings raised from slave systems have been removed\nDependencies have been updated",
         "de": "Warnungen aus Slave-Systemen wurden entfernt\nAbhängigkeiten wurden aktualisiert",
