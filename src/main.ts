@@ -42,9 +42,9 @@ export class HoymilesMsAdapter extends Adapter {
         this.#mqtt = new MqttServer(this, { network: this.config.srvNetwork, port: this.config.srvPort });
         try {
             await this.#mqtt.start();
-            this.log.info('[MQTT-Server] started');
+            this.log.info('[main] MQTT-Server started');
         } catch (e: any) {
-            this.log.error(`[MQTT-Server] cannot start server - ${e.message}`);
+            this.log.error(`[main] cannot start MQTT-Server - ${e.message}`);
             this.terminate('check adapter configuration', EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
         }
 
@@ -65,10 +65,10 @@ export class HoymilesMsAdapter extends Adapter {
         if (!state || state.ack) {
             return;
         }
-        this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+        this.log.info(`[main] state ${id} changed: ${state.val} (ack = ${state.ack})`);
 
         if (!this.#hoymilesMqtt) {
-            this.log.warn(`hoymilesMqtt not initialized, ignoreing state change`);
+            this.log.warn(`[main] hoymilesMqtt not initialized, ignoreing state change`);
             return;
         }
 
@@ -84,7 +84,7 @@ export class HoymilesMsAdapter extends Adapter {
             this.#hoymilesMqtt && (await this.#hoymilesMqtt.onMqttSubscribe(event as MqttMessageEvent));
         } else {
             this.log.warn(
-                `[MQTT] unknown event ${name} received from client ${event.clientId} connected from ${event.ip}`,
+                `[main] unknown mqtt event ${name} received from client ${event.clientId} connected from ${event.ip}`,
             );
         }
     }
