@@ -159,7 +159,7 @@ export class HoymilesMqtt {
 
     #refreshCnt = 0;
     private async doRefresh(): Promise<void> {
-        this.#log.debug(`[hoymilesMqtt] doRrefresh starting check`);
+        this.#log.debug(`[hoymilesMqtt] doRefresh starting check`);
         this.#refreshCnt = (this.#refreshCnt + 1) % 2;
 
         this.#watchFlag = false; // note: might by set async by publish too
@@ -194,12 +194,12 @@ export class HoymilesMqtt {
 
             if (!clientId) {
                 this.#log.debug(`[hoymilesMqtt] ${deviceId} - state ${id} has no clientId set, ignoring change`);
-                return;
+                continue;
             }
 
             if (!topic) {
                 this.#log.debug(`[hoymilesMqtt] ${deviceId} - state ${id} has no registered topic, ignoring change`);
-                return;
+                continue;
             }
 
             this.#log.debug(`[hoymilesMqtt] ${deviceId} - new value (${val}) at ${id} will be published at ${topic}`);
@@ -211,7 +211,7 @@ export class HoymilesMqtt {
         if (!this.#watchFlag) {
             this.#adapter.clearInterval(this.#refreshTimer);
             this.#refreshTimer = null;
-            this.#log(`[hoymilesMQTT] refresh timer cancelled`);
+            this.#log.info(`[hoymilesMQTT] refresh timer cancelled`);
         }
     }
 }
