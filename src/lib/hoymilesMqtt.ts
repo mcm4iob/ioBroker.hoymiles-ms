@@ -153,7 +153,7 @@ export class HoymilesMqtt {
 
         if (!this.#refreshTimer) {
             this.#refreshTimer = this.#adapter.setInterval(this.doRefresh.bind(this), REFRESH_TIMEOUT);
-            this.#log(`[hoymilesMQTT] refresh timer started`);
+            this.#log.info(`[hoymilesMQTT] refresh timer started`);
         }
     }
 
