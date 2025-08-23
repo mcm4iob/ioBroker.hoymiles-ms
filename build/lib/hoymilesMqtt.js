@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HoymilesMqtt = void 0;
 const states_1 = require("./states");
+const REFRESH_TIMEOUT = 20_000; //20s
 /**
  * HoymilesMqtt - class to handle hoymiles mqtt topics within ioBroker
  *
@@ -97,7 +98,7 @@ class HoymilesMqtt {
         }
         if (!this.#refreshTimer) {
             this.#adapter.log.info(`[hoymilesMqtt] starting refresh timer`);
-            this.#refreshTimer = this.#adapter.setInterval(this.doRefresh.bind(this), 20 * 1000);
+            this.#refreshTimer = this.#adapter.setInterval(this.doRefresh.bind(this), REFRESH_TIMEOUT);
         }
     }
     async onMqttStateChange(id, state) {
@@ -119,7 +120,7 @@ class HoymilesMqtt {
         const payload = val?.toString() || '';
         this.#adapter.mqttPublish(clientId, { topic: topic, payload: payload, qos: 0, retain: false });
         if (!this.#refreshTimer) {
-            this.#refreshTimer = this.#adapter.setInterval(this.doRefresh.bind(this), 20_1000);
+            this.#refreshTimer = this.#adapter.setInterval(this.doRefresh.bind(this), REFRESH_TIMEOUT);
             this.#log(`[hoymilesMQTT] refresh timer started`);
         }
     }
