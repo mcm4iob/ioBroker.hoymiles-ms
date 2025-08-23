@@ -1245,6 +1245,9 @@ async function resetStates(adapter) {
     adapter.log.debug(`reset of states in progress...`);
     const states = await adapter.getStatesAsync('*');
     for (const id in states) {
+        if (id.endsWith('info.connection')) {
+            continue; // ignore standard adapter state
+        }
         const key = id.split('.').slice(3).join('.');
         if (!(key && exports.stateConfig[key])) {
             adapter.log.warn(`state id ${id} detected - key ${key} is no known state key`);

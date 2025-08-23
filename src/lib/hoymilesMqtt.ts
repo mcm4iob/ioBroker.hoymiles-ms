@@ -114,7 +114,7 @@ export class HoymilesMqtt {
         }
 
         if (!this.#refreshTimer) {
-            this.#adapter.log.info(`[hoymilesMqtt] staring refreh times`);
+            this.#adapter.log.info(`[hoymilesMqtt] starting refreh timer`);
             this.#refreshTimer = this.#adapter.setInterval(this.doRefresh.bind(this), 20 * 1000);
         }
     }
