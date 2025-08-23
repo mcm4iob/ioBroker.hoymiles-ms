@@ -4,8 +4,8 @@
 
 import { Adapter, type AdapterOptions, I18n, EXIT_CODES } from '@iobroker/adapter-core';
 
-import { type MqttMessageEvent, type MqttEvent } from './lib/mqtt-event-types';
-import { type MqttPublishOptions } from './lib/mqtt-connection-types';
+import type { MqttConnectEvent, MqttMessageEvent, MqttEvent } from './lib/mqtt-event-types';
+import type { MqttPublishOptions } from './lib/mqtt-connection-types';
 import { MqttServer } from './lib/mqttServer';
 import { HoymilesMqtt } from './lib/hoymilesMqtt';
 import { checkOnlineStatus, resetStates } from './lib/states';
@@ -54,6 +54,7 @@ export class HoymilesMsAdapter extends Adapter {
     private onUnload(callback: () => void): void {
         try {
             this.#onlineInterval && this.clearInterval(this.#onlineInterval);
+            this.#hoymilesMqtt && this.#hoymilesMqtt.onUnload();
             callback();
         } catch {
             callback();
@@ -76,7 +77,7 @@ export class HoymilesMsAdapter extends Adapter {
 
     public async mqttEventCallback(name: string, event: MqttEvent): Promise<void> {
         if (name === 'connect') {
-            this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
+            this.#hoymilesMqtt && (await this.#hoymilesMqtt.onMqttConnect(event as MqttConnectEvent));
         } else if (name === 'message') {
             this.#hoymilesMqtt && (await this.#hoymilesMqtt.onMqttMessage(event as MqttMessageEvent));
         } else if (name === 'subscribe') {

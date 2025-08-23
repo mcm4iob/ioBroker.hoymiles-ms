@@ -8,7 +8,7 @@ export type MqttMessageEvent = {
     clientId: string;
     ip: string;
     topic: string;
-    payload: Buffer;
+    payload: string /*Buffer*/;
     qos: number;
     retain: boolean;
     packet: Packet;

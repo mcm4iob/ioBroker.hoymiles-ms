@@ -45,6 +45,7 @@ class HoymilesMsAdapter extends adapter_core_1.Adapter {
     onUnload(callback) {
         try {
             this.#onlineInterval && this.clearInterval(this.#onlineInterval);
+            this.#hoymilesMqtt && this.#hoymilesMqtt.onUnload();
             callback();
         }
         catch {
@@ -64,7 +65,7 @@ class HoymilesMsAdapter extends adapter_core_1.Adapter {
     }
     async mqttEventCallback(name, event) {
         if (name === 'connect') {
-            this.log.info(`[MQTT] client ${event.clientId} connected from ${event.ip}`);
+            this.#hoymilesMqtt && (await this.#hoymilesMqtt.onMqttConnect(event));
         }
         else if (name === 'message') {
             this.#hoymilesMqtt && (await this.#hoymilesMqtt.onMqttMessage(event));

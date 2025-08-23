@@ -94,7 +94,7 @@ exports.stateConfig = {
     'device.bat_i': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).bat_i,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).bat_i,
         },
         preInit: false,
         keepValue: false,
@@ -110,7 +110,7 @@ exports.stateConfig = {
     'device.bat_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).bat_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).bat_p,
         },
         preInit: false,
         keepValue: false,
@@ -126,7 +126,7 @@ exports.stateConfig = {
     'device.bat_temp': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).bat_temp,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).bat_temp,
         },
         preInit: false,
         keepValue: false,
@@ -142,7 +142,7 @@ exports.stateConfig = {
     'device.bat_v': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).bat_v,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).bat_v,
         },
         preInit: false,
         keepValue: false,
@@ -158,7 +158,7 @@ exports.stateConfig = {
     'device.bat_sts': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).bat_sts,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).bat_sts,
         },
         preInit: false,
         keepValue: false,
@@ -173,7 +173,7 @@ exports.stateConfig = {
     'device.grid_off.ein': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_off')[0]?.ein,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_off')[0]?.ein,
         },
         preInit: false,
         keepValue: false,
@@ -189,7 +189,7 @@ exports.stateConfig = {
     'device.grid_off.eout': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_off')[0]?.eout,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_off')[0]?.eout,
         },
         preInit: false,
         keepValue: false,
@@ -205,7 +205,7 @@ exports.stateConfig = {
     'device.grid_off.etin': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_off')[0]?.etin,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_off')[0]?.etin,
         },
         preInit: false,
         keepValue: false,
@@ -221,7 +221,7 @@ exports.stateConfig = {
     'device.grid_off.etout': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_off')[0]?.etout,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_off')[0]?.etout,
         },
         preInit: false,
         keepValue: false,
@@ -237,7 +237,7 @@ exports.stateConfig = {
     'device.grid_off.i': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_off')[0]?.i,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_off')[0]?.i,
         },
         preInit: false,
         keepValue: false,
@@ -253,7 +253,7 @@ exports.stateConfig = {
     'device.grid_off.f': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_off')[0]?.f,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_off')[0]?.f,
         },
         preInit: false,
         keepValue: false,
@@ -269,7 +269,7 @@ exports.stateConfig = {
     'device.grid_off.p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_off')[0]?.p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_off')[0]?.p,
         },
         preInit: false,
         keepValue: false,
@@ -285,7 +285,7 @@ exports.stateConfig = {
     'device.grid_off.q': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_off')[0]?.q,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_off')[0]?.q,
         },
         preInit: false,
         keepValue: false,
@@ -301,7 +301,7 @@ exports.stateConfig = {
     'device.grid_off.v': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_off')[0]?.v,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_off')[0]?.v,
         },
         preInit: false,
         keepValue: false,
@@ -317,7 +317,7 @@ exports.stateConfig = {
     'device.grid_on.ein': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_on')[0]?.ein,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_on')[0]?.ein,
         },
         preInit: false,
         keepValue: false,
@@ -333,7 +333,7 @@ exports.stateConfig = {
     'device.grid_on.eout': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_on')[0]?.eout,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_on')[0]?.eout,
         },
         preInit: false,
         keepValue: false,
@@ -349,7 +349,7 @@ exports.stateConfig = {
     'device.grid_on.etin': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_on')[0]?.etin,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_on')[0]?.etin,
         },
         preInit: false,
         keepValue: false,
@@ -365,7 +365,7 @@ exports.stateConfig = {
     'device.grid_on.etout': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_on')[0]?.etout,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_on')[0]?.etout,
         },
         preInit: false,
         keepValue: false,
@@ -381,7 +381,7 @@ exports.stateConfig = {
     'device.grid_on.i': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_on')[0]?.i,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_on')[0]?.i,
         },
         preInit: false,
         keepValue: false,
@@ -397,7 +397,7 @@ exports.stateConfig = {
     'device.grid_on.f': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_on')[0]?.f,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_on')[0]?.f,
         },
         preInit: false,
         keepValue: false,
@@ -413,7 +413,7 @@ exports.stateConfig = {
     'device.grid_on.p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_on')[0]?.p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_on')[0]?.p,
         },
         preInit: false,
         keepValue: false,
@@ -429,7 +429,7 @@ exports.stateConfig = {
     'device.grid_on.q': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_on')[0]?.q,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_on')[0]?.q,
         },
         preInit: false,
         keepValue: false,
@@ -445,7 +445,7 @@ exports.stateConfig = {
     'device.grid_on.v': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'grid_on')[0]?.v,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'grid_on')[0]?.v,
         },
         preInit: false,
         keepValue: false,
@@ -461,7 +461,7 @@ exports.stateConfig = {
     'device.identifiers': {
         mqtt: {
             mqtt_publish: `homeassistant/switch/<dev_id>/config`,
-            mqtt_publish_funct: (value) => JSON.stringify(JSON.parse(value).device?.identifiers),
+            mqtt_publish_funct: (value) => JSON.stringify(JSON.parse(value.payload).device?.identifiers),
         },
         preInit: false,
         keepValue: true,
@@ -476,7 +476,7 @@ exports.stateConfig = {
     'device.inv.ein': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'inv')[0]?.ein,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'inv')[0]?.ein,
         },
         preInit: false,
         keepValue: false,
@@ -492,7 +492,7 @@ exports.stateConfig = {
     'device.inv.eout': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'inv')[0]?.eout,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'inv')[0]?.eout,
         },
         preInit: false,
         keepValue: false,
@@ -508,7 +508,7 @@ exports.stateConfig = {
     'device.inv.etin': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'inv')[0]?.etin,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'inv')[0]?.etin,
         },
         preInit: false,
         keepValue: false,
@@ -524,7 +524,7 @@ exports.stateConfig = {
     'device.inv.etout': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'inv')[0]?.etout,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'inv')[0]?.etout,
         },
         preInit: false,
         keepValue: false,
@@ -540,7 +540,7 @@ exports.stateConfig = {
     'device.inv.i': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'inv')[0]?.i,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'inv')[0]?.i,
         },
         preInit: false,
         keepValue: false,
@@ -556,7 +556,7 @@ exports.stateConfig = {
     'device.inv.p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'inv')[0]?.p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'inv')[0]?.p,
         },
         preInit: false,
         keepValue: false,
@@ -572,7 +572,7 @@ exports.stateConfig = {
     'device.inv.q': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'inv')[0]?.q,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'inv')[0]?.q,
         },
         preInit: false,
         keepValue: false,
@@ -588,7 +588,7 @@ exports.stateConfig = {
     'device.inv.v': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid?.filter((obj) => obj.type === 'inv')[0]?.v,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid?.filter((obj) => obj.type === 'inv')[0]?.v,
         },
         preInit: false,
         keepValue: false,
@@ -604,7 +604,7 @@ exports.stateConfig = {
     'device.manufacturer': {
         mqtt: {
             mqtt_publish: `homeassistant/switch/<dev_id>/config`,
-            mqtt_publish_funct: (value) => JSON.parse(value).device?.manufacturer,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).device?.manufacturer,
         },
         preInit: true,
         keepValue: true,
@@ -619,7 +619,7 @@ exports.stateConfig = {
     'device.model': {
         mqtt: {
             mqtt_publish: `homeassistant/switch/<dev_id>/config`,
-            mqtt_publish_funct: (value) => JSON.parse(value).device?.model,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).device?.model,
         },
         preInit: true,
         keepValue: true,
@@ -634,7 +634,7 @@ exports.stateConfig = {
     'device.name': {
         mqtt: {
             mqtt_publish: `homeassistant/switch/<dev_id>/config`,
-            mqtt_publish_funct: (value) => JSON.parse(value).device?.name,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).device?.name,
         },
         preInit: true,
         keepValue: true,
@@ -649,7 +649,7 @@ exports.stateConfig = {
     'device.rssi': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).rssi,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).rssi,
         },
         preInit: false,
         keepValue: false,
@@ -665,7 +665,7 @@ exports.stateConfig = {
     'device.soc': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/device/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).soc,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).soc,
         },
         preInit: false,
         keepValue: false,
@@ -681,7 +681,7 @@ exports.stateConfig = {
     'device.sw_version': {
         mqtt: {
             mqtt_publish: `homeassistant/switch/<dev_id>/config`,
-            mqtt_publish_funct: (value) => JSON.parse(value).device?.sw_version,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).device?.sw_version,
         },
         preInit: false,
         keepValue: false,
@@ -718,6 +718,10 @@ exports.stateConfig = {
         },
     },
     'info.ip': {
+        mqtt: {
+            mqtt_publish: `homeassistant/switch/<dev_id>/config`,
+            mqtt_publish_funct: (value) => value.ip,
+        },
         preInit: true,
         keepValue: false,
         common: {
@@ -742,7 +746,7 @@ exports.stateConfig = {
     'power_ctrl.min': {
         mqtt: {
             mqtt_publish: `homeassistant/number/<dev_id>/power_ctrl/config`,
-            mqtt_publish_funct: (value) => JSON.parse(value).min,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).min,
         },
         preInit: false,
         keepValue: false,
@@ -758,7 +762,7 @@ exports.stateConfig = {
     'power_ctrl.max': {
         mqtt: {
             mqtt_publish: `homeassistant/number/<dev_id>/power_ctrl/config`,
-            mqtt_publish_funct: (value) => JSON.parse(value).max,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).max,
         },
         preInit: false,
         keepValue: false,
@@ -786,7 +790,7 @@ exports.stateConfig = {
     'power_ctrl.step': {
         mqtt: {
             mqtt_publish: `homeassistant/number/<dev_id>/power_ctrl/config`,
-            mqtt_publish_funct: (value) => JSON.parse(value).step,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).step,
         },
         preInit: false,
         keepValue: false,
@@ -802,7 +806,7 @@ exports.stateConfig = {
     'realtime.bat_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).bat_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).bat_p,
         },
         preInit: false,
         keepValue: false,
@@ -818,7 +822,7 @@ exports.stateConfig = {
     'realtime.bat_sts': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).bat_sts,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).bat_sts,
         },
         preInit: false,
         keepValue: false,
@@ -833,7 +837,7 @@ exports.stateConfig = {
     'realtime.grid_on_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid_on_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid_on_p,
         },
         preInit: false,
         keepValue: false,
@@ -849,7 +853,7 @@ exports.stateConfig = {
     'realtime.grid_off_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid_off_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid_off_p,
         },
         preInit: false,
         keepValue: false,
@@ -865,7 +869,7 @@ exports.stateConfig = {
     'realtime.soc': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).soc,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).soc,
         },
         preInit: false,
         keepValue: false,
@@ -881,7 +885,7 @@ exports.stateConfig = {
     'realtime.sys_bat_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).sys_bat_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).sys_bat_p,
         },
         preInit: false,
         keepValue: false,
@@ -897,7 +901,7 @@ exports.stateConfig = {
     'realtime.sys_grid_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).sys_grid_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).sys_grid_p,
         },
         preInit: false,
         keepValue: false,
@@ -913,7 +917,7 @@ exports.stateConfig = {
     'realtime.sys_load_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).sys_load_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).sys_load_p,
         },
         preInit: false,
         keepValue: false,
@@ -929,7 +933,7 @@ exports.stateConfig = {
     'realtime.sys_plug_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).sys_plug_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).sys_plug_p,
         },
         preInit: false,
         keepValue: false,
@@ -945,7 +949,7 @@ exports.stateConfig = {
     'realtime.sys_pv_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).sys_pv_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).sys_pv_p,
         },
         preInit: false,
         keepValue: false,
@@ -961,7 +965,7 @@ exports.stateConfig = {
     'realtime.sys_soc': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).sys_soc,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).sys_soc,
         },
         preInit: false,
         keepValue: false,
@@ -977,7 +981,7 @@ exports.stateConfig = {
     'realtime.sys_sp_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/quick/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).sys_sp_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).sys_sp_p,
         },
         preInit: false,
         keepValue: false,
@@ -993,7 +997,7 @@ exports.stateConfig = {
     'system.bat_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).bat_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).bat_p,
         },
         preInit: false,
         keepValue: false,
@@ -1009,7 +1013,7 @@ exports.stateConfig = {
     'system.chg_e': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).chg_e,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).chg_e,
         },
         preInit: false,
         keepValue: false,
@@ -1025,7 +1029,7 @@ exports.stateConfig = {
     'system.dchg_e': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).dchg_e,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).dchg_e,
         },
         preInit: false,
         keepValue: false,
@@ -1041,7 +1045,7 @@ exports.stateConfig = {
     'system.grid_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).grid_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).grid_p,
         },
         preInit: false,
         keepValue: false,
@@ -1057,7 +1061,7 @@ exports.stateConfig = {
     'system.ems_mode': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).ems_mode,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).ems_mode,
         },
         preInit: false,
         keepValue: false,
@@ -1072,7 +1076,7 @@ exports.stateConfig = {
     'system.plug_in_e': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).plug_in_e,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).plug_in_e,
         },
         preInit: false,
         keepValue: false,
@@ -1088,7 +1092,7 @@ exports.stateConfig = {
     'system.plug_out_e': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).plug_out_e,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).plug_out_e,
         },
         preInit: false,
         keepValue: false,
@@ -1104,7 +1108,7 @@ exports.stateConfig = {
     'system.pv_e': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).pv_e,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).pv_e,
         },
         preInit: false,
         keepValue: false,
@@ -1120,7 +1124,7 @@ exports.stateConfig = {
     'system.pv_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).pv_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).pv_p,
         },
         preInit: false,
         keepValue: false,
@@ -1136,7 +1140,7 @@ exports.stateConfig = {
     'system.soc': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).soc,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).soc,
         },
         preInit: false,
         keepValue: false,
@@ -1152,7 +1156,7 @@ exports.stateConfig = {
     'system.sp_p': {
         mqtt: {
             mqtt_publish: `homeassistant/sensor/<dev_id>/system/state`,
-            mqtt_publish_funct: (value) => JSON.parse(value).sp_p,
+            mqtt_publish_funct: (value) => JSON.parse(value.payload).sp_p,
         },
         preInit: false,
         keepValue: false,
