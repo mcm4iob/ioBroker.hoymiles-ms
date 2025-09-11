@@ -31,6 +31,13 @@ Note that this adapter is not related to the company mentioned above in any way 
 
 **************************************************************************************************************
 
+## Documentation
+
+For detailed setup instructions, configuration guide, and comprehensive reference documentation:
+
+- **[English Documentation](doc/en/DOCUMENTATION_en.md)**
+- **[German Documentation](doc/de/DOCUMENTATION_de.md)**
+
 ## Configuration
 
 ### Configuration of the adapter
@@ -57,19 +64,6 @@ This adapter currently does not yet support authentification. So this must be di
 ## Operation
 
 Once the adapter is started it listens to mqtt packets received from the Hoymiles device. The adapter does not poll in any way - all activity is triggered by the Hoymiles unit. Note that configurationd ata is sent only once after connection shas been established while realtime data is sent every second. Systemwide statistics is typically uodated every five minutes. Note that these intervals are not configurable by the adapter - they are defined by the Hoymiles-Api.
-
-Controlling the device (setting the output power) is not yet implemented.
-
-## Documentation
-
-For detailed setup instructions, configuration guide, and comprehensive reference documentation:
-
-- **[English Documentation](doc/en/DOCUMENTATION_en.md)**
-- **[German Documentation](doc/de/DOCUMENTATION_de.md)**
-
-## FAQ
-
-*to be added*
 
 **************************************************************************************************************
 
