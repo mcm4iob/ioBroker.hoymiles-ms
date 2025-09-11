@@ -32,11 +32,14 @@ Before setting up the adapter, ensure you have:
 
 ### Step 1: Install the Adapter
 
-Install the adapter through the ioBroker admin interface or via command line:
+Install the adapter through the ioBroker admin interface:
 
-```bash
-npm install iobroker.hoymiles-ms
-```
+1. Open the ioBroker admin interface in your web browser
+2. Navigate to the "Adapters" tab
+3. Search for "hoymiles-ms" in the adapter repository
+4. Click the "Install" button next to the adapter
+
+**Important:** Never install ioBroker adapters using npm directly. Always use the ioBroker admin interface for proper installation and dependency management.
 
 ### Step 2: Configure the Adapter
 
