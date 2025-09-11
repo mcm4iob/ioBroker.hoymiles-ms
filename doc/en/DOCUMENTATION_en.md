@@ -346,8 +346,12 @@ A: The adapter is currently limited to read-only monitoring and basic power cont
 For issues, questions, or contributions:
 
 - **GitHub Issues**: [Report issues here](https://github.com/mcm4iob/ioBroker.hoymiles-ms/issues)
-- **ioBroker Forum**: Community support and discussions
+- **ioBroker Forum**: [Community support and discussions](https://forum.iobroker.net/topic/81667/test-adapter-hoymiles-ms-v0-2-x)
 - **Documentation**: This document and inline code comments
+
+**If you like this adapter, please consider a donation:**
+  
+[![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://paypal.me/mcm1957atIoBroker)
 
 ---
 

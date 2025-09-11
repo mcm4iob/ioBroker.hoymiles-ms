@@ -60,6 +60,13 @@ Once the adapter is started it listens to mqtt packets received from the Hoymile
 
 Controlling the device (setting the output power) is not yet implemented.
 
+## Documentation
+
+For detailed setup instructions, configuration guide, and comprehensive reference documentation:
+
+- **[English Documentation](doc/en/DOCUMENTATION_en.md)**
+- **[German Documentation](doc/de/DOCUMENTATION_de.md)**
+
 ## FAQ
 
 *to be added*

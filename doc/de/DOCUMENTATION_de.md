@@ -346,8 +346,12 @@ A: Der Adapter ist derzeit auf schreibgeschützte Überwachung und grundlegende 
 Für Probleme, Fragen oder Beiträge:
 
 - **GitHub Issues**: [Probleme hier melden](https://github.com/mcm4iob/ioBroker.hoymiles-ms/issues)
-- **ioBroker Forum**: Community-Unterstützung und Diskussionen
+- **ioBroker Forum**: [Community-Unterstützung und Diskussionen](https://forum.iobroker.net/topic/81667/test-adapter-hoymiles-ms-v0-2-x)
 - **Dokumentation**: Dieses Dokument und Inline-Code-Kommentare
+
+**Wenn Ihnen dieser Adapter gefällt, denken Sie bitte über eine Spende nach:**
+  
+[![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://paypal.me/mcm1957atIoBroker)
 
 ---
 
