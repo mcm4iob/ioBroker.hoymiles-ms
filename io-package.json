@@ -100,6 +100,10 @@
     "enabled": true,
     "extIcon": "https://raw.githubusercontent.com/mcm4iob/ioBroker.hoymiles-ms/main/admin/hoymiles-ms.png",
     "readme": "https://github.com/mcm4iob/ioBroker.hoymiles-ms/blob/main/README.md",
+    "docs": {
+      "en": "doc/en/DOCUMENTATION_en.md",
+      "de": "doc/de/DOCUMENTATION_de.md"
+    },
     "loglevel": "info",
     "tier": 3,
     "mode": "daemon",

@@ -19,6 +19,12 @@ This is an ioBroker adapter that integrates **Hoymiles MicroStorage systems** (c
 - Maintain compatibility with Node.js >= 20
 - Follow ioBroker adapter development standards
 
+### Installation Guidelines
+- **NEVER** include npm installation instructions in documentation
+- ioBroker adapters must ONLY be installed through the ioBroker admin interface
+- Direct npm installation can cause dependency conflicts and system issues
+- Always guide users to use the admin UI adapter repository for installations
+
 ### Build Process
 - **IMPORTANT:** Build artifacts in the `build/` directory are intentionally committed to GitHub and should continue to be pushed in future changes
 - Use `npm run build` to compile TypeScript to JavaScript
