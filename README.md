@@ -97,7 +97,7 @@ Once the adapter is started it listens to mqtt packets received from the Hoymile
 ## License
 MIT License
 
-Copyright (c) 2025 mcm1957 <mcm57@gmx.at>
+Copyright (c) 2025-2026 mcm1957 <mcm57@gmx.at>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
