@@ -77,6 +77,9 @@ Once the adapter is started it listens to mqtt packets received from the Hoymile
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (mcm1957) ignore empty and invalid payloads. [#90]
+
 ### 0.2.0 (2025-08-23)
 * (mcm1957) States are created dynamically now. So no states should be created if a system does not provide data for it (i.e slave micro storage).
 * (mcm1957) State values are reset during startup now to prevent stale information.
