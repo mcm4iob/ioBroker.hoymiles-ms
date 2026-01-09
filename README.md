@@ -77,7 +77,7 @@ Once the adapter is started it listens to mqtt packets received from the Hoymile
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.2.1-alpha.0 (2026-01-09)
 * (mcm1957) ignore empty and invalid payloads. [#90]
 
 ### 0.2.0 (2025-08-23)
