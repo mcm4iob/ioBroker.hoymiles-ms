@@ -1,0 +1,411 @@
+# Hoymiles MSA Micro Storage MQTT Protocol Development Guide
+
+### 1. Basic Configuration information (Device Release)
+*Publish immediately after the device is connected for device discovery.*
+
+**topic:**  
+`homeassistant/switch/<dev_id>/config`
+
+**payload:**  
+```json
+{
+    "state_topic": "homeassistant/sensor/<dev_id>/device/state",
+    "command_topic": "homeassistant/switch/<dev_id>/set",
+    "json_attributes_topic": "homeassistant/sensor/<dev_id>/attributes",
+    "unique_id": "<dev_id>",
+    "device": {
+        "identifiers": ["<id>"], 
+        "name": "<dev_id>", 
+        "manufacturer": "Hoymiles", 
+        "model": "MS-A2",
+        "sw_version": "1.0.0" 
+    }
+}
+```
+
+**qos:**  
+`1`
+
+**retain:**  
+`true`
+
+### 2. Basic Attribute Information (Device Release)
+*Publish immediately after device connection for theme synchronization.*
+
+**topic:**  
+`homeassistant/sensor/<dev_id>/attributes`
+
+**payload:**  
+```json
+{
+    "supported_topics": {
+    "quick_state": "homeassistant/sensor/<dev_id>/quick/state",
+    "device_state": "homeassistant/sensor/<dev_id>/device/state",
+    "system_state": "homeassistant/sensor/<dev_id>/system/state",
+    "switch_ctrl": "homeassistant/switch/<dev_id>/set",
+    "ems_mode": "homeassistant/select/<dev_id>/ems_mode/command",
+    "power_ctrl": "homeassistant/number/<dev_id>/power_ctrl/set" 
+ }
+}
+```
+
+**qos:**  
+`1`
+
+**retain:**  
+`true`
+
+**note:**  
+`supported_topics` : indicates the topics that the device supports publishing and subscribing.  
+`quick_state` : Topics published by the device for quick updates of the device itself and system status, see Section 10.  
+`device_state` : A topic published by the device for timed updates of the device's own state, see Section 11.  
+`system_state` : The topic published by the device for the scheduled update of the system state, see Section 12.  
+`switch_ctrl` : The topic that the device responds to for device on/off control, see Section 7.  
+`ems_mode` : The topic that the device responds to for setting the EMS mode, see Section 8.  
+`power_ctrl` : The topic that the device responds to for controlling power, see Section 9.  
+
+### 3. EMS Mode configuration (Device Release)
+*Publish immediately after the device is connected to notify of power control rules. This topic is only supported for host and standalone devices.*
+
+**topic:**  
+`homeassistant/select/<dev_id>/ems_mode/config`
+
+**payload:**  
+```json
+{
+    "command_topic": "homeassistant/select/<dev_id>/ems_mode/command",
+    "options": ["general", "mqtt_ctrl"],
+    "unique_id": "<dev_id>",
+    "device": {
+    "identifiers": ["<id>"], 
+    "name": "<dev_id>", 
+    "manufacturer": "Hoymiles", 
+    "model": "MS-A2" 
+ }
+}
+```
+
+**qos:**  
+`1`
+
+**retain:**  
+`true`
+
+**note:**  
+`options` : System EMS mode (` general` : default, when enabled, the device manages energy through inherent logic, `mqtt_ctrl` : When enabled, the device responds to mqtt instructions to control power, which can be managed through the `homeassistant/number/<dev_id>/power_ctrl/set` topic) 
+
+### 4. Power Control configuration (Device release)
+*Publish immediately after the device is connected to notify of power control rules. This topic is only supported on host and standalone devices.*
+
+**topic:**  
+`homeassistant/number/<dev_id>/power_ctrl/config`
+
+**payload:**  
+```json
+{
+    "name": null,
+    "command_topic": "homeassistant/number/<dev_id>/power_ctrl/set",
+    "device_class": "power",
+    "unit_of_measurement": "w",
+    "min": -1000,
+    "max": 1000,
+    "step": 0.1,
+    "unique_id": "<dev_id>",
+    "device": {
+    "identifiers": ["<id>"], 
+    "name": "<dev_id>", 
+    "manufacturer": "Hoymiles", 
+    "model": "MS-A2" 
+ }
+}
+```
+
+**qos:**  
+`1`
+
+**retain:**  
+`true`
+
+### 5. Battery Level Information Display configuration (Device Release)
+*Publish immediately after the device is connected for configuration of battery display information.*
+
+**topic:**  
+`homeassistant/sensor/<dev_id>/soc/config`
+
+**payload:**  
+```json
+{
+    "name": "soc", 
+    "state_topic": "homeassistant/sensor/<dev_id>/quick/state", 
+    "value_template": "{{ value_json.soc }}",
+    "device_class": "battery",
+    "unit_of_measurement": "%",
+    "device": {
+    "identifiers": ["<id>"], 
+    "name": "<dev_id>", 
+    "manufacturer": "Hoymiles", 
+    "model": "MS-A2" 
+ }
+}
+```
+
+**qos:**  
+`1`
+
+**retain:**  
+`true`
+
+### 6. Battery charge and Discharge power display configuration (Device Release)
+*Publish immediately after the device is connected for power display information configuration.*
+
+**topic:**  
+`homeassistant/sensor/<dev_id>/bat_p/config`
+
+**payload:**  
+```json
+{
+    "name": "bat_power", 
+    "state_topic": "homeassistant/sensor/<dev_id>/quick/state", 
+    "value_template": "{{ value_json.bat_p }}",
+    "device_class": "power",
+    "unit_of_measurement": "W",
+    "device": {
+    "identifiers": ["<id>"], 
+    "name": "<dev_id>", 
+    "manufacturer": "Hoymiles", 
+    "model": "MS-A2" 
+ }
+}
+```
+
+**qos:**  
+`1`
+
+**retain:**  
+`true`
+
+### 7. Power On/Off Control (Device Subscription) [Reserved Feature]
+*Device subscription and response, not supported for now.*
+
+**topic:**  
+`homeassistant/switch/<dev_id>/set`
+
+**payload:**  
+`ON`
+
+**qos:**  
+`1`
+
+**retain:**  
+`false`
+
+**note:**  
+Types that can be set in the `payload` include `ON` and `OFF`.
+
+### 8. EMS mode (Device Subscription)
+*Device subscribe and respond, this topic is only supported on host and standalone.*
+
+**topic:**  
+`homeassistant/select/<dev_id>/ems_mode/command`
+
+**payload:**  
+`mqtt_ctrl`
+
+**qos:**  
+`1`
+
+**retain:**  
+`false`
+
+**note:**  
+See `options` in the`homeassistant/select/<dev_id>/ems_mode/config`topic in the`payload`.
+
+### 9. Power Control (Device Subscription)
+*Device subscribe and respond, this topic is only supported on host and standalone.*
+
+**topic:**  
+`homeassistant/number/<dev_id>/power_ctrl/set`
+
+**payload:**  
+`80.0`
+
+**qos:**  
+`1`
+
+**retain:**  
+`false`
+
+**note:**  
+See `min` and `max` in the `homeassistant/number/<dev_id>/power_ctrl/config` theme.
+
+### 10. Second-level data (Device publishing)
+*The device is released at intervals of 1 second, including the device and system.*
+
+**topic:**  
+`homeassistant/sensor/<dev_id>/quick/state`
+
+**payload:**  
+```json
+{
+ "grid_on_p": 0.1,
+ "grid_off_p": 0.1,
+ "bat_sts": "standby",
+ "bat_p": 0.1,
+ "soc": 0.01,
+ "sys_pv_p": 0.1,
+ "sys_plug_p": 0.1,
+ "sys_bat_p": 0.1,
+ "sys_grid_p": 0.1,
+ "sys_load_p": 0.1,
+ "sys_sp_p": 0.1,
+ "sys_soc": 0.01
+}
+```
+
+**qos:**  
+` 0 `
+
+**retain:**  
+`false`
+
+**note:**  
+`grid_on_p` : Active power of the device connected to the grid-on port (minimum unit: 0.1W)  
+`grid_off_p` : Active power of the device away from the grid-off port (minimum unit: 0.1W)  
+`bat_sts` : Device battery status (`standby` : Standby, `charge` : charging, `discharge` : discharging, `lock` : locked)  
+`bat_p` : Device battery power (minimum unit: 0.1W)  
+`soc` : Remaining battery power of the device (minimum unit: 0.01%)  
+`sys_pv_p` : System photovoltaic power (minimum unit: 0.1W)  
+`sys_plug_p` : System socket power (minimum unit: 0.1W)  
+`sys_bat_p` : System battery power (minimum unit: 0.1W)  
+`sys_grid_p` : System grid power (minimum unit: 0.1W)  
+`sys_load_p` : System load power (minimum unit: 0.1W)  
+`sys_sp_p` : System smart socket power (minimum unit: 0.1W)  
+`sys_soc` : System battery power (minimum unit: 0.01%)  
+
+### 11. Device real-time Data (Device Release)
+*Devices are published at intervals of 5 minutes.*
+
+**topic:**  
+`homeassistant/sensor/<dev_id>/device/state`
+
+**payload:**  
+```json
+{
+    "grid":[
+    {
+        "type": "grid_on",
+        "v": 0.1,
+        "i": 0.01,
+        "f": 0.01,
+        "p": 0.1,
+        "q": 0.1,
+        "ein": 1,
+        "eout": 1,
+        "etin": 1,
+        "etout": 1
+    },
+    {
+        "type": "grid_off",
+        "v": 0.1,
+        "i": 0.01,
+        "f": 0.01,
+        "p": 0.1,
+        "q": 0.1,
+        "ein": 1,
+        "eout": 1,
+        "etin": 1,
+        "etout": 1
+    },
+    {
+        "type": "inv",
+        "v": 0.1,
+        "i": 0.01,
+        "p": 0.1,
+        "q": 0.1,
+        "ein": 1,
+        "eout": 1,
+        "etin": 1,
+        "etout": 1
+    }],
+
+    "bat_sts": "standby",
+    "bat_v": 0.01,
+    "bat_i": 0.01,
+    "bat_p": 0.1,
+    "bat_temp": 0.1,
+    "soc": 0.01,
+    "rssi": -10
+}
+```
+
+**qos:**  
+`1`
+
+**retain:**  
+`false`
+
+**note:**  
+`type` : equipment port type (`grid_on` : and so, `grid_off` : so, `inv` : inverter)  
+`v` : Device port voltage (minimum unit: 0.1V)  
+`i` : Device port current (minimum unit: 0.01A)  
+`f` : Device port frequency (minimum unit: 0.01Hz)  
+`p` : Active power of the device port (minimum unit: 0.1W)  
+`q` : Device port reactive power (minimum unit: 0.1VAR)  
+`ein` : Device port input power of the day (minimum unit: 1Wh)  
+`eout` : Device port output power of the day (minimum unit: 1Wh)  
+`etin` : Historical cumulative input power of the device port (minimum unit: 1Wh)  
+`etout` : Historical cumulative output power of device ports (minimum unit: 1Wh)  
+`bat_sts` : Device battery status (`standby` : on standby, `charge` : charging, `discharge` : discharging, `lock` : locked)  
+`bat_v` : Device battery voltage (minimum unit: 0.01V)  
+`bat_i` : Device battery current (minimum unit: 0.01A)  
+`bat_p` : Device battery power (minimum unit: 0.1W)  
+`bat_temp` : Device battery temperature (minimum unit: 0.1 ° C)  
+`soc` : Remaining battery power of the device (minimum unit: 0.01%)  
+`rssi` : Device signal value (minimum unit: 1dBm)  
+
+### 12. System real-time data (Device release)
+*Devices are released at intervals of 5 minutes. This topic is only available for host and standalone devices.*
+
+**topic:**  
+`homeassistant/sensor/<dev_id>/system/state`
+
+**payload:**  
+```json
+{
+    "pv_p": 0.1,
+    "plug_p": 0.1,
+    "bat_p": 0.1,
+    "grid_p": 0.1,
+    "load_p": 0.1,
+    "sp_p": 0.1,
+    "soc": 0.01,
+    "pv_e": 1,
+    "dchg_e": 1,
+    "chg_e": 1,
+    "plug_out_e": 1,
+    "plug_in_e": 1,
+ 
+    "ems_mode": "general"
+}
+```
+
+**qos:**  
+`1`
+
+**retain:**  
+`false`
+
+**note:**  
+`pv_p` : System photovoltaic power (minimum unit: 0.1W)  
+`plug_p` : System socket power (minimum unit: 0.1W)  
+`bat_p` : System battery power (minimum unit: 0.1W)  
+`grid_p` : System grid power (minimum unit: 0.1W)  
+`load_p` : System load power (minimum unit: 0.1W)  
+`sp_p` : System smart socket power (minimum unit: 0.1W)  
+`soc` : System battery power (minimum unit: 0.01%)  
+`pv_e` : Photovoltaic power generation of the system on the day (minimum unit: 1Wh)  
+`dchg_e` : Battery side discharge capacity of the system for the day (minimum unit: 1Wh)  
+`chg_e` : System charge on the battery side for the day (minimum unit: 1Wh)  
+`plug_out_e` : System output of grid-connected sockets on the day (minimum unit: 1Wh)  
+`plug_in_e` : System grid-connected socket input power of the day (minimum unit: 1Wh)  
+`ems_mode` : The current EMS mode of the system (`general`: power controlled by the device itself,`mqtt_ctrl`: Power controlled by mqtt commands) 
