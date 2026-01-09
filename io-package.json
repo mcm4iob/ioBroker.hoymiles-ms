@@ -1,20 +1,20 @@
 {
   "common": {
     "name": "hoymiles-ms",
-    "version": "0.2.1-alpha.0",
+    "version": "0.2.1",
     "news": {
-      "0.2.1-alpha.0": {
-        "en": "ignore empty and invalid payloads. [#90]",
-        "de": "leere und ungültige nutzlasten ignorieren. (#90)",
-        "ru": "игнорировать пустые и недействительные полезные нагрузки. [#90]",
-        "pt": "ignorar as cargas vazias e inválidas. [#90]",
-        "nl": "lege en ongeldige lading negeren. [#90]",
-        "fr": "ignorer les charges utiles vides et invalides. [#90]",
-        "it": "ignorare i carichi di pagamento vuoti e non validi. [#90]",
-        "es": "ignorar las cargas de pago vacías e inválidas. [#90]",
-        "pl": "ignorować puste i nieprawidłowe ładunki. [# 90]",
-        "uk": "ігнорувати порожні та недійсні навантаження. [#90]",
-        "zh-cn": "忽略空的和无效的有效载荷。 [#90]"
+      "0.2.1": {
+        "en": "Empty and invalid payloads will be ignored now. [#90]\nDependencies have been updated",
+        "de": "Leere und ungültige Daten werden nun ignoriert. (#90)\nAbhängigkeiten wurden aktualisiert",
+        "ru": "игнорировать пустые и недействительные полезные нагрузки. [#90]\nЗависимости были обновлены",
+        "pt": "ignorar as cargas vazias e inválidas. [#90]\nAs dependências foram atualizadas",
+        "nl": "lege en ongeldige lading negeren. [#90]\nAfhankelijkheden zijn bijgewerkt",
+        "fr": "ignorer les charges utiles vides et invalides. [#90]\nLes dépendances ont été actualisées",
+        "it": "ignorare i carichi di pagamento vuoti e non validi. [#90]\nLe dipendenze sono state aggiornate",
+        "es": "ignorar las cargas de pago vacías e inválidas. [#90]\nSe han actualizado las dependencias",
+        "pl": "ignorować puste i nieprawidłowe ładunki. [# 90]\nZaktualizowano zależności",
+        "uk": "ігнорувати порожні та недійсні навантаження. [#90]\nЗалежність було оновлено",
+        "zh-cn": "忽略空的和无效的有效载荷。 [#90]\n依赖关系已更新"
       },
       "0.2.0": {
         "en": "States are created dynamically now. So no states should be created if a system does not provide data for it (i.e slave micro storage).\nState values are reset during startup now to prevent stale information.\nSupport to control power consumption and delivery has been added.\nDependencies have been updated",
