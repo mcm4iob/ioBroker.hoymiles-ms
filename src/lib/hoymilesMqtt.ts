@@ -37,11 +37,25 @@ export class HoymilesMqtt {
             return;
         }
 
+        if (!event.payload || !event.payload.toString().length) {
+            this.#log.debug(`[hoymilesMqtt] ignoring empty payload for topic ${event.topic}`);
+            return;
+        }
+
         const topicDetails = event.topic.split('/');
         if (topicDetails.length < 2) {
             this.#log.debug(`[hoymilesMqtt] ignoring invalid topic ${event.topic}`);
             return;
         }
+
+        try {
+            const payloadObj = JSON.parse(event.payload) as Record<string, unknown>;
+            event.payloadObj = payloadObj;
+        } catch {
+            this.#log.debug(`[hoymilesMqtt] error parsing payload for topic ${event.topic}, paylod: ${event.payload}`);
+            return;
+        }
+
         const deviceId = topicDetails[2];
         topicDetails[2] = '<dev_id>';
         const topic = topicDetails.join('/');
@@ -53,7 +67,6 @@ export class HoymilesMqtt {
             if (!stateConfig[stateKey].mqtt || stateConfig[stateKey].mqtt.mqtt_publish !== topic) {
                 continue;
             }
-
             const state = stateConfig[stateKey];
 
             const stateId = `${filterDevId(deviceId)}.${stateKey}`;

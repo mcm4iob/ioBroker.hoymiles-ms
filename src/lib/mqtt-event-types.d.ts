@@ -8,10 +8,11 @@ export type MqttMessageEvent = {
     clientId: string;
     ip: string;
     topic: string;
-    payload: string /*Buffer*/;
+    payload: string /* Buffer */;
     qos: number;
     retain: boolean;
     packet: Packet;
+    payloadObj: Record<string, unknown> /* json object */;
 };
 
 export type MqttSubscribeEvent = {

@@ -30,9 +30,21 @@ class HoymilesMqtt {
             this.#log.debug(`[hoymilesMqtt] ignoring empty topic`);
             return;
         }
+        if (!event.payload || !event.payload.toString().length) {
+            this.#log.debug(`[hoymilesMqtt] ignoring empty payload for topic ${event.topic}`);
+            return;
+        }
         const topicDetails = event.topic.split('/');
         if (topicDetails.length < 2) {
             this.#log.debug(`[hoymilesMqtt] ignoring invalid topic ${event.topic}`);
+            return;
+        }
+        try {
+            const payloadObj = JSON.parse(event.payload);
+            event.payloadObj = payloadObj;
+        }
+        catch {
+            this.#log.debug(`[hoymilesMqtt] error parsing payload for topic ${event.topic}, paylod: ${event.payload}`);
             return;
         }
         const deviceId = topicDetails[2];
