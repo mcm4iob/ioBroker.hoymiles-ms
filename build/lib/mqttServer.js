@@ -10,6 +10,8 @@ const mqtt_connection_1 = __importDefault(require("mqtt-connection"));
  * MqttServer
  *
  * class to hold one mqtt server instance
+ *
+ * api reference: https://www.npmjs.com/package/mqtt-connection#api
  */
 class MqttServer {
     #adapter;
@@ -68,22 +70,40 @@ class MqttServer {
             });
         });
         client.on('subscribe', (packet) => {
-            packet.subscriptions.forEach(async (sub) => {
-                this.#log.debug(`[MQTT-Server] (${client.id}) client subscribed to "${sub.topic}"`);
-                await this.#adapter.mqttEventCallback('subscribe', {
-                    clientId: client.id,
-                    ip: remoteAddress,
-                    topic: sub.topic,
-                    qos: packet.qos ?? 0,
-                    retain: packet.retain ?? false,
-                    packet,
-                });
-            });
+            this.#log.debug(`[MQTT-Server] (${client.id}) client subscribing to "${JSON.stringify(packet.subscriptions)}"`);
+            // packet.subscriptions.forEach(async (sub: any) => {
+            //     this.#log.debug(`[MQTT-Server] (${client.id}) client subscribing to "${sub.topic}"`);
+            //     await this.#adapter.mqttEventCallback('subscribe', {
+            //         clientId: client.id,
+            //         ip: remoteAddress,
+            //         topic: sub.topic,
+            //         qos: packet.qos ?? 0,
+            //         retain: packet.retain ?? false,
+            //         packet,
+            //     } as MqttSubscribeEvent);
+            // });
             // Grant all requested QoS levels
+            // client.suback({
+            //     granted: packet.subscriptions.map((sub: any) => sub.qos ?? 0),
+            //     messageId: client._lastSubscriptionId || 1,
+            // });
+            this.#log.debug(`[MQTT-Server] (${client.id}) client sending suback id:${packet.messageId}, qos:${packet.qos}"`);
             client.suback({
-                granted: packet.subscriptions.map((sub) => sub.qos ?? 0),
-                messageId: client._lastSubscriptionId || 1,
+                granted: [packet.qos],
+                messageId: packet.messageId,
             });
+            // process subscriptions
+            // packet.subscriptions.forEach(async (sub: any) => {
+            //     this.#log.debug(`[MQTT-Server] (${client.id}) client subscribing to "${sub.topic}"`);
+            //     await this.#adapter.mqttEventCallback('subscribe', {
+            //         clientId: client.id,
+            //         ip: remoteAddress,
+            //         topic: sub.topic,
+            //         qos: packet.qos ?? 0,
+            //         retain: packet.retain ?? false,
+            //         packet,
+            //     } as MqttSubscribeEvent);
+            // });
         });
         client.on('unsubscribe', (unsubscriptions) => {
             unsubscriptions.forEach(topic => {
