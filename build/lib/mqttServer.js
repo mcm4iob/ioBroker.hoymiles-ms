@@ -93,17 +93,17 @@ class MqttServer {
                 messageId: packet.messageId,
             });
             // process subscriptions
-            // packet.subscriptions.forEach(async (sub: any) => {
-            //     this.#log.debug(`[MQTT-Server] (${client.id}) client subscribing to "${sub.topic}"`);
-            //     await this.#adapter.mqttEventCallback('subscribe', {
-            //         clientId: client.id,
-            //         ip: remoteAddress,
-            //         topic: sub.topic,
-            //         qos: packet.qos ?? 0,
-            //         retain: packet.retain ?? false,
-            //         packet,
-            //     } as MqttSubscribeEvent);
-            // });
+            packet.subscriptions.forEach(async (sub) => {
+                this.#log.debug(`[MQTT-Server] (${client.id}) client processing subscription to "${sub.topic}"`);
+                await this.#adapter.mqttEventCallback('subscribe', {
+                    clientId: client.id,
+                    ip: remoteAddress,
+                    topic: sub.topic,
+                    qos: packet.qos ?? 0,
+                    retain: packet.retain ?? false,
+                    packet,
+                });
+            });
         });
         client.on('unsubscribe', (unsubscriptions) => {
             unsubscriptions.forEach(topic => {
