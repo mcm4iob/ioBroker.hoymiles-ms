@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hoymiles-ms",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "news": {
+      "0.2.2": {
+        "en": "Subscription code has been fixed to allow operation with hoymiles mqtt v3.0\nNOTE: TOU topics are not yet supported and raising warnings currently.",
+        "de": "Der Subscription-Code wurde festgelegt, um den Betrieb mit hoymiles mqtt v3.0 zu ermöglichen\nHINWEIS: TOU-Themen werden derzeit noch nicht unterstützt und Warnungen angehoben.",
+        "ru": "Исправлен код подписки, позволяющий работать с hoymiles mqtt v3.0\nПРИМЕЧАНИЕ: Темы TOU пока не поддерживаются и в настоящее время не вызывают предупреждения.",
+        "pt": "O código de assinatura foi fixado para permitir a operação com hoymiles mqtt v3.0\nNOTA: Os tópicos TOU ainda não são suportados e estão a levantar avisos.",
+        "nl": "Abonnementscode is vastgesteld om te kunnen werken met hoymiles mqtt v3.0\nOPMERKING: TOU-onderwerpen worden momenteel nog niet ondersteund en waarschuwen.",
+        "fr": "Le code d'abonnement a été fixé pour permettre le fonctionnement avec hoymiles mqtt v3.0\nNOTE: Les sujets TOU ne sont pas encore pris en charge et soulèvent des avertissements actuellement.",
+        "it": "Codice di abbonamento è stato fissato per consentire l'operazione con hoymiles mqtt v3.0\nNOTA: gli argomenti TOU non sono ancora supportati e sollevano avvisi al momento.",
+        "es": "Se ha fijado el código de suscripción para permitir la operación con hoymiles mqtt v3.0\nNOTA: Los temas de TOU aún no están respaldados y planteando advertencias actualmente.",
+        "pl": "Kod subskrypcji został ustalony, aby umożliwić działanie z hoymiles mqtt v3.0\nUWAGA: Tematy TOU nie są jeszcze obsługiwane i ostrzegające.",
+        "uk": "Код підписки був закріплений для забезпечення роботи з hoymiles mqtt v3.0\nВ даний час не підтримуються теми TOU.",
+        "zh-cn": "订阅代码已被固定, 允许使用 hoymiles mqtt v3. 0 操作 \n注:TOU专题目前尚未得到支持,因此目前未发出警告."
+      },
       "0.2.1": {
         "en": "Empty and invalid payloads will be ignored now. [#90]\nDependencies have been updated",
         "de": "Leere und ungültige Daten werden nun ignoriert. (#90)\nAbhängigkeiten wurden aktualisiert",
