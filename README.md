@@ -77,6 +77,10 @@ Once the adapter is started it listens to mqtt packets received from the Hoymile
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (mcm1957) Subscription code has been fixed to allow operation with hoymiles mqtt v3.0
+* (mcm1957) NOTE: TOU topics are not yet supported and raising warnings currently.
+
 ### 0.2.1 (2026-01-09)
 * (mcm1957) ignore empty and invalid payloads. [#90]
 * (mcm1957) Dependencies have been updated
