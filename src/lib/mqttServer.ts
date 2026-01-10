@@ -25,6 +25,8 @@ type MqttClients = {
  * MqttServer
  *
  * class to hold one mqtt server instance
+ *
+ * api reference: https://www.npmjs.com/package/mqtt-connection#api
  */
 export class MqttServer {
     #adapter: HoymilesMsAdapter;
@@ -102,23 +104,27 @@ export class MqttServer {
         });
 
         client.on('subscribe', (packet: Packet) => {
-            packet.subscriptions.forEach(async (sub: any) => {
-                this.#log.debug(`[MQTT-Server] (${client.id}) client subscribing to "${sub.topic}"`);
-                await this.#adapter.mqttEventCallback('subscribe', {
-                    clientId: client.id,
-                    ip: remoteAddress,
-                    topic: sub.topic,
-                    qos: packet.qos ?? 0,
-                    retain: packet.retain ?? false,
-                    packet,
-                } as MqttSubscribeEvent);
-            });
+            this.#log.debug(
+                `[MQTT-Server] (${client.id}) client subscribing to "${JSON.stringify(packet.subscriptions)}"`,
+            );
+            // packet.subscriptions.forEach(async (sub: any) => {
+            //     this.#log.debug(`[MQTT-Server] (${client.id}) client subscribing to "${sub.topic}"`);
+            //     await this.#adapter.mqttEventCallback('subscribe', {
+            //         clientId: client.id,
+            //         ip: remoteAddress,
+            //         topic: sub.topic,
+            //         qos: packet.qos ?? 0,
+            //         retain: packet.retain ?? false,
+            //         packet,
+            //     } as MqttSubscribeEvent);
+            // });
 
             // Grant all requested QoS levels
             // client.suback({
             //     granted: packet.subscriptions.map((sub: any) => sub.qos ?? 0),
             //     messageId: client._lastSubscriptionId || 1,
             // });
+
             this.#log.debug(
                 `[MQTT-Server] (${client.id}) client sending suback id:${packet.messageId}, qos:${packet.qos}"`,
             );
@@ -126,6 +132,19 @@ export class MqttServer {
                 granted: [packet.qos],
                 messageId: packet.messageId,
             });
+
+            // process subscriptions
+            // packet.subscriptions.forEach(async (sub: any) => {
+            //     this.#log.debug(`[MQTT-Server] (${client.id}) client subscribing to "${sub.topic}"`);
+            //     await this.#adapter.mqttEventCallback('subscribe', {
+            //         clientId: client.id,
+            //         ip: remoteAddress,
+            //         topic: sub.topic,
+            //         qos: packet.qos ?? 0,
+            //         retain: packet.retain ?? false,
+            //         packet,
+            //     } as MqttSubscribeEvent);
+            // });
         });
 
         client.on('unsubscribe', (unsubscriptions: any[]) => {
