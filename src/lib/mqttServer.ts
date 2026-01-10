@@ -103,7 +103,7 @@ export class MqttServer {
 
         client.on('subscribe', (packet: Packet) => {
             packet.subscriptions.forEach(async (sub: any) => {
-                this.#log.debug(`[MQTT-Server] (${client.id}) client subscribed to "${sub.topic}"`);
+                this.#log.debug(`[MQTT-Server] (${client.id}) client subscribing to "${sub.topic}"`);
                 await this.#adapter.mqttEventCallback('subscribe', {
                     clientId: client.id,
                     ip: remoteAddress,
@@ -115,9 +115,16 @@ export class MqttServer {
             });
 
             // Grant all requested QoS levels
+            // client.suback({
+            //     granted: packet.subscriptions.map((sub: any) => sub.qos ?? 0),
+            //     messageId: client._lastSubscriptionId || 1,
+            // });
+            this.#log.debug(
+                `[MQTT-Server] (${client.id}) client sending suback id:${packet.messageId}, qos:${packet.qos}"`,
+            );
             client.suback({
-                granted: packet.subscriptions.map((sub: any) => sub.qos ?? 0),
-                messageId: client._lastSubscriptionId || 1,
+                granted: [packet.qos],
+                messageId: packet.messageId,
             });
         });
 
