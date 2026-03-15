@@ -7,14 +7,14 @@ updates:
     schedule:
       interval: cron
       timezone: "Europe/Berlin"
-      cronjob: 0/15 * 15 * *
+      cronjob: '25 13 15 * *'
     open-pull-requests-limit: 15
     versioning-strategy: "increase"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "cron"
+      interval: cron
       timezone: "Europe/Berlin"
-      cronjob: "0/10 * * *"
+      cronjob: '30 13 * * *'
     open-pull-requests-limit: 15
