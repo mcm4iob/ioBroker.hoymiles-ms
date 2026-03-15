@@ -7,7 +7,7 @@ updates:
     schedule:
       interval: cron
       timezone: "Europe/Berlin"
-      cronjob: '25 13 15 * *'
+      cronjob: '25 12 15 * *'
     open-pull-requests-limit: 15
     versioning-strategy: "increase"
 
@@ -16,5 +16,5 @@ updates:
     schedule:
       interval: cron
       timezone: "Europe/Berlin"
-      cronjob: '30 13 * * *'
+      cronjob: '30 12 * * *'
     open-pull-requests-limit: 15
