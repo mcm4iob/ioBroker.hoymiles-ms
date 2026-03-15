@@ -5,9 +5,9 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "cron"
+      interval: cron
       timezone: "Europe/Berlin"
-      cronjob: "7 2 11 * *"
+      cronjob: 11 20 15 * *
     open-pull-requests-limit: 15
     versioning-strategy: "increase"
 
