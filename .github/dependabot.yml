@@ -16,5 +16,5 @@ updates:
     schedule:
       interval: "cron"
       timezone: "Europe/Berlin"
-      cronjob: "7 2 11 * *"
+      cronjob: "10 20 15 * *"
     open-pull-requests-limit: 15
