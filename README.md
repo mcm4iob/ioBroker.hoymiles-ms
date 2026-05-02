@@ -81,6 +81,9 @@ Once the adapter is started it listens to mqtt packets received from the Hoymile
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+- (copilot) Adapter requires node.js >= 22 now
+
 ### 0.2.2 (2026-01-10)
 * (mcm1957) Subscription code has been fixed to allow operation with hoymiles mqtt v3.0
 * (mcm1957) NOTE: TOU topics are not yet supported and raising warnings currently.
