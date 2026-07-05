@@ -21,7 +21,7 @@ For more details and for information how to disable the error reporting see [Sen
 ## hoymiles-ms adapter for ioBroker
 
 This adapter integrates the **HOYMILES** **M**icro**S**torage systems into ioBroker. Currently the following systems have been checked to work
-- Hoymiles MS-A2
+- Hoymiles MS-A2 
 - Hoymiles HiBattery 1920 AC
   
 A description of the devices is available [here](https://www.hoymiles.com/de/products/).
