@@ -149,6 +149,9 @@
     "ems_mode.command_name": "EMS -configuratieparamater",
     "power_ctrl.set_desc": "Vermogenswaarde die moet worden gebruikt voor uitvoerregeling.",
     "power_ctrl.set_name": "Krachtwaarde",
+    "output_power.set_desc": "Vermogenswaarde die moet worden gebruikt voor de regeling van het uitgangsvermogen.",
+    "output_power.set_name": "Uitgangsvermogen",
+
     "info.ip_desc": "Ip-adres",
     "info.ip_name": "IP-adres van apparaat",
     "info.online_desc": "Indicator om de werkelijke online status van apparaat weer te geven",

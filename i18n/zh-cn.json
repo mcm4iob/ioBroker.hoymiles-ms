@@ -149,6 +149,9 @@
     "ems_mode.command_name": "EMS配置Paramater",
     "power_ctrl.set_desc": "用于输出控制的功率值。",
     "power_ctrl.set_name": "功率值",
+    "output_power.set_desc": "用于输出功率控制的功率值。",
+    "output_power.set_name": "输出功率值",
+
     "info.ip_desc": "IP地址",
     "info.ip_name": "设备的IP地址",
     "info.online_desc": "显示实际在线设备状态的指标",

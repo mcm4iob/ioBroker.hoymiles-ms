@@ -149,6 +149,9 @@
     "ems_mode.command_name": "EMS Configuration Paramater",
     "power_ctrl.set_desc": "Значение мощности, которое будет использоваться для выходного управления.",
     "power_ctrl.set_name": "Значение мощности",
+    "output_power.set_desc": "Значение мощности, которое будет использоваться для управления выходной мощностью.",
+    "output_power.set_name": "Значение выходной мощности",
+
     "info.ip_desc": "Ip-address",
     "info.ip_name": "IP-адрес устройства",
     "info.online_desc": "Индикатор, чтобы показать фактическое онлайн -состояние устройства",

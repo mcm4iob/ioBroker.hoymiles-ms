@@ -101,6 +101,9 @@
     "power_ctrl.min_name": "Maximum Input Power",
     "power_ctrl.set_desc": "Power value to be used for output control.",
     "power_ctrl.set_name": "Power value",
+    "output_power.set_desc": "Power value to be used for output power control.",
+    "output_power.set_name": "Output power value",
+
     "power_ctrl.step_desc": "Stepsize for power control.",
     "power_ctrl.step_name": "Power Stepsize",
     "power_ctrl_desc": "Power-Control",

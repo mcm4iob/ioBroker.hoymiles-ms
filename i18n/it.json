@@ -149,6 +149,9 @@
     "ems_mode.command_name": "Paramater di configurazione EMS",
     "power_ctrl.set_desc": "Valore di potenza da utilizzare per il controllo di output.",
     "power_ctrl.set_name": "Valore di potenza",
+    "output_power.set_desc": "Valore di potenza da utilizzare per il controllo della potenza in uscita.",
+    "output_power.set_name": "Valore di potenza in uscita",
+
     "info.ip_desc": "Indirizzo IP",
     "info.ip_name": "Indirizzo IP del dispositivo",
     "info.online_desc": "Indicatore per mostrare lo stato online effettivo del dispositivo",
