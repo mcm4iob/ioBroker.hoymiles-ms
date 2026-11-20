@@ -76,6 +76,12 @@ const channelConfig: ChannelConfig = {
         },
     },
 
+    output_power: {
+        common: {
+            name: '',
+        },
+    },
+
     realtime: {
         common: {
             name: '',
@@ -869,6 +875,70 @@ export const stateConfig: StateConfig = {
     'power_ctrl.step': {
         mqtt: {
             mqtt_publish: `homeassistant/number/<dev_id>/power_ctrl/config`,
+            mqtt_publish_funct: (value: MqttMessageEvent): any => JSON.parse(value.payload).step,
+        },
+        preInit: false,
+        keepValue: false,
+        common: {
+            name: '',
+            type: 'number',
+            role: 'value.power',
+            read: true,
+            write: false,
+            unit: 'W',
+        },
+    },
+
+    'output_power.min': {
+        mqtt: {
+            mqtt_publish: `homeassistant/number/<dev_id>/output_power/config`,
+            mqtt_publish_funct: (value: MqttMessageEvent): any => JSON.parse(value.payload).min,
+        },
+        preInit: false,
+        keepValue: false,
+        common: {
+            name: '',
+            type: 'number',
+            role: 'value.power',
+            read: true,
+            write: false,
+            unit: 'W',
+        },
+    },
+
+    'output_power.max': {
+        mqtt: {
+            mqtt_publish: `homeassistant/number/<dev_id>/output_power/config`,
+            mqtt_publish_funct: (value: MqttMessageEvent): any => JSON.parse(value.payload).max,
+        },
+        preInit: false,
+        keepValue: false,
+        common: {
+            name: '',
+            type: 'number',
+            role: 'value.power',
+            read: true,
+            write: false,
+            unit: 'W',
+        },
+    },
+
+    'output_power.set': {
+        preInit: false,
+        keepValue: false,
+        common: {
+            name: '',
+            type: 'number',
+            role: 'level.power',
+            read: true,
+            write: true,
+            unit: 'W',
+        },
+    },
+
+    'output_power.step': {
+        mqtt: {
+            mqtt_publish: `homeassistant/number/<dev_id>/output_power/config`,
             mqtt_publish_funct: (value: MqttMessageEvent): any => JSON.parse(value.payload).step,
         },
         preInit: false,
